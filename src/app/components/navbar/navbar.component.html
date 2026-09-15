@@ -1,0 +1,104 @@
+<nav class="sticky top-0 z-50 bg-white shadow-lg border-b-4 border-[#E60000]">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-20">
+
+      <!-- Logo -->
+      <a routerLink="/" class="flex items-center gap-3 group flex-shrink-0">
+        <img
+          src="logo.png"
+          alt="Electro Bodegón"
+          class="h-16 w-16 object-contain group-hover:scale-110 transition-transform duration-300 drop-shadow-md"
+        />
+        <div class="hidden sm:block leading-tight">
+          <span class="block font-montserrat font-black text-[#E60000] text-2xl leading-none tracking-tight">ELECTRO</span>
+          <span class="block font-montserrat font-black text-[#111827] text-2xl leading-none tracking-tight">BODEGÓN</span>
+          <span class="block font-inter text-[10px] text-gray-400 uppercase tracking-widest">Donde compran los que saben de ahorro</span>
+        </div>
+      </a>
+
+      <!-- Desktop Nav Links -->
+      <div class="hidden md:flex items-center gap-1">
+        <a routerLink="/" routerLinkActive="text-[#E60000] bg-red-50 border-b-2 border-[#E60000]"
+           [routerLinkActiveOptions]="{exact: true}"
+           class="px-4 py-2.5 font-montserrat font-bold text-sm text-[#111827] hover:text-[#E60000] transition-all rounded-lg hover:bg-red-50">
+          <i class="fas fa-home mr-1.5"></i> Inicio
+        </a>
+        <a routerLink="/catalogo" routerLinkActive="text-[#E60000] bg-red-50 border-b-2 border-[#E60000]"
+           class="px-4 py-2.5 font-montserrat font-bold text-sm text-[#111827] hover:text-[#E60000] transition-all rounded-lg hover:bg-red-50">
+          <i class="fas fa-th-large mr-1.5"></i> Catálogo
+        </a>
+        <a routerLink="/sucursales" routerLinkActive="text-[#E60000] bg-red-50 border-b-2 border-[#E60000]"
+           class="px-4 py-2.5 font-montserrat font-bold text-sm text-[#111827] hover:text-[#E60000] transition-all rounded-lg hover:bg-red-50">
+          <i class="fas fa-map-marker-alt mr-1.5"></i> Sucursales
+        </a>
+      </div>
+
+      <!-- Social + CTA -->
+      <div class="flex items-center gap-2">
+        <!-- Social icons (desktop) -->
+        <div class="hidden lg:flex items-center gap-1.5 mr-2">
+          <a href="https://wa.me/593986952147" target="_blank" rel="noopener"
+             class="w-8 h-8 flex items-center justify-center rounded-lg text-[#25D366] hover:bg-green-50 transition-all hover:scale-110" title="WhatsApp">
+            <i class="fab fa-whatsapp text-xl"></i>
+          </a>
+          <a href="https://instagram.com" target="_blank" rel="noopener"
+             class="w-8 h-8 flex items-center justify-center rounded-lg text-pink-500 hover:bg-pink-50 transition-all hover:scale-110" title="Instagram">
+            <i class="fab fa-instagram text-xl"></i>
+          </a>
+          <a href="https://facebook.com" target="_blank" rel="noopener"
+             class="w-8 h-8 flex items-center justify-center rounded-lg text-[#1877F2] hover:bg-blue-50 transition-all hover:scale-110" title="Facebook">
+            <i class="fab fa-facebook-f text-xl"></i>
+          </a>
+          <a href="https://tiktok.com" target="_blank" rel="noopener"
+             class="w-8 h-8 flex items-center justify-center rounded-lg text-gray-900 hover:bg-gray-100 transition-all hover:scale-110" title="TikTok">
+            <i class="fab fa-tiktok text-xl"></i>
+          </a>
+        </div>
+
+        <!-- WhatsApp CTA button -->
+        <a href="https://wa.me/593986952147" target="_blank" rel="noopener"
+           class="hidden sm:flex items-center gap-2 bg-[#25D366] text-white px-4 py-2.5 rounded-full text-sm font-montserrat font-bold hover:bg-green-600 transition-all hover:scale-105 shadow-md">
+          <i class="fab fa-whatsapp text-base"></i>
+          <span>Contáctanos</span>
+        </a>
+
+        <!-- Mobile hamburger -->
+        <button id="mobile-menu-btn" (click)="toggleMenu()" class="md:hidden p-2.5 rounded-lg text-gray-600 hover:text-[#E60000] hover:bg-red-50 transition-colors">
+          @if (!menuOpen()) {
+            <i class="fas fa-bars text-xl"></i>
+          } @else {
+            <i class="fas fa-times text-xl"></i>
+          }
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Dropdown -->
+    @if (menuOpen()) {
+      <div class="md:hidden border-t border-gray-100 py-3 space-y-1">
+        <a routerLink="/" (click)="closeMenu()" routerLinkActive="text-[#E60000] bg-red-50"
+           [routerLinkActiveOptions]="{exact: true}"
+           class="flex items-center gap-2 px-4 py-3 text-sm font-montserrat font-semibold text-gray-700 hover:bg-red-50 hover:text-[#E60000] rounded-xl transition-colors">
+          <i class="fas fa-home w-5 text-center"></i> Inicio
+        </a>
+        <a routerLink="/catalogo" (click)="closeMenu()" routerLinkActive="text-[#E60000] bg-red-50"
+           class="flex items-center gap-2 px-4 py-3 text-sm font-montserrat font-semibold text-gray-700 hover:bg-red-50 hover:text-[#E60000] rounded-xl transition-colors">
+          <i class="fas fa-th-large w-5 text-center"></i> Catálogo
+        </a>
+        <a routerLink="/sucursales" (click)="closeMenu()" routerLinkActive="text-[#E60000] bg-red-50"
+           class="flex items-center gap-2 px-4 py-3 text-sm font-montserrat font-semibold text-gray-700 hover:bg-red-50 hover:text-[#E60000] rounded-xl transition-colors">
+          <i class="fas fa-map-marker-alt w-5 text-center"></i> Sucursales
+        </a>
+        <!-- Mobile social icons -->
+        <div class="flex items-center gap-3 px-4 pt-2 pb-1 border-t border-gray-100 mt-2">
+          <a href="https://wa.me/593986952147" target="_blank" rel="noopener" class="flex items-center gap-1.5 text-[#25D366] text-sm font-montserrat font-semibold hover:underline">
+            <i class="fab fa-whatsapp text-lg"></i> WhatsApp
+          </a>
+          <a href="https://instagram.com" target="_blank" rel="noopener" class="text-pink-500 hover:scale-110 transition-transform"><i class="fab fa-instagram text-xl"></i></a>
+          <a href="https://facebook.com" target="_blank" rel="noopener" class="text-[#1877F2] hover:scale-110 transition-transform"><i class="fab fa-facebook-f text-xl"></i></a>
+          <a href="https://tiktok.com" target="_blank" rel="noopener" class="text-gray-900 hover:scale-110 transition-transform"><i class="fab fa-tiktok text-xl"></i></a>
+        </div>
+      </div>
+    }
+  </div>
+</nav>

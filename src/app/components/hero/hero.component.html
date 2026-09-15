@@ -1,0 +1,85 @@
+<section class="relative min-h-[88vh] flex items-center overflow-hidden">
+
+  <!-- Background Image -->
+  <div class="absolute inset-0 z-0">
+    <img
+      src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1600&q=85"
+      alt="Electrodomésticos modernos"
+      class="w-full h-full object-cover object-center"
+    />
+    <!-- Red gradient overlay -->
+    <div class="hero-gradient absolute inset-0"></div>
+  </div>
+
+  <!-- Animated circles -->
+  <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+    <div class="absolute -top-20 -right-20 w-96 h-96 rounded-full bg-[#FFCC00] opacity-10"></div>
+    <div class="absolute bottom-0 -left-20 w-64 h-64 rounded-full bg-white opacity-5"></div>
+    <div class="absolute top-1/2 right-1/4 w-32 h-32 rounded-full bg-[#FFCC00] opacity-10 animate-pulse"></div>
+  </div>
+
+  <!-- Content -->
+  <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-20">
+    <div class="max-w-2xl">
+
+      <!-- Badge -->
+      <div class="inline-flex items-center gap-2 bg-[#FFCC00] text-[#111827] px-4 py-1.5 rounded-full text-xs font-montserrat font-black uppercase tracking-widest mb-6 shadow-lg animate-bounce">
+        <i class="fas fa-fire text-[#E60000]"></i>
+        Ofertas Estrella 2025
+      </div>
+
+      <!-- Heading -->
+      <h1 class="font-montserrat font-black text-white text-4xl sm:text-5xl lg:text-6xl leading-tight mb-6">
+        Electrodomésticos<br/>
+        <span class="text-[#FFCC00]">de Primera</span><br/>
+        al Mejor Precio
+      </h1>
+
+      <!-- Subtitle -->
+      <p class="font-inter font-normal text-white/80 text-lg leading-relaxed mb-8 max-w-lg">
+        Las mejores marcas: LG, Samsung, Mabe, Indurama, Oster y más.
+        Cierra tu compra por WhatsApp en segundos. ¡Envío disponible!
+      </p>
+
+      <!-- CTAs -->
+      <div class="flex flex-wrap gap-4">
+        <a routerLink="/catalogo"
+           class="inline-flex items-center gap-2 bg-[#FFCC00] hover:bg-yellow-400 text-[#111827] px-8 py-4 rounded-2xl font-montserrat font-black text-base shadow-xl hover:shadow-2xl transition-all hover:scale-105 active:scale-95">
+          <i class="fas fa-shopping-bag"></i>
+          Ver Catálogo Completo
+        </a>
+        <a routerLink="/sucursales"
+           class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white border border-white/30 px-8 py-4 rounded-2xl font-montserrat font-bold text-base transition-all hover:scale-105 active:scale-95">
+          <i class="fas fa-map-marker-alt text-[#FFCC00]"></i>
+          Ver Sucursales
+        </a>
+      </div>
+
+      <!-- Stats bar -->
+      <div class="flex flex-wrap gap-6 mt-10 pt-8 border-t border-white/20">
+        <div class="text-center">
+          <span class="block font-montserrat font-black text-[#FFCC00] text-2xl">30+</span>
+          <span class="text-xs font-inter text-white/60 uppercase tracking-wide">Productos</span>
+        </div>
+        <div class="text-center">
+          <span class="block font-montserrat font-black text-[#FFCC00] text-2xl">8</span>
+          <span class="text-xs font-inter text-white/60 uppercase tracking-wide">Marcas top</span>
+        </div>
+        <div class="text-center">
+          <span class="block font-montserrat font-black text-[#FFCC00] text-2xl">2</span>
+          <span class="text-xs font-inter text-white/60 uppercase tracking-wide">Sucursales</span>
+        </div>
+        <div class="text-center">
+          <span class="block font-montserrat font-black text-[#FFCC00] text-2xl">100%</span>
+          <span class="text-xs font-inter text-white/60 uppercase tracking-wide">Garantía</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll indicator -->
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 text-white/50 animate-bounce">
+    <span class="text-xs font-inter uppercase tracking-widest">Desliza</span>
+    <i class="fas fa-chevron-down text-sm"></i>
+  </div>
+</section>

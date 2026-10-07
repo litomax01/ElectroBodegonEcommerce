@@ -20,19 +20,19 @@
         </p>
         <!-- Social Links -->
         <div class="flex gap-3">
-          <a href="https://facebook.com" target="_blank" rel="noopener"
+          <a [href]="redes.facebook" target="_blank" rel="noopener" aria-label="Facebook"
              class="w-9 h-9 bg-gray-800 hover:bg-[#1877F2] text-gray-400 hover:text-white rounded-lg flex items-center justify-center transition-all hover:scale-110">
             <i class="fab fa-facebook-f text-sm"></i>
           </a>
-          <a href="https://instagram.com" target="_blank" rel="noopener"
+          <a [href]="redes.instagram" target="_blank" rel="noopener" aria-label="Instagram"
              class="w-9 h-9 bg-gray-800 text-gray-400 hover:text-white rounded-lg flex items-center justify-center transition-all hover:scale-110">
             <i class="fab fa-instagram text-sm"></i>
           </a>
-          <a href="https://wa.me/593986952147" target="_blank" rel="noopener"
+          <a [href]="whatsapp(whatsappPrincipal)" target="_blank" rel="noopener" aria-label="WhatsApp"
              class="w-9 h-9 bg-gray-800 hover:bg-[#25D366] text-gray-400 hover:text-white rounded-lg flex items-center justify-center transition-all hover:scale-110">
             <i class="fab fa-whatsapp text-sm"></i>
           </a>
-          <a href="https://tiktok.com" target="_blank" rel="noopener"
+          <a [href]="redes.tiktok" target="_blank" rel="noopener" aria-label="TikTok"
              class="w-9 h-9 bg-gray-800 hover:bg-black text-gray-400 hover:text-white rounded-lg flex items-center justify-center transition-all hover:scale-110">
             <i class="fab fa-tiktok text-sm"></i>
           </a>
@@ -61,47 +61,28 @@
         </ul>
       </div>
 
-      <!-- Sucursal Norte -->
-      <div>
-        <h3 class="font-montserrat font-bold text-white text-base mb-4 uppercase tracking-wide">
-          <i class="fas fa-map-marker-alt text-[#E60000] mr-2"></i>Sucursal Norte
-        </h3>
-        <ul class="space-y-2 text-sm text-gray-400">
-          <li class="flex items-start gap-2">
-            <i class="fas fa-location-dot text-[#E60000] mt-0.5 flex-shrink-0"></i>
-            <span>Av. Del Maestro y Sebastián Buara</span>
-          </li>
-          <li class="flex items-center gap-2">
-            <i class="fab fa-whatsapp text-[#25D366]"></i>
-            <a href="https://wa.me/593986952147" class="hover:text-[#25D366] transition-colors">0986 952 147</a>
-          </li>
-          <li class="flex items-center gap-2 text-gray-500">
-            <i class="fas fa-user text-xs"></i>
-            <span>Asesora: Elizabeth</span>
-          </li>
-        </ul>
-      </div>
-
-      <!-- Sucursal Sur -->
-      <div>
-        <h3 class="font-montserrat font-bold text-white text-base mb-4 uppercase tracking-wide">
-          <i class="fas fa-map-marker-alt text-[#E60000] mr-2"></i>Sucursal Sur
-        </h3>
-        <ul class="space-y-2 text-sm text-gray-400">
-          <li class="flex items-start gap-2">
-            <i class="fas fa-location-dot text-[#E60000] mt-0.5 flex-shrink-0"></i>
-            <span>Dr. José Peralta y Amaluza</span>
-          </li>
-          <li class="flex items-center gap-2">
-            <i class="fab fa-whatsapp text-[#25D366]"></i>
-            <a href="https://wa.me/593958771384" class="hover:text-[#25D366] transition-colors">0958 771 384</a>
-          </li>
-          <li class="flex items-center gap-2 text-gray-500">
-            <i class="fas fa-user text-xs"></i>
-            <span>Asesor: Fernando</span>
-          </li>
-        </ul>
-      </div>
+      <!-- Sucursales -->
+      @for (s of sucursales; track s.id) {
+        <div>
+          <h3 class="font-montserrat font-bold text-white text-base mb-4 uppercase tracking-wide">
+            <i class="fas fa-map-marker-alt text-[#E60000] mr-2"></i>{{ s.zona }}
+          </h3>
+          <ul class="space-y-2 text-sm text-gray-400">
+            <li class="flex items-start gap-2">
+              <i class="fas fa-location-dot text-[#E60000] mt-0.5 flex-shrink-0"></i>
+              <span>{{ s.direccion }}</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <i class="fab fa-whatsapp text-[#25D366]"></i>
+              <a [href]="whatsapp(s.whatsapp)" target="_blank" rel="noopener" class="hover:text-[#25D366] transition-colors">{{ s.telefono }}</a>
+            </li>
+            <li class="flex items-center gap-2 text-gray-500">
+              <i class="fas fa-user text-xs"></i>
+              <span>{{ s.asesorTitulo }}: {{ s.asesorNombre }}</span>
+            </li>
+          </ul>
+        </div>
+      }
     </div>
   </div>
 
@@ -109,7 +90,7 @@
   <div class="border-t border-gray-800">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row justify-between items-center gap-2">
       <p class="text-xs text-gray-500 font-inter">
-        &copy; 2025 Electro Bodegón. Todos los derechos reservados.
+        &copy; {{ anioActual }} Electro Bodegón. Todos los derechos reservados.
       </p>
       <div class="flex items-center gap-4">
         <span class="text-xs text-gray-600 flex items-center gap-1">

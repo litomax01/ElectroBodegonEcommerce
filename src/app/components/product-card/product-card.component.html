@@ -2,20 +2,27 @@
 
   <!-- Image Container -->
   <div class="relative overflow-hidden bg-gray-50 aspect-square">
-    <img
-      [src]="producto.imagen_url"
-      [alt]="producto.nombre"
-      class="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
-      loading="lazy"
-      (error)="onImgError($event)"
-    />
+    <!-- Enlace de imagen: oculto para lectores de pantalla (el nombre ya enlaza a la ficha) -->
+    <a [routerLink]="ruta" tabindex="-1" aria-hidden="true" class="block w-full h-full">
+      <img
+        [src]="imagenPrincipal"
+        [alt]="producto.nombre"
+        width="600"
+        height="600"
+        class="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
+        loading="lazy"
+        (error)="onImgError($event)"
+      />
+    </a>
     <!-- Discount Badge -->
-    <span class="absolute top-3 left-3 bg-[#E60000] text-white text-xs font-montserrat font-800 px-2.5 py-1 rounded-full shadow-md uppercase tracking-wide">
-      {{ producto.etiqueta }}
-    </span>
+    @if (producto.etiqueta) {
+      <span class="absolute top-3 left-3 bg-[#E60000] text-white text-xs font-montserrat font-extrabold px-2.5 py-1 rounded-full shadow-md uppercase tracking-wide">
+        {{ producto.etiqueta }}
+      </span>
+    }
     <!-- Destacado Badge -->
     @if (producto.destacado) {
-      <span class="absolute top-3 right-3 bg-[#FFCC00] text-[#111827] text-xs font-montserrat font-700 px-2.5 py-1 rounded-full shadow-md uppercase tracking-wide">
+      <span class="absolute top-3 right-3 bg-[#FFCC00] text-[#111827] text-xs font-montserrat font-bold px-2.5 py-1 rounded-full shadow-md uppercase tracking-wide">
         <i class="fas fa-star text-xs mr-1"></i>Oferta
       </span>
     }
@@ -26,56 +33,59 @@
 
     <!-- Brand + Category -->
     <div class="flex items-center justify-between mb-2">
-      <span class="text-xs font-montserrat font-700 text-[#E60000] uppercase tracking-wider">{{ producto.marca }}</span>
+      <span class="text-xs font-montserrat font-bold text-[#E60000] uppercase tracking-wider">{{ producto.marca }}</span>
       <span class="text-xs font-inter text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">{{ producto.categoria }}</span>
     </div>
 
     <!-- Product Name -->
-    <h3 class="font-montserrat font-700 text-[#111827] text-sm leading-tight mb-2 line-clamp-2 flex-1">
-      {{ producto.nombre }}
+    <h3 class="font-montserrat font-bold text-[#111827] text-sm leading-tight mb-2 line-clamp-2 flex-1">
+      <a [routerLink]="ruta" class="hover:text-[#E60000] transition-colors">{{ producto.nombre }}</a>
     </h3>
 
     <!-- Description -->
-    @if (producto.descripcion) {
+    @if (producto.descripcionCorta) {
       <p class="text-xs font-inter text-gray-500 leading-relaxed mb-3 line-clamp-2">
-        {{ producto.descripcion }}
+        {{ producto.descripcionCorta }}
       </p>
     }
 
     <!-- Pricing -->
-    <div class="flex items-end gap-2 mb-4">
-      <span class="font-montserrat font-900 text-[#E60000] text-2xl leading-none">
-        ${{ producto.precio_oferta | number:'1.2-2' }}
+    <div class="flex items-end gap-2 mb-3">
+      <span class="font-montserrat font-black text-[#E60000] text-2xl leading-none">
+        ${{ producto.precio | number:'1.2-2' }}
       </span>
-      <span class="font-inter text-gray-400 text-sm line-through leading-none mb-0.5">
-        ${{ producto.precio_original | number:'1.2-2' }}
-      </span>
-      <span class="ml-auto text-xs font-montserrat font-600 text-green-600 bg-green-50 px-2 py-0.5 rounded-full">
-        Ahorras ${{ getSavings() | number:'1.2-2' }}
-      </span>
+      @if (hasDiscount()) {
+        <span class="font-inter text-gray-400 text-sm line-through leading-none mb-0.5">
+          ${{ producto.precioOriginal | number:'1.2-2' }}
+        </span>
+        <span class="ml-auto text-xs font-montserrat font-semibold text-green-600 bg-green-50 px-2 py-0.5 rounded-full">
+          Ahorras ${{ getSavings() | number:'1.2-2' }}
+        </span>
+      }
     </div>
 
-    <!-- WhatsApp Buttons -->
-    <div class="grid grid-cols-2 gap-2">
-      <!-- Norte -->
-      <a [href]="getWhatsappLink('norte')" target="_blank" rel="noopener"
-         class="flex flex-col items-center gap-1 bg-[#E60000] hover:bg-[#cc0000] text-white py-2.5 px-2 rounded-xl text-xs font-montserrat font-700 transition-all hover:scale-105 hover:shadow-lg active:scale-95 text-center">
-        <div class="flex items-center gap-1">
-          <i class="fab fa-whatsapp text-sm"></i>
-          <span>Suc. Norte</span>
-        </div>
-        <span class="text-[10px] font-inter font-400 text-red-200 truncate w-full text-center">Elizabeth</span>
-      </a>
+    <!-- Ver ficha -->
+    <a [routerLink]="ruta"
+       class="flex items-center justify-center gap-1.5 mb-2 py-2 rounded-xl border border-gray-200 text-xs font-montserrat font-bold text-[#111827] hover:border-[#E60000] hover:text-[#E60000] transition-colors"
+       [attr.aria-label]="'Ver producto ' + producto.nombre">
+      Ver producto <i class="fas fa-arrow-right text-[10px]"></i>
+    </a>
 
-      <!-- Sur -->
-      <a [href]="getWhatsappLink('sur')" target="_blank" rel="noopener"
-         class="flex flex-col items-center gap-1 bg-[#111827] hover:bg-gray-800 text-white py-2.5 px-2 rounded-xl text-xs font-montserrat font-700 transition-all hover:scale-105 hover:shadow-lg active:scale-95 text-center">
-        <div class="flex items-center gap-1">
-          <i class="fab fa-whatsapp text-sm text-[#25D366]"></i>
-          <span>Suc. Sur</span>
-        </div>
-        <span class="text-[10px] font-inter font-400 text-gray-400 truncate w-full text-center">Fernando</span>
-      </a>
+    <!-- WhatsApp Buttons (una por sucursal) -->
+    <div class="grid grid-cols-2 gap-2">
+      @for (s of sucursales; track s.id; let first = $first) {
+        <a [href]="getWhatsappLink(s)" target="_blank" rel="noopener"
+           [attr.aria-label]="'Consultar por WhatsApp en ' + s.zona + ' con ' + s.asesorNombre"
+           class="flex flex-col items-center gap-1 text-white py-2.5 px-2 rounded-xl text-xs font-montserrat font-bold transition-all hover:scale-105 hover:shadow-lg active:scale-95 text-center"
+           [class]="first ? 'bg-[#E60000] hover:bg-[#cc0000]' : 'bg-[#111827] hover:bg-gray-800'">
+          <div class="flex items-center gap-1">
+            <i class="fab fa-whatsapp text-sm" [class]="first ? '' : 'text-[#25D366]'"></i>
+            <span>Suc. {{ s.nombreCorto }}</span>
+          </div>
+          <span class="text-[10px] font-inter font-normal truncate w-full text-center"
+                [class]="first ? 'text-red-200' : 'text-gray-400'">{{ s.asesorNombre }}</span>
+        </a>
+      }
     </div>
   </div>
 </div>

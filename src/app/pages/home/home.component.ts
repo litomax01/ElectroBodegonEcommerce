@@ -1,8 +1,8 @@
 import { Component, OnInit, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { ProductService } from '../../services/product.service';
-import { Producto } from '../../models/producto.model';
+import { STORE_CONFIG, SucursalConfig, whatsappLink } from '../../core/config/store.config';
+import { ProductRepository } from '../../data/repositories/product.repository';
+import { Producto, ProductoId } from '../../core/models/producto.model';
 import { HeroComponent } from '../../components/hero/hero.component';
 import { ProductCardComponent } from '../../components/product-card/product-card.component';
 
@@ -16,13 +16,15 @@ export interface Brand {
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterLink, HeroComponent, ProductCardComponent],
+  imports: [RouterLink, HeroComponent, ProductCardComponent],
   templateUrl: './home.component.html'
 })
 export class HomeComponent implements OnInit {
   destacados = signal<Producto[]>([]);
   loading = signal(true);
   skeletons = [1, 2, 3, 4, 5, 6];
+  readonly sucursales = STORE_CONFIG.sucursales;
+  private readonly logosFallidos = signal<Set<string>>(new Set());
 
   brands: Brand[] = [
     {
@@ -81,10 +83,10 @@ export class HomeComponent implements OnInit {
     return [...this.brands, ...this.brands];
   }
 
-  constructor(private productService: ProductService) {}
+  constructor(private productRepository: ProductRepository) {}
 
   ngOnInit(): void {
-    this.productService.getDestacados(6).subscribe({
+    this.productRepository.getFeatured(6).subscribe({
       next: (products) => {
         this.destacados.set(products);
         this.loading.set(false);
@@ -97,19 +99,20 @@ export class HomeComponent implements OnInit {
     return { marca: marcaName };
   }
 
-  trackById(_: number, p: Producto): number {
+  trackById(_: number, p: Producto): ProductoId {
     return p.id;
   }
 
-  trackByName(_: number, b: Brand): string {
-    return b.name;
+  /** Si el logo no carga, se muestra el nombre de la marca (sin manipular el DOM) */
+  onLogoError(name: string): void {
+    this.logosFallidos.update(set => new Set(set).add(name));
   }
 
-  onLogoError(event: Event, name: string): void {
-    const img = event.target as HTMLImageElement;
-    const parent = img.parentElement;
-    if (parent) {
-      parent.innerHTML = '<span class="font-montserrat font-black text-sm text-gray-700">' + name + '</span>';
-    }
+  logoFallido(name: string): boolean {
+    return this.logosFallidos().has(name);
+  }
+
+  getWhatsappUrl(s: SucursalConfig): string {
+    return whatsappLink(s.whatsapp, `Hola ${s.asesorNombre}, quiero información de productos`);
   }
 }

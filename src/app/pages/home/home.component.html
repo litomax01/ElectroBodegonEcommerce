@@ -12,7 +12,7 @@
   </p>
   <div class="marquee-wrapper">
     <div class="marquee-track">
-      @for (brand of brandsLoop; track trackByName($index, brand)) {
+      @for (brand of brandsLoop; track $index) {
         <a
           routerLink="/catalogo"
           [queryParams]="getMarcaQueryParams(brand.name)"
@@ -20,12 +20,16 @@
           [title]="'Ver productos ' + brand.name">
           <div class="w-24 h-24 bg-white rounded-2xl flex items-center justify-center shadow-sm border-2 border-gray-100
                       transition-all duration-300 group-hover:border-[#E60000] group-hover:shadow-xl group-hover:scale-110 group-hover:-translate-y-1 p-3">
-            <img
-              [src]="brand.logo"
-              [alt]="brand.name"
-              class="w-full h-full object-contain"
-              (error)="onLogoError($event, brand.name)"
-            />
+            @if (logoFallido(brand.name)) {
+              <span class="font-montserrat font-black text-sm text-gray-700">{{ brand.name }}</span>
+            } @else {
+              <img
+                [src]="brand.logo"
+                [alt]="brand.name"
+                class="w-full h-full object-contain"
+                (error)="onLogoError(brand.name)"
+              />
+            }
           </div>
           <span class="text-xs font-montserrat font-bold text-gray-600 group-hover:text-[#E60000] transition-colors">
             {{ brand.name }}
@@ -103,18 +107,17 @@
       Nuestros asesores te ayudan a elegir el electrodoméstico perfecto
     </p>
     <div class="flex flex-col sm:flex-row gap-4 justify-center">
-      <a href="https://wa.me/593986952147?text=Hola%20Elizabeth,%20quiero%20información%20de%20productos"
-         target="_blank" rel="noopener"
-         class="inline-flex items-center gap-3 bg-white text-[#E60000] px-8 py-4 rounded-2xl font-montserrat font-black text-base hover:bg-yellow-50 transition-all hover:scale-105 shadow-xl">
-        <i class="fab fa-whatsapp text-[#25D366] text-xl"></i>
-        Norte — Elizabeth
-      </a>
-      <a href="https://wa.me/593958771384?text=Hola%20Fernando,%20quiero%20información%20de%20productos"
-         target="_blank" rel="noopener"
-         class="inline-flex items-center gap-3 bg-white/10 text-white border border-white/30 px-8 py-4 rounded-2xl font-montserrat font-black text-base hover:bg-white/20 transition-all hover:scale-105">
-        <i class="fab fa-whatsapp text-[#25D366] text-xl"></i>
-        Sur — Fernando
-      </a>
+      @for (s of sucursales; track s.id; let first = $first) {
+        <a [href]="getWhatsappUrl(s)"
+           target="_blank" rel="noopener"
+           class="inline-flex items-center gap-3 px-8 py-4 rounded-2xl font-montserrat font-black text-base transition-all hover:scale-105"
+           [class]="first
+             ? 'bg-white text-[#E60000] hover:bg-yellow-50 shadow-xl'
+             : 'bg-white/10 text-white border border-white/30 hover:bg-white/20'">
+          <i class="fab fa-whatsapp text-[#25D366] text-xl"></i>
+          {{ s.nombreCorto }} — {{ s.asesorNombre }}
+        </a>
+      }
     </div>
   </div>
 </section>
@@ -135,8 +138,12 @@
          [queryParams]="getMarcaQueryParams(brand.name)"
          class="group flex flex-col items-center gap-3 p-5 bg-white rounded-2xl shadow-sm border-2 border-transparent hover:border-[#E60000] hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer">
         <div class="w-16 h-16 flex items-center justify-center">
-          <img [src]="brand.logo" [alt]="brand.name" class="w-full h-full object-contain"
-               (error)="onLogoError($event, brand.name)"/>
+          @if (logoFallido(brand.name)) {
+            <span class="font-montserrat font-black text-sm text-gray-700">{{ brand.name }}</span>
+          } @else {
+            <img [src]="brand.logo" [alt]="brand.name" class="w-full h-full object-contain"
+                 (error)="onLogoError(brand.name)"/>
+          }
         </div>
         <span class="font-montserrat font-bold text-xs text-gray-700 group-hover:text-[#E60000] transition-colors text-center">{{ brand.name }}</span>
         <span class="text-[10px] font-inter text-[#E60000] opacity-0 group-hover:opacity-100 transition-all -mt-2 flex items-center gap-1">

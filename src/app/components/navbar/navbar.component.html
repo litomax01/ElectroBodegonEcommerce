@@ -12,7 +12,8 @@
         <div class="hidden sm:block leading-tight">
           <span class="block font-montserrat font-black text-[#E60000] text-2xl leading-none tracking-tight">ELECTRO</span>
           <span class="block font-montserrat font-black text-[#111827] text-2xl leading-none tracking-tight">BODEGÓN</span>
-          <span class="block font-inter text-[10px] text-gray-400 uppercase tracking-widest">Donde compran los que saben de ahorro</span>
+          <!-- Oculto solo en tablet (md): con los enlaces de escritorio no cabe y desborda -->
+          <span class="block md:hidden lg:block font-inter text-[10px] text-gray-400 uppercase tracking-widest">Donde compran los que saben de ahorro</span>
         </div>
       </a>
 
@@ -37,33 +38,34 @@
       <div class="flex items-center gap-2">
         <!-- Social icons (desktop) -->
         <div class="hidden lg:flex items-center gap-1.5 mr-2">
-          <a href="https://wa.me/593986952147" target="_blank" rel="noopener"
+          <a [href]="whatsappUrl" target="_blank" rel="noopener"
              class="w-8 h-8 flex items-center justify-center rounded-lg text-[#25D366] hover:bg-green-50 transition-all hover:scale-110" title="WhatsApp">
             <i class="fab fa-whatsapp text-xl"></i>
           </a>
-          <a href="https://instagram.com" target="_blank" rel="noopener"
+          <a [href]="redes.instagram" aria-label="Instagram" target="_blank" rel="noopener"
              class="w-8 h-8 flex items-center justify-center rounded-lg text-pink-500 hover:bg-pink-50 transition-all hover:scale-110" title="Instagram">
             <i class="fab fa-instagram text-xl"></i>
           </a>
-          <a href="https://facebook.com" target="_blank" rel="noopener"
+          <a [href]="redes.facebook" aria-label="Facebook" target="_blank" rel="noopener"
              class="w-8 h-8 flex items-center justify-center rounded-lg text-[#1877F2] hover:bg-blue-50 transition-all hover:scale-110" title="Facebook">
             <i class="fab fa-facebook-f text-xl"></i>
           </a>
-          <a href="https://tiktok.com" target="_blank" rel="noopener"
+          <a [href]="redes.tiktok" aria-label="TikTok" target="_blank" rel="noopener"
              class="w-8 h-8 flex items-center justify-center rounded-lg text-gray-900 hover:bg-gray-100 transition-all hover:scale-110" title="TikTok">
             <i class="fab fa-tiktok text-xl"></i>
           </a>
         </div>
 
         <!-- WhatsApp CTA button -->
-        <a href="https://wa.me/593986952147" target="_blank" rel="noopener"
+        <a [href]="whatsappUrl" target="_blank" rel="noopener"
            class="hidden sm:flex items-center gap-2 bg-[#25D366] text-white px-4 py-2.5 rounded-full text-sm font-montserrat font-bold hover:bg-green-600 transition-all hover:scale-105 shadow-md">
           <i class="fab fa-whatsapp text-base"></i>
           <span>Contáctanos</span>
         </a>
 
         <!-- Mobile hamburger -->
-        <button id="mobile-menu-btn" (click)="toggleMenu()" class="md:hidden p-2.5 rounded-lg text-gray-600 hover:text-[#E60000] hover:bg-red-50 transition-colors">
+        <button id="mobile-menu-btn" type="button" (click)="toggleMenu()"
+                [attr.aria-expanded]="menuOpen()" aria-label="Abrir menú de navegación" class="md:hidden p-2.5 rounded-lg text-gray-600 hover:text-[#E60000] hover:bg-red-50 transition-colors">
           @if (!menuOpen()) {
             <i class="fas fa-bars text-xl"></i>
           } @else {
@@ -91,12 +93,12 @@
         </a>
         <!-- Mobile social icons -->
         <div class="flex items-center gap-3 px-4 pt-2 pb-1 border-t border-gray-100 mt-2">
-          <a href="https://wa.me/593986952147" target="_blank" rel="noopener" class="flex items-center gap-1.5 text-[#25D366] text-sm font-montserrat font-semibold hover:underline">
+          <a [href]="whatsappUrl" target="_blank" rel="noopener" class="flex items-center gap-1.5 text-[#25D366] text-sm font-montserrat font-semibold hover:underline">
             <i class="fab fa-whatsapp text-lg"></i> WhatsApp
           </a>
-          <a href="https://instagram.com" target="_blank" rel="noopener" class="text-pink-500 hover:scale-110 transition-transform"><i class="fab fa-instagram text-xl"></i></a>
-          <a href="https://facebook.com" target="_blank" rel="noopener" class="text-[#1877F2] hover:scale-110 transition-transform"><i class="fab fa-facebook-f text-xl"></i></a>
-          <a href="https://tiktok.com" target="_blank" rel="noopener" class="text-gray-900 hover:scale-110 transition-transform"><i class="fab fa-tiktok text-xl"></i></a>
+          <a [href]="redes.instagram" aria-label="Instagram" target="_blank" rel="noopener" class="text-pink-500 hover:scale-110 transition-transform"><i class="fab fa-instagram text-xl"></i></a>
+          <a [href]="redes.facebook" aria-label="Facebook" target="_blank" rel="noopener" class="text-[#1877F2] hover:scale-110 transition-transform"><i class="fab fa-facebook-f text-xl"></i></a>
+          <a [href]="redes.tiktok" aria-label="TikTok" target="_blank" rel="noopener" class="text-gray-900 hover:scale-110 transition-transform"><i class="fab fa-tiktok text-xl"></i></a>
         </div>
       </div>
     }

@@ -45,14 +45,21 @@
 
         <!-- Map iframe -->
         <div class="relative h-72 bg-gray-100">
-          <iframe
-            [src]="s.mapUrl"
-            class="w-full h-full border-0"
-            allowfullscreen
-            loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
-            [title]="'Mapa ' + s.nombre"
-          ></iframe>
+          @if (s.mapUrl) {
+            <iframe
+              [src]="s.mapUrl"
+              class="w-full h-full border-0"
+              allowfullscreen
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              [title]="'Mapa ' + s.nombre"
+            ></iframe>
+          } @else {
+            <div class="w-full h-full flex flex-col items-center justify-center gap-2 text-gray-400 text-sm font-inter">
+              <i class="fas fa-map-location-dot text-3xl"></i>
+              Mapa no disponible
+            </div>
+          }
         </div>
 
         <!-- Contact Info -->
@@ -119,18 +126,15 @@
       Déjanos tu consulta por WhatsApp y uno de nuestros asesores se pondrá en contacto contigo de inmediato.
     </p>
     <div class="flex flex-col sm:flex-row gap-4 justify-center">
-      <a href="https://wa.me/593986952147?text=Hola%20Elizabeth,%20me%20gustaría%20que%20me%20contacten"
-         target="_blank" rel="noopener"
-         class="inline-flex items-center gap-2 bg-[#E60000] text-white px-8 py-4 rounded-2xl font-montserrat font-bold hover:bg-red-700 transition-all hover:scale-105 shadow-lg">
-        <i class="fab fa-whatsapp text-xl text-white"></i>
-        Elizabeth — Norte
-      </a>
-      <a href="https://wa.me/593958771384?text=Hola%20Fernando,%20me%20gustaría%20que%20me%20contacten"
-         target="_blank" rel="noopener"
-         class="inline-flex items-center gap-2 bg-[#111827] text-white px-8 py-4 rounded-2xl font-montserrat font-bold hover:bg-gray-800 transition-all hover:scale-105 shadow-lg">
-        <i class="fab fa-whatsapp text-xl text-[#25D366]"></i>
-        Fernando — Sur
-      </a>
+      @for (s of sucursales; track s.id; let first = $first) {
+        <a [href]="getContactUrl(s)"
+           target="_blank" rel="noopener"
+           class="inline-flex items-center gap-2 text-white px-8 py-4 rounded-2xl font-montserrat font-bold transition-all hover:scale-105 shadow-lg"
+           [class]="first ? 'bg-[#E60000] hover:bg-red-700' : 'bg-[#111827] hover:bg-gray-800'">
+          <i class="fab fa-whatsapp text-xl" [class]="first ? 'text-white' : 'text-[#25D366]'"></i>
+          {{ s.asesorNombre }} — {{ s.nombreCorto }}
+        </a>
+      }
     </div>
   </div>
 </div>

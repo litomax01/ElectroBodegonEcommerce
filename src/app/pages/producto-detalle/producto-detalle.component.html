@@ -1,0 +1,282 @@
+@switch (estado()) {
+
+  <!-- ============ CARGANDO ============ -->
+  @case ('cargando') {
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12" aria-busy="true">
+      <div class="h-4 w-64 bg-gray-200 rounded mb-8 animate-pulse"></div>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 animate-pulse">
+        <div class="aspect-square bg-gray-200 rounded-2xl"></div>
+        <div class="space-y-4">
+          <div class="h-4 w-24 bg-gray-200 rounded"></div>
+          <div class="h-8 w-full bg-gray-200 rounded"></div>
+          <div class="h-8 w-2/3 bg-gray-200 rounded"></div>
+          <div class="h-12 w-1/2 bg-gray-200 rounded mt-6"></div>
+          <div class="h-32 w-full bg-gray-200 rounded-2xl mt-6"></div>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- ============ NO ENCONTRADO / ERROR ============ -->
+  @case ('no-encontrado') {
+    <ng-container *ngTemplateOutlet="sinProducto; context: { error: false }" />
+  }
+  @case ('error') {
+    <ng-container *ngTemplateOutlet="sinProducto; context: { error: true }" />
+  }
+
+  <!-- ============ FICHA ============ -->
+  @case ('ok') {
+    @if (producto(); as p) {
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-28 lg:pt-10 lg:pb-16">
+
+        <!-- Breadcrumb -->
+        <nav aria-label="Ruta de navegación" class="mb-6 text-sm font-inter text-gray-500 overflow-hidden">
+          <ol class="flex items-center gap-2 min-w-0">
+            <li class="flex-shrink-0"><a routerLink="/" class="hover:text-[#E60000] transition-colors">Inicio</a></li>
+            <li class="flex-shrink-0"><i class="fas fa-chevron-right text-[10px] text-gray-300"></i></li>
+            <li class="flex-shrink-0"><a routerLink="/catalogo" class="hover:text-[#E60000] transition-colors">Catálogo</a></li>
+            <li class="flex-shrink-0 hidden sm:block"><i class="fas fa-chevron-right text-[10px] text-gray-300"></i></li>
+            <li class="flex-shrink-0 hidden sm:block">
+              <a routerLink="/catalogo" [queryParams]="{ categoria: p.categoria }" class="hover:text-[#E60000] transition-colors">{{ p.categoria }}</a>
+            </li>
+            <li class="flex-shrink-0"><i class="fas fa-chevron-right text-[10px] text-gray-300"></i></li>
+            <li class="truncate text-[#111827] font-semibold" aria-current="page">{{ p.nombre }}</li>
+          </ol>
+        </nav>
+
+        <!-- ===== Sección superior ===== -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
+
+          <!-- Galería -->
+          <div class="lg:sticky lg:top-28">
+            <app-product-gallery [imagenes]="p.imagenes" [nombre]="p.nombre" [etiqueta]="p.etiqueta" />
+          </div>
+
+          <!-- Información -->
+          <div class="min-w-0">
+            <a routerLink="/catalogo" [queryParams]="{ marca: p.marca }"
+               class="inline-block text-sm font-montserrat font-bold text-[#E60000] uppercase tracking-wider hover:underline mb-2">
+              {{ p.marca }}
+            </a>
+
+            <h1 class="font-montserrat font-black text-[#111827] text-2xl sm:text-3xl lg:text-4xl leading-tight break-words">
+              {{ p.nombre }}
+            </h1>
+
+            @if (p.modelo || p.sku) {
+              <p class="mt-2 text-sm font-inter text-gray-500 flex flex-wrap gap-x-4 gap-y-1">
+                @if (p.modelo) { <span>Modelo: <strong class="text-gray-700">{{ p.modelo }}</strong></span> }
+                @if (p.sku) { <span>SKU: <strong class="text-gray-700">{{ p.sku }}</strong></span> }
+              </p>
+            }
+
+            @if (resumen()) {
+              <p class="mt-4 font-inter text-gray-600 leading-relaxed">{{ resumen() }}</p>
+            }
+
+            <!-- Precio -->
+            <div class="mt-6 p-5 bg-white rounded-2xl border border-gray-100 shadow-sm">
+              <div class="flex flex-wrap items-end gap-x-3 gap-y-2">
+                <span class="font-montserrat font-black text-[#E60000] text-4xl leading-none">
+                  ${{ p.precio | number:'1.2-2' }}
+                </span>
+                @if (conDescuento()) {
+                  <span class="font-inter text-gray-400 text-lg line-through leading-none mb-0.5">
+                    ${{ p.precioOriginal | number:'1.2-2' }}
+                  </span>
+                  <span class="text-xs font-montserrat font-bold text-white bg-[#E60000] px-2 py-1 rounded-full">
+                    -{{ descuento() }}%
+                  </span>
+                }
+              </div>
+              @if (conDescuento()) {
+                <p class="mt-3 text-sm font-montserrat font-semibold text-green-600">
+                  <i class="fas fa-tag mr-1"></i> Ahorras ${{ ahorro() | number:'1.2-2' }}
+                </p>
+              }
+
+              @if (disponibilidad() || p.garantia) {
+                <div class="mt-4 flex flex-wrap gap-2">
+                  @if (disponibilidad(); as d) {
+                    <span class="inline-flex items-center gap-1.5 text-xs font-montserrat font-bold px-3 py-1.5 rounded-full" [class]="d.clase">
+                      <i [class]="d.icono"></i> {{ d.texto }}
+                    </span>
+                  }
+                  @if (p.garantia) {
+                    <span class="inline-flex items-center gap-1.5 text-xs font-montserrat font-bold px-3 py-1.5 rounded-full text-blue-700 bg-blue-50">
+                      <i class="fas fa-shield-halved"></i> Garantía: {{ p.garantia }}
+                    </span>
+                  }
+                </div>
+              }
+            </div>
+
+            <!-- Características principales -->
+            @if (caracteristicas().length > 0) {
+              <ul class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                @for (c of caracteristicas(); track c.label) {
+                  <li class="flex items-start gap-3 p-3 bg-white rounded-xl border border-gray-100">
+                    <i class="fas fa-check text-[#E60000] mt-1"></i>
+                    <span class="min-w-0 text-sm font-inter">
+                      <span class="block text-gray-400 text-xs uppercase tracking-wide">{{ c.label }}</span>
+                      <span class="block text-[#111827] font-semibold break-words">{{ c.value }}</span>
+                    </span>
+                  </li>
+                }
+              </ul>
+            }
+
+            <!-- CTA WhatsApp -->
+            <div id="consultar" class="mt-6 p-5 bg-gradient-to-br from-[#111827] to-gray-800 rounded-2xl text-white scroll-mt-28">
+              <h2 class="font-montserrat font-black text-lg flex items-center gap-2">
+                <i class="fab fa-whatsapp text-[#25D366] text-2xl"></i> Consultar por WhatsApp
+              </h2>
+              <p class="mt-1 text-sm font-inter text-white/70">Elige tu sucursal y un asesor te confirma disponibilidad y formas de pago.</p>
+              <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                @for (s of sucursales(); track s.id; let first = $first) {
+                  <a [href]="whatsappUrl(s)" target="_blank" rel="noopener"
+                     [attr.aria-label]="'Consultar por WhatsApp en ' + s.zona + ' con ' + s.asesorNombre"
+                     class="flex items-center gap-3 px-4 py-3 rounded-xl font-montserrat font-bold transition-all hover:scale-[1.02] active:scale-95"
+                     [class]="first ? 'bg-[#25D366] hover:bg-green-500 text-white' : 'bg-white text-[#111827] hover:bg-gray-100'">
+                    <i class="fab fa-whatsapp text-2xl" [class]="first ? '' : 'text-[#25D366]'"></i>
+                    <span class="min-w-0 leading-tight">
+                      <span class="block text-sm">{{ s.zona }}</span>
+                      <span class="block text-xs font-inter font-normal opacity-80 truncate">{{ s.asesorTitulo }}: {{ s.asesorNombre }}</span>
+                    </span>
+                  </a>
+                }
+              </div>
+              <a routerLink="/sucursales" class="mt-4 inline-flex items-center gap-2 text-sm font-inter text-white/70 hover:text-white transition-colors">
+                <i class="fas fa-map-marker-alt text-[#FFCC00]"></i> Ver ubicación y horarios de las sucursales
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== Secciones de detalle ===== -->
+        <div class="mt-12 grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+          @if (textoDescripcion()) {
+            <section class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 lg:col-span-2" aria-labelledby="titulo-descripcion">
+              <h2 id="titulo-descripcion" class="font-montserrat font-black text-[#111827] text-xl mb-4 flex items-center gap-2">
+                <i class="fas fa-align-left text-[#E60000]"></i> Descripción
+              </h2>
+              <p class="font-inter text-gray-600 leading-relaxed whitespace-pre-line break-words">{{ textoDescripcion() }}</p>
+            </section>
+          }
+
+          @if (especificaciones().length > 0) {
+            <section class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6" aria-labelledby="titulo-specs"
+                     [class]="hayDimensiones() ? '' : 'lg:col-span-2'">
+              <h2 id="titulo-specs" class="font-montserrat font-black text-[#111827] text-xl mb-4 flex items-center gap-2">
+                <i class="fas fa-list-check text-[#E60000]"></i> Especificaciones técnicas
+              </h2>
+              <dl class="divide-y divide-gray-100">
+                @for (e of especificaciones(); track e.label) {
+                  <div class="grid grid-cols-[minmax(0,2fr)_minmax(0,3fr)] gap-4 py-3 text-sm">
+                    <dt class="font-inter text-gray-500 break-words">{{ e.label }}</dt>
+                    <dd class="font-inter font-semibold text-[#111827] break-words">{{ e.value }}</dd>
+                  </div>
+                }
+              </dl>
+            </section>
+          }
+
+          @if (hayDimensiones()) {
+            <section class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6" aria-labelledby="titulo-dimensiones">
+              <h2 id="titulo-dimensiones" class="font-montserrat font-black text-[#111827] text-xl mb-4 flex items-center gap-2">
+                <i class="fas fa-ruler-combined text-[#E60000]"></i> Dimensiones
+              </h2>
+              @if (medidas().length > 0) {
+                <div class="grid grid-cols-2 gap-3">
+                  @for (m of medidas(); track m.label) {
+                    <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
+                      <i class="text-[#E60000]" [class]="m.icono"></i>
+                      <div class="min-w-0">
+                        <p class="text-xs font-inter text-gray-400 uppercase tracking-wide">{{ m.label }}</p>
+                        <p class="font-montserrat font-bold text-[#111827] text-sm">{{ m.valor }}</p>
+                      </div>
+                    </div>
+                  }
+                </div>
+              }
+              @if (p.imagenDimensiones && !imagenDimensionesFallida()) {
+                <img [src]="p.imagenDimensiones.url"
+                     [alt]="p.imagenDimensiones.alt || 'Dimensiones de ' + p.nombre"
+                     [attr.width]="p.imagenDimensiones.width ?? null"
+                     [attr.height]="p.imagenDimensiones.height ?? null"
+                     loading="lazy"
+                     class="mt-4 w-full h-auto rounded-xl border border-gray-100 bg-white"
+                     (error)="imagenDimensionesFallida.set(true)" />
+              }
+            </section>
+          }
+        </div>
+
+        <!-- ===== Relacionados ===== -->
+        @if (relacionados().length > 0) {
+          <section class="mt-16" aria-labelledby="titulo-relacionados">
+            <h2 id="titulo-relacionados" class="font-montserrat font-black text-[#111827] text-2xl sm:text-3xl mb-8">
+              También te puede interesar
+            </h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              @for (r of relacionados(); track r.id) {
+                <app-product-card [producto]="r" />
+              }
+            </div>
+          </section>
+        }
+      </div>
+
+      <!-- Barra fija inferior (móvil/tablet): precio + CTA siempre visibles -->
+      <div class="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-white border-t border-gray-200 shadow-[0_-4px_20px_rgba(0,0,0,0.08)] px-4 py-3 flex items-center gap-3">
+        <div class="min-w-0 flex-1">
+          <p class="text-xs font-inter text-gray-500 truncate">{{ p.nombre }}</p>
+          <p class="font-montserrat font-black text-[#E60000] text-xl leading-tight">${{ p.precio | number:'1.2-2' }}</p>
+        </div>
+        <button type="button" (click)="irAConsultar()"
+                class="flex-shrink-0 inline-flex items-center gap-2 bg-[#25D366] hover:bg-green-500 text-white px-4 py-3 rounded-xl font-montserrat font-bold text-sm shadow-md active:scale-95 transition-all">
+          <i class="fab fa-whatsapp text-lg"></i> Consultar
+        </button>
+      </div>
+    }
+  }
+}
+
+<!-- Vista "Producto no encontrado" (también para error de carga) -->
+<ng-template #sinProducto let-error="error">
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 py-16 text-center">
+    <div class="w-20 h-20 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-6">
+      <i class="fas text-[#E60000] text-3xl" [class]="error ? 'fa-triangle-exclamation' : 'fa-box-open'"></i>
+    </div>
+    <h1 class="font-montserrat font-black text-[#111827] text-2xl sm:text-3xl mb-3">
+      {{ error ? 'No pudimos cargar el producto' : 'Producto no encontrado' }}
+    </h1>
+    <p class="font-inter text-gray-500 mb-8 max-w-md mx-auto">
+      {{ error
+        ? 'Hubo un problema al cargar la información. Revisa tu conexión e inténtalo de nuevo.'
+        : 'El producto que buscas no existe o ya no está disponible.' }}
+    </p>
+    <div class="flex flex-col sm:flex-row gap-3 justify-center">
+      <a routerLink="/catalogo"
+         class="inline-flex items-center justify-center gap-2 bg-[#E60000] hover:bg-[#cc0000] text-white px-6 py-3 rounded-xl font-montserrat font-bold text-sm transition-all hover:scale-105">
+        <i class="fas fa-arrow-left"></i> Volver al catálogo
+      </a>
+      <a routerLink="/catalogo" [queryParams]="{ orden: 'descuento' }"
+         class="inline-flex items-center justify-center gap-2 border-2 border-[#E60000] text-[#E60000] hover:bg-[#E60000] hover:text-white px-6 py-3 rounded-xl font-montserrat font-bold text-sm transition-all">
+        <i class="fas fa-fire"></i> Ver productos en oferta
+      </a>
+    </div>
+  </div>
+  @if (!error && destacados().length > 0) {
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+      <h2 class="font-montserrat font-black text-[#111827] text-xl sm:text-2xl mb-6 text-center">Productos destacados</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        @for (d of destacados(); track d.id) {
+          <app-product-card [producto]="d" />
+        }
+      </div>
+    </section>
+  }
+</ng-template>

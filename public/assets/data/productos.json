@@ -1,6 +1,7 @@
 [
   {
     "id": 1,
+    "slug": "smart-tv-samsung-65-4k-qled-neo",
     "nombre": "Smart TV Samsung 65\" 4K QLED Neo",
     "marca": "Samsung",
     "categoria": "TV y Audio",
@@ -13,6 +14,7 @@
   },
   {
     "id": 2,
+    "slug": "refrigeradora-samsung-french-door-28-pies",
     "nombre": "Refrigeradora Samsung French Door 28 Pies",
     "marca": "Samsung",
     "categoria": "Línea Blanca",
@@ -25,6 +27,7 @@
   },
   {
     "id": 3,
+    "slug": "lavadora-samsung-22-kg-wd22-ai-energy",
     "nombre": "Lavadora Samsung 22 kg WD22 AI Energy",
     "marca": "Samsung",
     "categoria": "Línea Blanca",
@@ -37,6 +40,7 @@
   },
   {
     "id": 4,
+    "slug": "smart-tv-samsung-43-crystal-uhd-4k",
     "nombre": "Smart TV Samsung 43\" Crystal UHD 4K",
     "marca": "Samsung",
     "categoria": "TV y Audio",
@@ -49,6 +53,7 @@
   },
   {
     "id": 5,
+    "slug": "aspiradora-samsung-jet-85-premium-inalambrica",
     "nombre": "Aspiradora Samsung Jet 85 Premium Inalámbrica",
     "marca": "Samsung",
     "categoria": "Hogar",
@@ -61,6 +66,7 @@
   },
   {
     "id": 6,
+    "slug": "soundbar-samsung-hw-q600c-3-1-2-ch-atmos",
     "nombre": "Soundbar Samsung HW-Q600C 3.1.2 ch Atmos",
     "marca": "Samsung",
     "categoria": "TV y Audio",
@@ -73,6 +79,7 @@
   },
   {
     "id": 7,
+    "slug": "smart-tv-lg-55-oled-evo-4k-c3",
     "nombre": "Smart TV LG 55\" OLED evo 4K C3",
     "marca": "LG",
     "categoria": "TV y Audio",
@@ -85,6 +92,7 @@
   },
   {
     "id": 8,
+    "slug": "refrigeradora-lg-16-pies-no-frost-door-cooling",
     "nombre": "Refrigeradora LG 16 Pies³ No Frost Door Cooling",
     "marca": "LG",
     "categoria": "Línea Blanca",
@@ -97,6 +105,7 @@
   },
   {
     "id": 9,
+    "slug": "lavadora-lg-20-kg-turbowash-360-con-ia",
     "nombre": "Lavadora LG 20 kg TurboWash 360 con IA",
     "marca": "LG",
     "categoria": "Línea Blanca",
@@ -109,6 +118,7 @@
   },
   {
     "id": 10,
+    "slug": "aire-acondicionado-lg-dual-cool-18000-btu",
     "nombre": "Aire Acondicionado LG DUAL Cool 18000 BTU",
     "marca": "LG",
     "categoria": "Línea Blanca",
@@ -121,6 +131,7 @@
   },
   {
     "id": 11,
+    "slug": "sistema-de-sonido-lg-xboom-2-1-500w",
     "nombre": "Sistema de Sonido LG XBOOM 2.1 500W",
     "marca": "LG",
     "categoria": "TV y Audio",
@@ -133,6 +144,7 @@
   },
   {
     "id": 12,
+    "slug": "purificador-de-agua-lg-wd516an-fria-caliente",
     "nombre": "Purificador de Agua LG WD516AN Fría/Caliente",
     "marca": "LG",
     "categoria": "Hogar",
@@ -145,6 +157,7 @@
   },
   {
     "id": 13,
+    "slug": "refrigeradora-mabe-16-pies-no-frost-rme400fzpc",
     "nombre": "Refrigeradora Mabe 16 Pies³ No Frost RME400FZPC",
     "marca": "Mabe",
     "categoria": "Línea Blanca",
@@ -157,6 +170,7 @@
   },
   {
     "id": 14,
+    "slug": "lavadora-mabe-18-kg-carga-superior-lma7814vbab0",
     "nombre": "Lavadora Mabe 18 kg Carga Superior LMA7814VBAB0",
     "marca": "Mabe",
     "categoria": "Línea Blanca",
@@ -169,6 +183,7 @@
   },
   {
     "id": 15,
+    "slug": "lavadora-secadora-mabe-11kg-7kg-carga-frontal",
     "nombre": "Lavadora Secadora Mabe 11kg/7kg Carga Frontal",
     "marca": "Mabe",
     "categoria": "Línea Blanca",
@@ -181,6 +196,7 @@
   },
   {
     "id": 16,
+    "slug": "cocina-mabe-30-5-quemadores-acero-inoxidable",
     "nombre": "Cocina Mabe 30\" 5 Quemadores Acero Inoxidable",
     "marca": "Mabe",
     "categoria": "Línea Blanca",
@@ -193,6 +209,7 @@
   },
   {
     "id": 17,
+    "slug": "microondas-mabe-1-1-cu-ft-1200w-con-grill",
     "nombre": "Microondas Mabe 1.1 Cu.ft 1200W con Grill",
     "marca": "Mabe",
     "categoria": "Electrodomésticos Menores",
@@ -205,6 +222,7 @@
   },
   {
     "id": 18,
+    "slug": "cocina-indurama-30-6-quemadores-ci-630-quarzo",
     "nombre": "Cocina Indurama 30\" 6 Quemadores CI-630 Quarzo",
     "marca": "Indurama",
     "categoria": "Línea Blanca",
@@ -217,6 +235,7 @@
   },
   {
     "id": 19,
+    "slug": "refrigeradora-indurama-14-pies-ri-395-croma",
     "nombre": "Refrigeradora Indurama 14 Pies³ RI-395 Croma",
     "marca": "Indurama",
     "categoria": "Línea Blanca",
@@ -229,6 +248,7 @@
   },
   {
     "id": 20,
+    "slug": "congelador-horizontal-indurama-250l-ci-250",
     "nombre": "Congelador Horizontal Indurama 250L CI-250",
     "marca": "Indurama",
     "categoria": "Línea Blanca",
@@ -241,6 +261,7 @@
   },
   {
     "id": 21,
+    "slug": "cocina-indurama-24-4-quemadores-ci-432",
     "nombre": "Cocina Indurama 24\" 4 Quemadores CI-432",
     "marca": "Indurama",
     "categoria": "Línea Blanca",
@@ -253,6 +274,7 @@
   },
   {
     "id": 22,
+    "slug": "microondas-oster-1-1-cu-ft-1000w-inox-ogzb1101",
     "nombre": "Microondas Oster 1.1 Cu.ft 1000W Inox OGZB1101",
     "marca": "Oster",
     "categoria": "Electrodomésticos Menores",
@@ -265,6 +287,7 @@
   },
   {
     "id": 23,
+    "slug": "licuadora-oster-osterizer-pro-600w-6-velocidades",
     "nombre": "Licuadora Oster Osterizer Pro 600W 6 velocidades",
     "marca": "Oster",
     "categoria": "Electrodomésticos Menores",
@@ -277,6 +300,7 @@
   },
   {
     "id": 24,
+    "slug": "cafetera-oster-prima-latte-iii-espresso-15-bar",
     "nombre": "Cafetera Oster Prima Latte III Espresso 15 Bar",
     "marca": "Oster",
     "categoria": "Electrodomésticos Menores",
@@ -289,6 +313,7 @@
   },
   {
     "id": 25,
+    "slug": "freidora-de-aire-oster-duraceramic-5-3-qt",
     "nombre": "Freidora de Aire Oster DuraCeramic 5.3 Qt",
     "marca": "Oster",
     "categoria": "Electrodomésticos Menores",
@@ -301,6 +326,7 @@
   },
   {
     "id": 26,
+    "slug": "plancha-a-vapor-oster-2200w-suela-titanio",
     "nombre": "Plancha a Vapor Oster 2200W Suela Titanio",
     "marca": "Oster",
     "categoria": "Electrodomésticos Menores",
@@ -313,6 +339,7 @@
   },
   {
     "id": 27,
+    "slug": "procesador-de-alimentos-oster-10-tazas-600w",
     "nombre": "Procesador de Alimentos Oster 10 Tazas 600W",
     "marca": "Oster",
     "categoria": "Electrodomésticos Menores",
@@ -325,6 +352,7 @@
   },
   {
     "id": 28,
+    "slug": "tostadora-oster-4-ranuras-1500w-digital",
     "nombre": "Tostadora Oster 4 Ranuras 1500W Digital",
     "marca": "Oster",
     "categoria": "Electrodomésticos Menores",
@@ -337,6 +365,7 @@
   },
   {
     "id": 29,
+    "slug": "smart-tv-tcl-65-4k-qled-google-tv-c635",
     "nombre": "Smart TV TCL 65\" 4K QLED Google TV C635",
     "marca": "TCL",
     "categoria": "TV y Audio",
@@ -349,6 +378,7 @@
   },
   {
     "id": 30,
+    "slug": "smart-tv-tcl-50-4k-uhd-google-tv-s546",
     "nombre": "Smart TV TCL 50\" 4K UHD Google TV S546",
     "marca": "TCL",
     "categoria": "TV y Audio",
@@ -361,6 +391,7 @@
   },
   {
     "id": 31,
+    "slug": "televisor-tcl-32-hd-android-tv-32a522",
     "nombre": "Televisor TCL 32\" HD Android TV 32A522",
     "marca": "TCL",
     "categoria": "TV y Audio",
@@ -373,6 +404,7 @@
   },
   {
     "id": 32,
+    "slug": "barra-de-sonido-tcl-s522w-dolby-atmos-2-1",
     "nombre": "Barra de Sonido TCL S522W Dolby Atmos 2.1",
     "marca": "TCL",
     "categoria": "TV y Audio",
@@ -385,6 +417,7 @@
   },
   {
     "id": 33,
+    "slug": "refrigeradora-electrolux-efficient-14-pies-frostfree",
     "nombre": "Refrigeradora Electrolux Efficient 14 Pies³ FrostFree",
     "marca": "Electrolux",
     "categoria": "Línea Blanca",
@@ -397,6 +430,7 @@
   },
   {
     "id": 34,
+    "slug": "lavadora-electrolux-16-kg-ewf1604bes-carga-frontal",
     "nombre": "Lavadora Electrolux 16 kg EWF1604BES Carga Frontal",
     "marca": "Electrolux",
     "categoria": "Línea Blanca",
@@ -409,6 +443,7 @@
   },
   {
     "id": 35,
+    "slug": "lavavajillas-electrolux-14-servicios-eea17200l",
     "nombre": "Lavavajillas Electrolux 14 servicios EEA17200L",
     "marca": "Electrolux",
     "categoria": "Hogar",
@@ -421,6 +456,7 @@
   },
   {
     "id": 36,
+    "slug": "cocina-electrolux-5-quemadores-ek5gh-inox",
     "nombre": "Cocina Electrolux 5 Quemadores EK5GH Inox",
     "marca": "Electrolux",
     "categoria": "Línea Blanca",
@@ -433,6 +469,7 @@
   },
   {
     "id": 37,
+    "slug": "microondas-electrolux-1-5-cu-ft-1200w-emo25",
     "nombre": "Microondas Electrolux 1.5 Cu.ft 1200W EMO25",
     "marca": "Electrolux",
     "categoria": "Electrodomésticos Menores",
@@ -445,6 +482,7 @@
   },
   {
     "id": 38,
+    "slug": "secadora-electrolux-16-kg-eed47b5sb",
     "nombre": "Secadora Electrolux 16 kg EED47B5SB",
     "marca": "Electrolux",
     "categoria": "Línea Blanca",
@@ -457,6 +495,7 @@
   },
   {
     "id": 39,
+    "slug": "lavavajillas-bosch-serie-6-sms6zci42e-14-servicios",
     "nombre": "Lavavajillas Bosch Serie 6 SMS6ZCI42E 14 servicios",
     "marca": "Bosch",
     "categoria": "Hogar",
@@ -469,6 +508,7 @@
   },
   {
     "id": 40,
+    "slug": "refrigeradora-bosch-508l-multi-door-inox-kfn96apea",
     "nombre": "Refrigeradora Bosch 508L Multi Door Inox KFN96APEA",
     "marca": "Bosch",
     "categoria": "Línea Blanca",
@@ -481,6 +521,7 @@
   },
   {
     "id": 41,
+    "slug": "lavadora-bosch-10-kg-serie-6-wau28ui0es-i-dos",
     "nombre": "Lavadora Bosch 10 kg Serie 6 WAU28UI0ES i-DOS",
     "marca": "Bosch",
     "categoria": "Línea Blanca",
@@ -493,6 +534,7 @@
   },
   {
     "id": 42,
+    "slug": "horno-electrico-bosch-hba534bs0-pirolitico-71l",
     "nombre": "Horno Eléctrico Bosch HBA534BS0 Pirolítico 71L",
     "marca": "Bosch",
     "categoria": "Línea Blanca",
@@ -505,6 +547,7 @@
   },
   {
     "id": 43,
+    "slug": "cocina-haceb-titanio-4-quemadores-chc-400",
     "nombre": "Cocina Haceb Titanio 4 Quemadores CHC-400",
     "marca": "Haceb",
     "categoria": "Línea Blanca",
@@ -517,6 +560,7 @@
   },
   {
     "id": 44,
+    "slug": "ventilador-de-torre-haceb-40-3-velocidades-vpt-40",
     "nombre": "Ventilador de Torre Haceb 40\" 3 velocidades VPT-40",
     "marca": "Haceb",
     "categoria": "Electrodomésticos Menores",
@@ -529,6 +573,7 @@
   },
   {
     "id": 45,
+    "slug": "robot-de-cocina-haceb-multifuncion-rcm-1000",
     "nombre": "Robot de Cocina Haceb Multifunción RCM-1000",
     "marca": "Haceb",
     "categoria": "Electrodomésticos Menores",
@@ -541,6 +586,7 @@
   },
   {
     "id": 46,
+    "slug": "refrigeradora-haceb-14-pies-evolution-no-frost",
     "nombre": "Refrigeradora Haceb 14 Pies³ Evolution No Frost",
     "marca": "Haceb",
     "categoria": "Línea Blanca",
@@ -553,6 +599,7 @@
   },
   {
     "id": 47,
+    "slug": "lavadora-whirlpool-18-kg-carga-superior-wtrl1800",
     "nombre": "Lavadora Whirlpool 18 kg Carga Superior WTRL1800",
     "marca": "Whirlpool",
     "categoria": "Línea Blanca",
@@ -565,6 +612,7 @@
   },
   {
     "id": 48,
+    "slug": "refrigeradora-whirlpool-18-pies-wrf540cwhz-french-door",
     "nombre": "Refrigeradora Whirlpool 18 Pies³ WRF540CWHZ French Door",
     "marca": "Whirlpool",
     "categoria": "Línea Blanca",
@@ -577,6 +625,7 @@
   },
   {
     "id": 49,
+    "slug": "microondas-whirlpool-1-7-cu-ft-over-the-range-wmh31017hz",
     "nombre": "Microondas Whirlpool 1.7 Cu.ft Over-the-Range WMH31017HZ",
     "marca": "Whirlpool",
     "categoria": "Electrodomésticos Menores",
@@ -589,6 +638,7 @@
   },
   {
     "id": 50,
+    "slug": "cama-electrica-ajustable-hogar-premium-motorizada-haceb",
     "nombre": "Cama Eléctrica Ajustable Hogar Premium Motorizada",
     "marca": "Haceb",
     "categoria": "Hogar",
@@ -601,6 +651,7 @@
   },
   {
     "id": 51,
+    "slug": "extractor-de-jugos-oster-jussimple-wide-700w",
     "nombre": "Extractor de Jugos Oster JusSimple Wide 700W",
     "marca": "Oster",
     "categoria": "Electrodomésticos Menores",
@@ -613,6 +664,7 @@
   },
   {
     "id": 52,
+    "slug": "horno-de-conveccion-electrolux-ebo30s5msp-30l",
     "nombre": "Horno de Convección Electrolux EBO30S5MSP 30L",
     "marca": "Electrolux",
     "categoria": "Electrodomésticos Menores",
@@ -625,6 +677,7 @@
   },
   {
     "id": 53,
+    "slug": "smart-tv-whirlpool-55-4k-uhd-wtv55smart",
     "nombre": "Smart TV Whirlpool 55\" 4K UHD WTV55SMART",
     "marca": "Whirlpool",
     "categoria": "TV y Audio",
@@ -637,6 +690,7 @@
   },
   {
     "id": 54,
+    "slug": "batidora-de-pie-bosch-mum5-1000w-creationline",
     "nombre": "Batidora de Pie Bosch MUM5 1000W CreationLine",
     "marca": "Bosch",
     "categoria": "Electrodomésticos Menores",
@@ -649,6 +703,7 @@
   },
   {
     "id": 55,
+    "slug": "indurama-cocina-empotrable-4-quemadores-a-gas",
     "nombre": "Indurama Cocina Empotrable 4 Quemadores a Gas",
     "marca": "Indurama",
     "categoria": "Línea Blanca",

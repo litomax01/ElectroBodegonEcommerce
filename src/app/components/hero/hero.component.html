@@ -25,7 +25,7 @@
       <!-- Badge -->
       <div class="inline-flex items-center gap-2 bg-[#FFCC00] text-[#111827] px-4 py-1.5 rounded-full text-xs font-montserrat font-black uppercase tracking-widest mb-6 shadow-lg animate-bounce">
         <i class="fas fa-fire text-[#E60000]"></i>
-        Ofertas Estrella 2025
+        Ofertas Estrella {{ anioActual }}
       </div>
 
       <!-- Heading -->
@@ -58,15 +58,15 @@
       <!-- Stats bar -->
       <div class="flex flex-wrap gap-6 mt-10 pt-8 border-t border-white/20">
         <div class="text-center">
-          <span class="block font-montserrat font-black text-[#FFCC00] text-2xl">30+</span>
+          <span class="block font-montserrat font-black text-[#FFCC00] text-2xl">{{ totalProductosLabel() }}</span>
           <span class="text-xs font-inter text-white/60 uppercase tracking-wide">Productos</span>
         </div>
         <div class="text-center">
-          <span class="block font-montserrat font-black text-[#FFCC00] text-2xl">8</span>
+          <span class="block font-montserrat font-black text-[#FFCC00] text-2xl">{{ totalMarcas() }}</span>
           <span class="text-xs font-inter text-white/60 uppercase tracking-wide">Marcas top</span>
         </div>
         <div class="text-center">
-          <span class="block font-montserrat font-black text-[#FFCC00] text-2xl">2</span>
+          <span class="block font-montserrat font-black text-[#FFCC00] text-2xl">{{ totalSucursales }}</span>
           <span class="text-xs font-inter text-white/60 uppercase tracking-wide">Sucursales</span>
         </div>
         <div class="text-center">

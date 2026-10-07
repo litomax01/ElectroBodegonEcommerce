@@ -1,6 +1,4 @@
 import { Component, Input, Output, EventEmitter, signal, computed, OnChanges, SimpleChanges } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 
 export interface FiltersState {
   categorias: string[];
@@ -10,7 +8,7 @@ export interface FiltersState {
 @Component({
   selector: 'app-sidebar-filters',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [],
   templateUrl: './sidebar-filters.component.html'
 })
 export class SidebarFiltersComponent implements OnChanges {
@@ -31,11 +29,12 @@ export class SidebarFiltersComponent implements OnChanges {
   );
 
   ngOnChanges(changes: SimpleChanges): void {
-    // Apply initial values once data arrives
-    if (changes['initialMarcas'] && this.initialMarcas.length > 0) {
+    // Sincroniza la selección con el padre (query params o "Limpiar filtros").
+    // También se aplica cuando llega un arreglo vacío, para desmarcar las casillas.
+    if (changes['initialMarcas']) {
       this.selectedMarcas.set([...this.initialMarcas]);
     }
-    if (changes['initialCategorias'] && this.initialCategorias.length > 0) {
+    if (changes['initialCategorias']) {
       this.selectedCategorias.set([...this.initialCategorias]);
     }
   }

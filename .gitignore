@@ -39,6 +39,13 @@ testem.log
 /typings
 __screenshots__/
 
+# Variables de entorno / credenciales locales (nunca al repositorio)
+.env
+.env.*
+!.env.example
+# Generado desde SUPABASE_URL / SUPABASE_ANON_KEY (scripts/generar-config-supabase.mjs)
+/src/environments/supabase.generated.ts
+
 # System files
 .DS_Store
 Thumbs.db

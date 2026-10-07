@@ -1,4 +1,7 @@
 @import "tailwindcss";
+/* Tailwind no debe buscar clases en SQL, configuración de Supabase ni scripts de build */
+@source not "../supabase";
+@source not "../scripts";
 
 /* ============================================================
    ELECTRO BODEGÓN — Global Styles

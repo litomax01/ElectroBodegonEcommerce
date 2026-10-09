@@ -4,7 +4,7 @@ import { provideHttpClient } from '@angular/common/http';
 
 import { routes } from './app.routes';
 import { ProductRepository } from './data/repositories/product.repository';
-import { JsonProductRepository } from './data/repositories/json/json-product.repository';
+import { SupabaseProductRepository } from './data/repositories/supabase/supabase-product.repository';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -17,7 +17,8 @@ export const appConfig: ApplicationConfig = {
       withInMemoryScrolling({ scrollPositionRestoration: 'enabled' })
     ),
     provideHttpClient(),
-    // Fuente de datos de productos. Fase 2: { provide: ProductRepository, useClass: SupabaseProductRepository }
-    { provide: ProductRepository, useClass: JsonProductRepository }
+    // Fuente de datos de productos: Supabase. JsonProductRepository se conserva como respaldo técnico
+    // (assets/data/productos.json); para volver a él basta cambiar este useClass.
+    { provide: ProductRepository, useClass: SupabaseProductRepository }
   ]
 };

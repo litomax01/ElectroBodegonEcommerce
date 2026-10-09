@@ -4,9 +4,8 @@ import { Producto, ProductoId } from '../../core/models/producto.model';
 /**
  * Contrato de acceso a productos. La UI solo conoce esta clase.
  *
- * Implementación actual: JsonProductRepository (assets/data/productos.json).
- * Fase 2: SupabaseProductRepository — se cambia el provider en app.config.ts
- * y ningún componente necesita modificarse.
+ * Implementación activa: SupabaseProductRepository (provider en app.config.ts).
+ * Respaldo técnico: JsonProductRepository (assets/data/productos.json).
  *
  * Todos los métodos devuelven únicamente productos publicados.
  */

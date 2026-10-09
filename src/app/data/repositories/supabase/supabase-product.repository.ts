@@ -10,8 +10,7 @@ const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 /**
  * Productos desde Supabase (tabla public.products + marca, categoría e imágenes).
  *
- * TODAVÍA NO ESTÁ ACTIVO: app.config.ts sigue usando JsonProductRepository.
- * Para activarlo: { provide: ProductRepository, useClass: SupabaseProductRepository }.
+ * Es la fuente ACTIVA del catálogo (provider en app.config.ts).
  *
  * - Siempre filtra is_published = true: aunque un administrador tenga sesión,
  *   la tienda pública solo muestra lo publicado (RLS ya lo garantiza para anon).

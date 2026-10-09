@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { SupabaseService } from '../../core/supabase/supabase.service';
 import { slugify } from '../../core/models/producto.helpers';
+import { optimizarImagen } from './optimizar-imagen';
 import {
   FiltrosProductos,
   ImagenAdmin,
@@ -221,9 +222,11 @@ export class AdminCatalogoService {
     return { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp', 'image/avif': 'avif' }[archivo.type] ?? 'jpg';
   }
 
-  private async subirArchivo(productId: string, archivo: File): Promise<string> {
-    const problema = this.validarArchivo(archivo);
+  private async subirArchivo(productId: string, original: File): Promise<string> {
+    const problema = this.validarArchivo(original);
     if (problema) throw new ErrorAdmin(problema);
+    // Se reduce y recodifica en WebP cuando conviene (fotos de móvil de varios MB)
+    const archivo = await optimizarImagen(original);
     const ruta = `products/${productId}/${crypto.randomUUID()}.${this.extension(archivo)}`;
     const { error } = await this.db.storage
       .from(BUCKET)

@@ -1,4 +1,5 @@
-import { Component, Input, inject } from '@angular/core';
+import { Component, Input, inject, signal } from '@angular/core';
+import { ImagenNoDisponibleComponent } from '../imagen-no-disponible/imagen-no-disponible.component';
 import { DOCUMENT, DecimalPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { Producto } from '../../core/models/producto.model';
@@ -6,12 +7,10 @@ import { ahorro, rutaProducto, tieneDescuento, urlAbsolutaProducto } from '../..
 import { STORE_CONFIG, SucursalConfig } from '../../core/config/store.config';
 import { whatsappProductoLink } from '../../core/whatsapp/whatsapp-mensajes';
 
-const FALLBACK_IMG = 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80';
-
 @Component({
   selector: 'app-product-card',
   standalone: true,
-  imports: [DecimalPipe, RouterLink],
+  imports: [DecimalPipe, RouterLink, ImagenNoDisponibleComponent],
   templateUrl: './product-card.component.html'
 })
 export class ProductCardComponent {
@@ -24,20 +23,16 @@ export class ProductCardComponent {
     return rutaProducto(this.producto);
   }
 
-  get imagenPrincipal(): string {
-    return this.producto.imagenes[0]?.url ?? FALLBACK_IMG;
+  /** URL de la imagen principal, o null si el producto no tiene */
+  get imagenPrincipal(): string | null {
+    return this.producto.imagenes[0]?.url ?? null;
   }
+
+  /** URL que ya falló al cargar: se sustituye por el marcador local (sin reintentos ni bucles) */
+  readonly urlFallida = signal<string | null>(null);
 
   getWhatsappLink(s: SucursalConfig): string {
     return whatsappProductoLink(s, this.producto, urlAbsolutaProducto(this.document.baseURI, this.producto));
-  }
-
-  onImgError(event: Event): void {
-    const img = event.target as HTMLImageElement;
-    // Evita un bucle infinito si la imagen de respaldo también falla
-    if (img.src !== FALLBACK_IMG) {
-      img.src = FALLBACK_IMG;
-    }
   }
 
   hasDiscount(): boolean {

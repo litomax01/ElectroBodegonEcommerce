@@ -1,6 +1,7 @@
 import { Component, computed, effect, input, signal, untracked } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
 import { ProductoImagen } from '../../core/models/producto.model';
+import { ImagenNoDisponibleComponent } from '../imagen-no-disponible/imagen-no-disponible.component';
 
 /**
  * Galería de la ficha de producto.
@@ -12,7 +13,7 @@ import { ProductoImagen } from '../../core/models/producto.model';
 @Component({
   selector: 'app-product-gallery',
   standalone: true,
-  imports: [NgOptimizedImage],
+  imports: [NgOptimizedImage, ImagenNoDisponibleComponent],
   templateUrl: './product-gallery.component.html'
 })
 export class ProductGalleryComponent {

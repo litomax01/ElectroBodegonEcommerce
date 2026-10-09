@@ -4,15 +4,23 @@
   <div class="relative overflow-hidden bg-gray-50 aspect-square">
     <!-- Enlace de imagen: oculto para lectores de pantalla (el nombre ya enlaza a la ficha) -->
     <a [routerLink]="ruta" tabindex="-1" aria-hidden="true" class="block w-full h-full">
-      <img
-        [src]="imagenPrincipal"
-        [alt]="producto.nombre"
-        width="600"
-        height="600"
-        class="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
-        loading="lazy"
-        (error)="onImgError($event)"
-      />
+      @if (imagenPrincipal; as src) {
+        @if (urlFallida() !== src) {
+          <img
+            [src]="src"
+            [alt]="producto.nombre"
+            width="600"
+            height="600"
+            class="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
+            loading="lazy"
+            (error)="urlFallida.set(src)"
+          />
+        } @else {
+          <app-imagen-no-disponible [nombre]="producto.nombre" />
+        }
+      } @else {
+        <app-imagen-no-disponible [nombre]="producto.nombre" />
+      }
     </a>
     <!-- Discount Badge -->
     @if (producto.etiqueta) {

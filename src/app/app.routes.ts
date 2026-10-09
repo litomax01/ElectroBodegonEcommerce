@@ -26,6 +26,11 @@ export const routes: Routes = [
     title: 'Sucursales y Contacto — Electro Bodegón'
   },
   {
+    // Panel de administración (carga diferida, protegido por guards)
+    path: 'admin',
+    loadChildren: () => import('./admin/admin.routes').then(m => m.ADMIN_ROUTES)
+  },
+  {
     path: '**',
     loadComponent: () => import('./pages/not-found/not-found.component').then(m => m.NotFoundComponent),
     title: 'Página no encontrada — Electro Bodegón'

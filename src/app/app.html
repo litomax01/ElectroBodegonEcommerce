@@ -1,20 +1,25 @@
-<!-- Sticky Navbar -->
-<app-navbar></app-navbar>
-
-<!-- Main Content -->
-<main>
+@if (enAdmin()) {
+  <!-- Panel de administración: marco propio -->
   <router-outlet></router-outlet>
-</main>
+} @else {
+  <!-- Sticky Navbar -->
+  <app-navbar></app-navbar>
 
-<!-- Footer -->
-<app-footer></app-footer>
+  <!-- Main Content -->
+  <main>
+    <router-outlet></router-outlet>
+  </main>
 
-<!-- Floating WhatsApp Button -->
-<a id="whatsapp-float-btn"
-   [href]="whatsappUrl"
-   target="_blank"
-   rel="noopener"
-   class="whatsapp-float"
-   aria-label="Contactar por WhatsApp">
-  <i class="fab fa-whatsapp"></i>
-</a>
+  <!-- Footer -->
+  <app-footer></app-footer>
+
+  <!-- Floating WhatsApp Button -->
+  <a id="whatsapp-float-btn"
+     [href]="whatsappUrl"
+     target="_blank"
+     rel="noopener"
+     class="whatsapp-float"
+     aria-label="Contactar por WhatsApp">
+    <i class="fab fa-whatsapp"></i>
+  </a>
+}

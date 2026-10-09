@@ -1,0 +1,11 @@
+node_modules
+dist
+.angular
+.git
+.env
+.env.*
+!.env.example
+src/environments/supabase.generated.ts
+supabase/.temp
+supabase/.branches
+*.log

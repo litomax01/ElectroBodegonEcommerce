@@ -18,7 +18,7 @@ export function validarConfigSupabase(cfg: SupabasePublicConfig | undefined): Re
 
   if (!url && !anonKey) return { ok: false, motivo: 'Supabase no configurado (url y anonKey vacías)' };
   if (!url) return { ok: false, motivo: 'Falta SUPABASE_URL' };
-  if (!anonKey) return { ok: false, motivo: 'Falta SUPABASE_ANON_KEY' };
+  if (!anonKey) return { ok: false, motivo: 'Falta SUPABASE_PUBLISHABLE_KEY' };
 
   let parsed: URL;
   try {
@@ -43,7 +43,7 @@ export function validarConfigSupabase(cfg: SupabasePublicConfig | undefined): Re
     return { ok: false, motivo: 'Se recibió la clave service_role. Nunca debe usarse en el frontend.' };
   }
   if (rol !== 'anon') {
-    return { ok: false, motivo: 'SUPABASE_ANON_KEY no parece una clave pública válida (anon / sb_publishable_)' };
+    return { ok: false, motivo: 'La clave pública no parece válida (sb_publishable_ / anon)' };
   }
   return { ok: true, url: parsed.origin, anonKey };
 }

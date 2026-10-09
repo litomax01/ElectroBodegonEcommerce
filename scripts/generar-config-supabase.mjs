@@ -4,8 +4,9 @@
  * Ese archivo está en .gitignore: los valores reales nunca se versionan.
  *
  * Variables:
- *   SUPABASE_URL       https://<project-ref>.supabase.co
- *   SUPABASE_ANON_KEY  clave PÚBLICA (anon JWT o sb_publishable_...)
+ *   SUPABASE_URL              https://<project-ref>.supabase.co
+ *   SUPABASE_PUBLISHABLE_KEY  clave PÚBLICA sb_publishable_... (recomendada)
+ *   SUPABASE_ANON_KEY         alternativa heredada (anon JWT); se usa solo si falta la anterior
  *
  * Origen (por prioridad):
  *   1. Variables del proceso (Vercel, Netlify, CI, terminal).
@@ -31,7 +32,7 @@ if (existsSync(archivoEnv) && typeof process.loadEnvFile === 'function') {
 }
 
 const url = (process.env.SUPABASE_URL ?? '').trim();
-const anonKey = (process.env.SUPABASE_ANON_KEY ?? '').trim();
+const anonKey = (process.env.SUPABASE_PUBLISHABLE_KEY || process.env.SUPABASE_ANON_KEY || '').trim();
 
 function rolDeJwt(token) {
   const partes = token.split('.');
@@ -50,7 +51,7 @@ function fallar(mensaje) {
 
 // Barrera 1 (build). La barrera 2 está en SupabaseService (navegador).
 if (anonKey.startsWith('sb_secret_') || rolDeJwt(anonKey) === 'service_role') {
-  fallar('SUPABASE_ANON_KEY contiene una clave SECRETA (service_role / sb_secret_). ' +
+  fallar('La clave pública contiene una clave SECRETA (service_role / sb_secret_). ' +
     'Usa la clave pública (anon / sb_publishable_). No se generó la configuración.');
 }
 if (url && !/^https:\/\//i.test(url) && !/^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?\/?$/i.test(url)) {
@@ -59,7 +60,7 @@ if (url && !/^https:\/\//i.test(url) && !/^http:\/\/(localhost|127\.0\.0\.1)(:\d
 
 const contenido =
 `// ARCHIVO GENERADO por scripts/generar-config-supabase.mjs — NO editar ni versionar.
-// Para cambiar los valores define SUPABASE_URL / SUPABASE_ANON_KEY (ver .env.example).
+// Para cambiar los valores define SUPABASE_URL / SUPABASE_PUBLISHABLE_KEY (ver .env.example).
 import { SupabasePublicConfig } from './environment.model';
 
 export const SUPABASE_PUBLIC_CONFIG: SupabasePublicConfig = ${JSON.stringify({ url, anonKey }, null, 2)};
@@ -74,4 +75,4 @@ const tipoClave = !anonKey ? 'sin clave'
   : rolDeJwt(anonKey) ?? 'formato desconocido';
 console.log(url && anonKey
   ? `[supabase] Configuración generada (${new URL(url).host}, clave: ${tipoClave}).`
-  : '[supabase] Sin SUPABASE_URL / SUPABASE_ANON_KEY: la app usará los datos locales (productos.json).');
+  : '[supabase] Sin SUPABASE_URL / SUPABASE_PUBLISHABLE_KEY: la app usará los datos locales (productos.json).');

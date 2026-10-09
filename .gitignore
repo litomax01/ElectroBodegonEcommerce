@@ -43,7 +43,7 @@ __screenshots__/
 .env
 .env.*
 !.env.example
-# Generado desde SUPABASE_URL / SUPABASE_ANON_KEY (scripts/generar-config-supabase.mjs)
+# Generado desde SUPABASE_URL / SUPABASE_PUBLISHABLE_KEY (scripts/generar-config-supabase.mjs)
 /src/environments/supabase.generated.ts
 
 # System files

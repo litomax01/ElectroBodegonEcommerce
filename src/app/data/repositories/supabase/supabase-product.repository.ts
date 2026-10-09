@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { Observable, defer, map, of, shareReplay } from 'rxjs';
 import { Producto, ProductoId } from '../../../core/models/producto.model';
-import { SupabaseService } from '../../../core/supabase/supabase.service';
+import { SupabaseRestService } from '../../../core/supabase/supabase-rest.service';
 import { ProductRepository } from '../product.repository';
 import { BUCKET_CATALOGO, ProductoRow, SELECT_PRODUCTO, mapProductoRow } from './producto-supabase.mapper';
 
@@ -12,6 +12,8 @@ const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
  *
  * Es la fuente ACTIVA del catálogo (provider en app.config.ts).
  *
+ * - Lee por la API REST pública con HttpClient (ver SupabaseRestService): Angular espera la
+ *   respuesta durante el SSR y la reutiliza en el navegador.
  * - Siempre filtra is_published = true: aunque un administrador tenga sesión,
  *   la tienda pública solo muestra lo publicado (RLS ya lo garantiza para anon).
  * - getRelated() trabaja sobre el catálogo en memoria (getAll, cacheado): con
@@ -19,9 +21,9 @@ const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
  */
 @Injectable()
 export class SupabaseProductRepository extends ProductRepository {
-  private readonly supabase = inject(SupabaseService);
+  private readonly api = inject(SupabaseRestService);
 
-  private readonly todos$: Observable<Producto[]> = defer(() => this.consultar(q => q)).pipe(
+  private readonly todos$: Observable<Producto[]> = defer(() => this.consultar({})).pipe(
     shareReplay({ bufferSize: 1, refCount: false })
   );
 
@@ -31,23 +33,23 @@ export class SupabaseProductRepository extends ProductRepository {
 
   getBySlug(slug: string): Observable<Producto | null> {
     const buscado = slug.trim().toLowerCase();
-    return defer(() => this.consultar(q => q.eq('slug', buscado).limit(1))).pipe(map(ps => ps[0] ?? null));
+    return defer(() => this.consultar({ slug: `eq.${buscado}`, limit: '1' })).pipe(map(ps => ps[0] ?? null));
   }
 
   getById(id: ProductoId): Observable<Producto | null> {
     const valor = String(id).trim();
     // Acepta el uuid de Supabase o el id numérico heredado de productos.json (legacy_id)
     if (UUID.test(valor)) {
-      return defer(() => this.consultar(q => q.eq('id', valor).limit(1))).pipe(map(ps => ps[0] ?? null));
+      return defer(() => this.consultar({ id: `eq.${valor}`, limit: '1' })).pipe(map(ps => ps[0] ?? null));
     }
     if (/^\d+$/.test(valor)) {
-      return defer(() => this.consultar(q => q.eq('legacy_id', Number(valor)).limit(1))).pipe(map(ps => ps[0] ?? null));
+      return defer(() => this.consultar({ legacy_id: `eq.${Number(valor)}`, limit: '1' })).pipe(map(ps => ps[0] ?? null));
     }
     return of(null);
   }
 
   getFeatured(limit = 6): Observable<Producto[]> {
-    return defer(() => this.consultar(q => q.eq('is_featured', true).limit(limit)));
+    return defer(() => this.consultar({ is_featured: 'eq.true', limit: String(limit) }));
   }
 
   getRelated(producto: Producto, limit = 4): Observable<Producto[]> {
@@ -67,19 +69,15 @@ export class SupabaseProductRepository extends ProductRepository {
   }
 
   /** Consulta base: publicados, orden estable (legacy_id del JSON y luego nombre). */
-  private async consultar(filtro: (q: any) => any): Promise<Producto[]> {
-    const client = this.supabase.client;
-    const base = client
-      .from('products')
-      .select(SELECT_PRODUCTO)
-      .eq('is_published', true)
-      .order('legacy_id', { ascending: true, nullsFirst: false })
-      .order('name', { ascending: true });
-
-    const { data, error } = await filtro(base);
-    if (error) throw new Error(`[supabase] products: ${error.message}`);
-
-    const urlPublica = (path: string) => client.storage.from(BUCKET_CATALOGO).getPublicUrl(path).data.publicUrl;
-    return ((data ?? []) as ProductoRow[]).map(row => mapProductoRow(row, urlPublica));
+  private consultar(filtros: Record<string, string>): Observable<Producto[]> {
+    const urlPublica = (path: string) => this.api.urlPublica(BUCKET_CATALOGO, path);
+    return this.api
+      .select<ProductoRow>('products', {
+        select: SELECT_PRODUCTO,
+        is_published: 'eq.true',
+        order: 'legacy_id.asc.nullslast,name.asc',
+        ...filtros
+      })
+      .pipe(map(rows => rows.map(row => mapProductoRow(row, urlPublica))));
   }
 }

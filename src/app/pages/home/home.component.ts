@@ -1,10 +1,12 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { STORE_CONFIG, SucursalConfig, whatsappLink } from '../../core/config/store.config';
 import { ProductRepository } from '../../data/repositories/product.repository';
 import { Producto, ProductoId } from '../../core/models/producto.model';
 import { HeroComponent } from '../../components/hero/hero.component';
 import { ProductCardComponent } from '../../components/product-card/product-card.component';
+import { SeoService } from '../../core/seo/seo.service';
+import { organizacionLd, sitioWebLd } from '../../core/seo/seo-schema';
 
 export interface Brand {
   name: string;
@@ -83,9 +85,18 @@ export class HomeComponent implements OnInit {
     return [...this.brands, ...this.brands];
   }
 
+  private readonly seo = inject(SeoService);
+
   constructor(private productRepository: ProductRepository) {}
 
   ngOnInit(): void {
+    const abs = (u: string) => this.seo.absoluta(u);
+    this.seo.set({
+      titulo: `${STORE_CONFIG.nombre} — Electrodomésticos, TV y línea blanca al mejor precio`,
+      descripcion: STORE_CONFIG.descripcion,
+      ruta: '/',
+      jsonLd: [sitioWebLd(abs), ...organizacionLd(abs)]
+    });
     this.productRepository.getFeatured(6).subscribe({
       next: (products) => {
         this.destacados.set(products);

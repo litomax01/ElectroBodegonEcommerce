@@ -20,22 +20,28 @@
         </p>
         <!-- Social Links -->
         <div class="flex gap-3">
-          <a [href]="redes.facebook" target="_blank" rel="noopener" aria-label="Facebook"
+          @if (redes.facebook) {
+            <a [href]="redes.facebook" target="_blank" rel="noopener" aria-label="Facebook"
              class="w-9 h-9 bg-gray-800 hover:bg-[#1877F2] text-gray-400 hover:text-white rounded-lg flex items-center justify-center transition-all hover:scale-110">
             <i class="fab fa-facebook-f text-sm"></i>
           </a>
-          <a [href]="redes.instagram" target="_blank" rel="noopener" aria-label="Instagram"
+          }
+          @if (redes.instagram) {
+            <a [href]="redes.instagram" target="_blank" rel="noopener" aria-label="Instagram"
              class="w-9 h-9 bg-gray-800 text-gray-400 hover:text-white rounded-lg flex items-center justify-center transition-all hover:scale-110">
             <i class="fab fa-instagram text-sm"></i>
           </a>
+          }
           <a [href]="whatsapp(whatsappPrincipal)" target="_blank" rel="noopener" aria-label="WhatsApp"
              class="w-9 h-9 bg-gray-800 hover:bg-[#25D366] text-gray-400 hover:text-white rounded-lg flex items-center justify-center transition-all hover:scale-110">
             <i class="fab fa-whatsapp text-sm"></i>
           </a>
-          <a [href]="redes.tiktok" target="_blank" rel="noopener" aria-label="TikTok"
+          @if (redes.tiktok) {
+            <a [href]="redes.tiktok" target="_blank" rel="noopener" aria-label="TikTok"
              class="w-9 h-9 bg-gray-800 hover:bg-black text-gray-400 hover:text-white rounded-lg flex items-center justify-center transition-all hover:scale-110">
             <i class="fab fa-tiktok text-sm"></i>
           </a>
+          }
         </div>
       </div>
 

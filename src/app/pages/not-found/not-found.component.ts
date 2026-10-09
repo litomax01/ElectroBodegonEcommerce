@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { SeoService } from '../../core/seo/seo.service';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -31,4 +32,15 @@ import { RouterLink } from '@angular/router';
     </section>
   `
 })
-export class NotFoundComponent {}
+export class NotFoundComponent {
+  constructor() {
+    // 404 real también en la respuesta HTTP (SSR) y sin indexar
+    inject(SeoService).set({
+      titulo: 'Página no encontrada — Electro Bodegón',
+      descripcion: 'La página que buscas no existe o cambió de dirección.',
+      ruta: '/404',
+      noindex: true,
+      estado: 404
+    });
+  }
+}

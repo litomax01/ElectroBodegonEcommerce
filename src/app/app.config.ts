@@ -1,6 +1,12 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
-import { provideRouter, withComponentInputBinding, withInMemoryScrolling } from '@angular/router';
-import { provideHttpClient } from '@angular/common/http';
+import {
+  provideRouter,
+  withComponentInputBinding,
+  withEnabledBlockingInitialNavigation,
+  withInMemoryScrolling
+} from '@angular/router';
+import { provideHttpClient, withFetch } from '@angular/common/http';
+import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 
 import { routes } from './app.routes';
 import { ProductRepository } from './data/repositories/product.repository';
@@ -14,9 +20,15 @@ export const appConfig: ApplicationConfig = {
       withComponentInputBinding(),
       // Al abrir otra página (ej. un producto relacionado) se vuelve arriba;
       // con atrás/adelante se restaura la posición anterior.
-      withInMemoryScrolling({ scrollPositionRestoration: 'enabled' })
+      withInMemoryScrolling({ scrollPositionRestoration: 'enabled' }),
+      // Con SSR + hidratación la navegación inicial debe terminar antes de que la app se dé por estable:
+      // así el navegador reutiliza los datos que ya descargó el servidor (TransferState)
+      withEnabledBlockingInitialNavigation()
     ),
-    provideHttpClient(),
+    // fetch nativo: necesario para SSR; HttpClient además registra las peticiones pendientes
+    // (el servidor espera los datos) y las reutiliza en el navegador (TransferState)
+    provideHttpClient(withFetch()),
+    provideClientHydration(withEventReplay()),
     // Fuente de datos de productos: Supabase. JsonProductRepository se conserva como respaldo técnico
     // (assets/data/productos.json); para volver a él basta cambiar este useClass.
     { provide: ProductRepository, useClass: SupabaseProductRepository }

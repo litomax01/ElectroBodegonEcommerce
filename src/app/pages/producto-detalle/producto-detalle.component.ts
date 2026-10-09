@@ -1,19 +1,20 @@
 import { Component, DestroyRef, Renderer2, computed, effect, inject, input, signal } from '@angular/core';
 import { DOCUMENT, DecimalPipe, NgTemplateOutlet } from '@angular/common';
-import { toObservable, toSignal } from '@angular/core/rxjs-interop';
-import { Title } from '@angular/platform-browser';
-import { RouterLink } from '@angular/router';
-import { catchError, map, of, startWith, switchMap } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { catchError, distinctUntilChanged, map, of, shareReplay, startWith, switchMap } from 'rxjs';
 import { ProductRepository } from '../../data/repositories/product.repository';
 import { Producto } from '../../core/models/producto.model';
 import {
   DISPONIBILIDAD_INFO, ahorro, caracteristicasPrincipales, especificacionesCompletas,
-  medidas, porcentajeDescuento, tieneDescuento, urlAbsolutaProducto
+  formatoPrecio, medidas, porcentajeDescuento, tieneDescuento, urlAbsolutaProducto
 } from '../../core/models/producto.helpers';
 import { STORE_CONFIG, SucursalConfig } from '../../core/config/store.config';
 import { whatsappProductoLink } from '../../core/whatsapp/whatsapp-mensajes';
 import { ProductCardComponent } from '../../components/product-card/product-card.component';
 import { ProductGalleryComponent } from '../../components/product-gallery/product-gallery.component';
+import { SeoService, recortar } from '../../core/seo/seo.service';
+import { migasLd, productoLd } from '../../core/seo/seo-schema';
 
 type Estado = 'cargando' | 'ok' | 'no-encontrado' | 'error';
 
@@ -35,29 +36,41 @@ export class ProductoDetalleComponent {
   readonly slug = input.required<string>();
 
   private readonly repo = inject(ProductRepository);
-  private readonly title = inject(Title);
+  private readonly seo = inject(SeoService);
   private readonly document = inject(DOCUMENT);
   private readonly renderer = inject(Renderer2);
 
-  /** Se recalcula al cambiar el slug (ej. al abrir un producto relacionado) */
-  private readonly resultado = toSignal(
-    toObservable(this.slug).pipe(
-      switchMap(slug =>
-        this.repo.getBySlug(slug).pipe(
-          map((producto): Resultado => ({ estado: producto ? 'ok' : 'no-encontrado', producto })),
-          catchError(() => of<Resultado>({ estado: 'error', producto: null })),
-          startWith<Resultado>({ estado: 'cargando', producto: null })
-        )
+  /**
+   * Se recalcula al cambiar el slug (ej. al abrir un producto relacionado).
+   * Se suscribe de forma SÍNCRONA a la ruta (no a un efecto): así, al hidratar, el navegador
+   * reutiliza la respuesta que ya descargó el servidor y el primer render coincide con el HTML del SSR.
+   */
+  private readonly resultado$ = inject(ActivatedRoute).paramMap.pipe(
+    map(params => params.get('slug') ?? ''),
+    distinctUntilChanged(),
+    switchMap(slug =>
+      this.repo.getBySlug(slug).pipe(
+        map((producto): Resultado => ({ estado: producto ? 'ok' : 'no-encontrado', producto })),
+        catchError(() => of<Resultado>({ estado: 'error', producto: null })),
+        startWith<Resultado>({ estado: 'cargando', producto: null })
       )
     ),
-    { initialValue: { estado: 'cargando', producto: null } as Resultado }
+    shareReplay({ bufferSize: 1, refCount: true })
   );
+
+  private readonly resultado = toSignal(this.resultado$, {
+    initialValue: { estado: 'cargando', producto: null } as Resultado
+  });
 
   readonly estado = computed(() => this.resultado().estado);
   readonly producto = computed(() => this.resultado().producto);
 
   readonly relacionados = toSignal(
-    toObservable(this.producto).pipe(switchMap(p => (p ? this.repo.getRelated(p, 4) : of([])))),
+    this.resultado$.pipe(
+      map(r => r.producto),
+      distinctUntilChanged(),
+      switchMap(p => (p ? this.repo.getRelated(p, 4).pipe(catchError(() => of([] as Producto[]))) : of([] as Producto[])))
+    ),
     { initialValue: [] as Producto[] }
   );
 
@@ -100,8 +113,17 @@ export class ProductoDetalleComponent {
     effect(() => {
       const estado = this.estado();
       const p = this.producto();
-      if (estado === 'ok' && p) this.title.setTitle(`${p.nombre} — Electro Bodegón`);
-      else if (estado === 'no-encontrado') this.title.setTitle('Producto no encontrado — Electro Bodegón');
+      if (estado === 'ok' && p) this.actualizarSeo(p);
+      else if (estado === 'no-encontrado') {
+        // 404 real (también en la respuesta HTTP del SSR) y sin indexar
+        this.seo.set({
+          titulo: 'Producto no encontrado — Electro Bodegón',
+          descripcion: 'El producto que buscas no existe o ya no está disponible.',
+          ruta: '/catalogo',
+          noindex: true,
+          estado: 404
+        });
+      }
 
       // En móvil la barra inferior reemplaza al botón flotante de WhatsApp
       if (estado === 'ok') this.renderer.addClass(this.document.body, CLASE_CTA_FIJA);
@@ -116,9 +138,34 @@ export class ProductoDetalleComponent {
     inject(DestroyRef).onDestroy(() => this.renderer.removeClass(this.document.body, CLASE_CTA_FIJA));
   }
 
+  private actualizarSeo(p: Producto): void {
+    const ruta = `/producto/${encodeURIComponent(p.slug)}`;
+    const abs = (u: string) => this.seo.absoluta(u);
+    const base = p.descripcionCorta ?? p.descripcion ?? `${p.nombre} de ${p.marca}`;
+    this.seo.set({
+      titulo: `${p.nombre} — Electro Bodegón`,
+      descripcion: recortar(`${base}. Precio ${formatoPrecio(p.precio)}. Consulta por WhatsApp.`, 160),
+      ruta,
+      imagen: p.imagenes[0]?.url,
+      imagenAlt: p.nombre,
+      tipoOg: 'product',
+      jsonLd: [
+        productoLd(p, ruta, abs),
+        migasLd(
+          [
+            { nombre: 'Inicio', ruta: '/' },
+            { nombre: 'Catálogo', ruta: '/catalogo' },
+            { nombre: p.nombre, ruta }
+          ],
+          abs
+        )
+      ]
+    });
+  }
+
   whatsappUrl(s: SucursalConfig): string {
     const p = this.producto()!;
-    return whatsappProductoLink(s, p, urlAbsolutaProducto(this.document.baseURI, p));
+    return whatsappProductoLink(s, p, urlAbsolutaProducto(this.seo.origen() + '/', p));
   }
 
   /** Barra inferior móvil: lleva a los botones de WhatsApp y les pasa el foco (accesibilidad) */

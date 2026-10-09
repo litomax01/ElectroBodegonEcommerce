@@ -1,8 +1,10 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './pages/home/home.component';
-import { CatalogoComponent } from './pages/catalogo/catalogo.component';
-import { SucursalesComponent } from './pages/sucursales/sucursales.component';
 
+/**
+ * Solo la portada va en el paquete inicial; el resto de páginas se descargan al visitarlas.
+ * Los títulos de las rutas son un valor por defecto: cada página fija su SEO completo con SeoService.
+ */
 export const routes: Routes = [
   {
     path: '',
@@ -11,7 +13,7 @@ export const routes: Routes = [
   },
   {
     path: 'catalogo',
-    component: CatalogoComponent,
+    loadComponent: () => import('./pages/catalogo/catalogo.component').then(m => m.CatalogoComponent),
     title: 'Catálogo Completo — Electro Bodegón'
   },
   {
@@ -22,7 +24,7 @@ export const routes: Routes = [
   },
   {
     path: 'sucursales',
-    component: SucursalesComponent,
+    loadComponent: () => import('./pages/sucursales/sucursales.component').then(m => m.SucursalesComponent),
     title: 'Sucursales y Contacto — Electro Bodegón'
   },
   {

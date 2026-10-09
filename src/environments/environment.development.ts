@@ -1,5 +1,5 @@
 import { AppEnvironment } from './environment.model';
-import { SUPABASE_PUBLIC_CONFIG } from './supabase.generated';
+import { SITE_PUBLIC_CONFIG, SUPABASE_PUBLIC_CONFIG } from './supabase.generated';
 
 /**
  * Configuración de DESARROLLO (ng serve). Reemplaza a environment.ts vía
@@ -10,5 +10,6 @@ import { SUPABASE_PUBLIC_CONFIG } from './supabase.generated';
  */
 export const environment: AppEnvironment = {
   production: false,
-  supabase: SUPABASE_PUBLIC_CONFIG
+  supabase: SUPABASE_PUBLIC_CONFIG,
+  site: SITE_PUBLIC_CONFIG
 };

@@ -8,6 +8,8 @@ import { Producto, ProductoId } from '../../core/models/producto.model';
 import { ProductCardComponent } from '../../components/product-card/product-card.component';
 import { SidebarFiltersComponent, FiltersState } from '../../components/sidebar-filters/sidebar-filters.component';
 import { Orden, filtrarProductos, leerParams } from './catalogo-filtros';
+import { SeoService } from '../../core/seo/seo.service';
+import { migasLd } from '../../core/seo/seo-schema';
 
 @Component({
   selector: 'app-catalogo',
@@ -39,6 +41,7 @@ export class CatalogoComponent implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
   private readonly document = inject(DOCUMENT);
   private readonly renderer = inject(Renderer2);
+  private readonly seo = inject(SeoService);
 
   readonly hayResultados = computed(() => this.productosFiltrados().length > 0);
 
@@ -51,6 +54,14 @@ export class CatalogoComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // El canonical es siempre /catalogo: las variantes con filtros u orden no se indexan por separado
+    this.seo.set({
+      titulo: 'Catálogo de electrodomésticos, TV y línea blanca — Electro Bodegón',
+      descripcion: 'Explora todo el catálogo de Electro Bodegón: televisores, refrigeradoras, lavadoras, cocinas y electrodomésticos menores de Samsung, LG, Mabe, Oster y más.',
+      ruta: '/catalogo',
+      jsonLd: [migasLd([{ nombre: 'Inicio', ruta: '/' }, { nombre: 'Catálogo', ruta: '/catalogo' }], u => this.seo.absoluta(u))]
+    });
+
     // Productos: se cargan una sola vez
     this.productRepository.getAll()
       .pipe(takeUntilDestroyed(this.destroyRef))

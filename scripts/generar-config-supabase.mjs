@@ -7,6 +7,9 @@
  *   SUPABASE_URL              https://<project-ref>.supabase.co
  *   SUPABASE_PUBLISHABLE_KEY  clave PÚBLICA sb_publishable_... (recomendada)
  *   SUPABASE_ANON_KEY         alternativa heredada (anon JWT); se usa solo si falta la anterior
+ *   SITE_URL                  origen público del sitio (https://dominio.com), opcional
+ *   GA4_MEASUREMENT_ID        G-XXXXXXXXXX, opcional (sin valor no se carga Google Analytics)
+ *   META_PIXEL_ID             id numérico del Pixel de Meta, opcional (sin valor no se carga)
  *
  * Origen (por prioridad):
  *   1. Variables del proceso (Vercel, Netlify, CI, terminal).
@@ -34,6 +37,14 @@ if (existsSync(archivoEnv) && typeof process.loadEnvFile === 'function') {
 const url = (process.env.SUPABASE_URL ?? '').trim();
 const anonKey = (process.env.SUPABASE_PUBLISHABLE_KEY || process.env.SUPABASE_ANON_KEY || '').trim();
 
+// ---- Sitio / analítica (todo opcional; sin valor = función desactivada) ----
+//   SITE_URL              https://dominio-definitivo.com   (canonical, Open Graph, sitemap)
+//   GA4_MEASUREMENT_ID    G-XXXXXXXXXX
+//   META_PIXEL_ID         solo dígitos
+const siteUrl = (process.env.SITE_URL ?? '').trim().replace(/\/+$/, '');
+const ga4Id = (process.env.GA4_MEASUREMENT_ID ?? '').trim();
+const metaPixelId = (process.env.META_PIXEL_ID ?? '').trim();
+
 function rolDeJwt(token) {
   const partes = token.split('.');
   if (partes.length !== 3) return null;
@@ -58,12 +69,24 @@ if (url && !/^https:\/\//i.test(url) && !/^http:\/\/(localhost|127\.0\.0\.1)(:\d
   fallar('SUPABASE_URL debe empezar por https:// (http solo para Supabase local).');
 }
 
+if (siteUrl && !/^https:\/\/[a-z0-9.-]+(:\d+)?$/i.test(siteUrl) && !/^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/i.test(siteUrl)) {
+  fallar('SITE_URL debe ser un origen https:// sin ruta (ej. https://electrobodegon.com).');
+}
+if (ga4Id && !/^G-[A-Z0-9]{6,14}$/.test(ga4Id)) {
+  fallar('GA4_MEASUREMENT_ID no tiene el formato esperado (G-XXXXXXXXXX).');
+}
+if (metaPixelId && !/^\d{8,20}$/.test(metaPixelId)) {
+  fallar('META_PIXEL_ID debe contener solo dígitos.');
+}
+
 const contenido =
 `// ARCHIVO GENERADO por scripts/generar-config-supabase.mjs — NO editar ni versionar.
 // Para cambiar los valores define SUPABASE_URL / SUPABASE_PUBLISHABLE_KEY (ver .env.example).
-import { SupabasePublicConfig } from './environment.model';
+import { SitePublicConfig, SupabasePublicConfig } from './environment.model';
 
 export const SUPABASE_PUBLIC_CONFIG: SupabasePublicConfig = ${JSON.stringify({ url, anonKey }, null, 2)};
+
+export const SITE_PUBLIC_CONFIG: SitePublicConfig = ${JSON.stringify({ siteUrl, ga4Id, metaPixelId }, null, 2)};
 `;
 
 // Solo escribe si cambió (evita recompilaciones innecesarias en ng serve)

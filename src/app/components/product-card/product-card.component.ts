@@ -1,6 +1,7 @@
 import { Component, Input, inject, signal } from '@angular/core';
 import { ImagenNoDisponibleComponent } from '../imagen-no-disponible/imagen-no-disponible.component';
-import { DOCUMENT, DecimalPipe } from '@angular/common';
+import { DecimalPipe } from '@angular/common';
+import { SeoService } from '../../core/seo/seo.service';
 import { RouterLink } from '@angular/router';
 import { Producto } from '../../core/models/producto.model';
 import { ahorro, rutaProducto, tieneDescuento, urlAbsolutaProducto } from '../../core/models/producto.helpers';
@@ -16,7 +17,7 @@ import { whatsappProductoLink } from '../../core/whatsapp/whatsapp-mensajes';
 export class ProductCardComponent {
   @Input({ required: true }) producto!: Producto;
 
-  private readonly document = inject(DOCUMENT);
+  private readonly seo = inject(SeoService);
   readonly sucursales = STORE_CONFIG.sucursales;
 
   get ruta(): string[] {
@@ -32,7 +33,7 @@ export class ProductCardComponent {
   readonly urlFallida = signal<string | null>(null);
 
   getWhatsappLink(s: SucursalConfig): string {
-    return whatsappProductoLink(s, this.producto, urlAbsolutaProducto(this.document.baseURI, this.producto));
+    return whatsappProductoLink(s, this.producto, urlAbsolutaProducto(this.seo.origen() + '/', this.producto));
   }
 
   hasDiscount(): boolean {

@@ -10,6 +10,7 @@ import { JsonLd } from './seo.service';
 type Absoluta = (urlORuta: string) => string;
 
 function sucursalLd(s: SucursalConfig, abs: Absoluta): JsonLd {
+  const h = s.horarioEstructurado;
   return {
     '@type': 'ElectronicsStore',
     '@id': abs(`/sucursales#${s.id}`),
@@ -22,14 +23,14 @@ function sucursalLd(s: SucursalConfig, abs: Absoluta): JsonLd {
       streetAddress: s.direccion,
       addressCountry: STORE_CONFIG.pais
     },
-    openingHoursSpecification: [
-      {
-        '@type': 'OpeningHoursSpecification',
-        dayOfWeek: s.horarioEstructurado.dias,
-        opens: s.horarioEstructurado.abre,
-        closes: s.horarioEstructurado.cierra
-      }
-    ],
+    // Solo si la sucursal tiene horario estructurado (no se publica un horario inventado)
+    ...(h
+      ? {
+          openingHoursSpecification: [
+            { '@type': 'OpeningHoursSpecification', dayOfWeek: h.dias, opens: h.abre, closes: h.cierra }
+          ]
+        }
+      : {}),
     parentOrganization: { '@id': abs('/#organizacion') }
   };
 }

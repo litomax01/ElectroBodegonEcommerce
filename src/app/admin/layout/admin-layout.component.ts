@@ -57,6 +57,14 @@ import { AdminUiService } from '../core/admin-ui.service';
              class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/5">
             <i class="fas fa-plus w-5 text-center"></i> Nuevo producto
           </a>
+          <a routerLink="/admin/portada" routerLinkActive="bg-white/10 text-white"
+             class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/5">
+            <i class="fas fa-images w-5 text-center"></i> Portada y banners
+          </a>
+          <a routerLink="/admin/tienda" routerLinkActive="bg-white/10 text-white"
+             class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/5">
+            <i class="fas fa-store w-5 text-center"></i> Tienda y sucursales
+          </a>
           <div class="pt-3 mt-3 border-t border-white/10">
             <a href="/" target="_blank" rel="noopener"
                class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/5">

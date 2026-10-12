@@ -48,6 +48,16 @@ export const ADMIN_ROUTES: Routes = [
         title: 'Editar producto — Admin Electro Bodegón',
         loadComponent: () => import('./pages/producto-form/admin-producto-form.component').then(m => m.AdminProductoFormComponent)
       },
+      {
+        path: 'tienda',
+        title: 'Tienda — Admin Electro Bodegón',
+        loadComponent: () => import('./pages/tienda/admin-tienda.component').then(m => m.AdminTiendaComponent)
+      },
+      {
+        path: 'portada',
+        title: 'Portada — Admin Electro Bodegón',
+        loadComponent: () => import('./pages/portada/admin-portada.component').then(m => m.AdminPortadaComponent)
+      },
       { path: '**', redirectTo: '' }
     ]
   }

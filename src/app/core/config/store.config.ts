@@ -2,7 +2,9 @@
  * Configuración central de la tienda.
  * Único lugar donde se definen teléfonos, vendedores, sucursales, horarios y redes sociales:
  * navbar, footer, páginas, WhatsApp y los datos estructurados (schema.org) salen de aquí.
- * En una fase posterior estos datos pueden leerse desde Supabase (tablas branches / sellers / store_settings).
+ * Estos valores son el RESPALDO: al arrancar, StoreConfigRemotoService los reemplaza con lo que el
+ * administrador edita en /admin/tienda (tablas branches / sellers / store_settings). Si Supabase no
+ * responde o aún no tiene datos, la tienda sigue funcionando con lo definido aquí.
  *
  * Nota: la app no escribe URLs absolutas del propio sitio en el código: el dominio definitivo
  * se define con la variable de entorno SITE_URL (ver .env.example).
@@ -30,6 +32,8 @@ export interface SucursalConfig {
   asesorNombre: string;
   /** Etiqueta mostrada antes del nombre ("Asesora", "Asesor") */
   asesorTitulo: string;
+  /** URL de la foto del asesor subida desde el panel (vacío = foto de respaldo) */
+  asesorFoto?: string;
   /** Número en formato internacional sin "+" ni espacios (ej. 593986952147) */
   whatsapp: string;
   /**
@@ -38,7 +42,8 @@ export interface SucursalConfig {
    */
   mapa: MapLocation;
   horario: string;
-  horarioEstructurado: HorarioAtencion;
+  /** null = sin horario estructurado (no se publica en schema.org) */
+  horarioEstructurado: HorarioAtencion | null;
   icon: string;
 }
 
@@ -47,6 +52,16 @@ export interface RedesSociales {
   facebook: string;
   instagram: string;
   tiktok: string;
+}
+
+/** Qué diapositivas automáticas muestra el carrusel y cada cuánto cambia. */
+export interface HeroConfig {
+  mostrarOfertas: boolean;
+  mostrarBienvenida: boolean;
+  mostrarPromos: boolean;
+  mostrarAsesores: boolean;
+  /** Segundos entre diapositivas (3–20) */
+  intervaloSeg: number;
 }
 
 /** Datos comerciales generales. */
@@ -70,6 +85,14 @@ export const STORE_CONFIG = {
     instagram: '',
     tiktok: ''
   } satisfies RedesSociales,
+  /** Diapositivas automáticas del carrusel de portada (se editan en /admin/portada) */
+  hero: {
+    mostrarOfertas: true,
+    mostrarBienvenida: true,
+    mostrarPromos: true,
+    mostrarAsesores: true,
+    intervaloSeg: 7
+  } as HeroConfig,
   sucursales: [
     {
       id: 'norte',
@@ -118,4 +141,32 @@ export function telefonoInternacional(whatsapp: string): string {
 export function whatsappLink(numero: string, mensaje?: string): string {
   const base = 'https://wa.me/' + numero;
   return mensaje ? base + '?text=' + encodeURIComponent(mensaje) : base;
+}
+
+/** Datos de la tienda ya mapeados desde Supabase (ver store-config-remoto.service.ts). */
+export interface ConfigTiendaRemota {
+  nombre?: string;
+  whatsappPrincipal?: string;
+  redes?: Partial<RedesSociales>;
+  hero?: Partial<HeroConfig>;
+  sucursales: SucursalConfig[];
+}
+
+/**
+ * Sustituye en el sitio los datos de respaldo por los remotos. Muta STORE_CONFIG en el mismo
+ * objeto/arreglo para que cualquier referencia existente vea los datos nuevos. Si no llegan
+ * sucursales activas se conservan las de respaldo (nunca deja la tienda sin sucursales).
+ */
+export function aplicarConfigRemota(remota: ConfigTiendaRemota): void {
+  if (remota.nombre) STORE_CONFIG.nombre = remota.nombre;
+  if (remota.whatsappPrincipal) STORE_CONFIG.whatsappPrincipal = remota.whatsappPrincipal;
+  if (remota.redes) {
+    STORE_CONFIG.redes.facebook = remota.redes.facebook ?? '';
+    STORE_CONFIG.redes.instagram = remota.redes.instagram ?? '';
+    STORE_CONFIG.redes.tiktok = remota.redes.tiktok ?? '';
+  }
+  if (remota.hero) Object.assign(STORE_CONFIG.hero, remota.hero);
+  if (remota.sucursales.length > 0) {
+    STORE_CONFIG.sucursales.splice(0, STORE_CONFIG.sucursales.length, ...remota.sucursales);
+  }
 }

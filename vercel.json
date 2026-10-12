@@ -10,15 +10,19 @@
       "maxDuration": 15
     }
   },
-  "rewrites": [{ "source": "/(.*)", "destination": "/api/index" }],
-  "headers": [
+  "routes": [
     {
-      "source": "/(.*)\\.(js|css|woff2)",
-      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+      "src": "/(.*)\\.(js|css|woff2)",
+      "headers": { "Cache-Control": "public, max-age=31536000, immutable" },
+      "continue": true
     },
     {
-      "source": "/(favicon.ico|logo.png)",
-      "headers": [{ "key": "Cache-Control", "value": "public, max-age=86400" }]
-    }
+      "src": "/(favicon.ico|logo.png)",
+      "headers": { "Cache-Control": "public, max-age=86400" },
+      "continue": true
+    },
+    { "src": "^/$", "dest": "/api/index" },
+    { "handle": "filesystem" },
+    { "src": "/(.*)", "dest": "/api/index" }
   ]
 }

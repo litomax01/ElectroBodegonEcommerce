@@ -35,9 +35,16 @@ El repositorio ya trae `vercel.json` y `api/index.mjs`:
    envía el resto de peticiones a la función `api/index.mjs` (el servidor Angular).
 4. Añadir el dominio (Settings → Domains) y ponerlo en `SITE_URL` y `NG_ALLOWED_HOSTS`; redesplegar.
 
-> El adaptador de Vercel está preparado pero **no se ha podido probar sin una cuenta**. Si algo falla
-> al primer despliegue, la alternativa de abajo funciona igual. Puntos a vigilar: que `/` llegue a la
-> función (no a `index.csr.html`) y que `NG_ALLOWED_HOSTS` incluya el dominio de despliegue.
+> **Desplegado y probado** (2026-10-12) en `https://electro-bodegon.vercel.app`. Dos trampas resueltas:
+> 1. Vercel envía `X-Forwarded-*`; Angular SSR, si no los declara de confianza, vuelve a renderizar en el
+>    navegador y entrega el shell vacío. Se resolvió con `trustProxyHeaders` en `src/server.ts`
+>    (el `Host` se sigue validando con `NG_ALLOWED_HOSTS`).
+> 2. Vercel sirve `/` como archivo estático (`index.csr.html`) antes de aplicar `rewrites`. Por eso
+>    `vercel.json` usa `routes` con `^/$ → /api/index` antes del sistema de archivos.
+>
+> Variables en Vercel (Production y Preview): `SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEY` y
+> `NG_ALLOWED_HOSTS=*.vercel.app`. Al añadir el dominio propio, sumar `SITE_URL` y el dominio en
+> `NG_ALLOWED_HOSTS` y redesplegar (`npx vercel --prod`).
 
 **Alternativa portable: contenedor Node** (Render, Railway, Fly.io, Cloud Run, un VPS). Usa el
 `Dockerfile` incluido (ver sus comentarios para los `--build-arg`). Arranca con

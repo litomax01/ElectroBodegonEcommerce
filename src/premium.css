@@ -1501,3 +1501,18 @@ app-hero .hero-bg::after {
     animation: none !important;
   }
 }
+
+/* Móvil: sin flecha en las tarjetas de categoría (toda la tarjeta es el enlace) para que el nombre quepa */
+@media (max-width: 639px) {
+  .cat-card-flecha {
+    display: none;
+  }
+  .cat-card-panel {
+    padding: 0.8rem 0.7rem;
+  }
+  .cat-card-nombre {
+    font-size: 0.85rem;
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+}

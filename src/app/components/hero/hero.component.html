@@ -1,85 +1,198 @@
-<section class="relative min-h-[88vh] flex items-center overflow-hidden">
+<section class="hero-bg relative overflow-hidden text-[#111827]"
+         role="region" aria-roledescription="carrusel" aria-label="Destacados de la tienda"
+         (mouseenter)="pausar(true)" (mouseleave)="pausar(false)"
+         (focusin)="pausar(true)" (focusout)="pausar(false)">
+  <div class="hero-grid absolute inset-0 pointer-events-none" aria-hidden="true"></div>
 
-  <!-- Background Image -->
-  <div class="absolute inset-0 z-0">
-    <img
-      src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1600&q=85"
-      alt="Electrodomésticos modernos"
-      class="w-full h-full object-cover object-center"
-    />
-    <!-- Red gradient overlay -->
-    <div class="hero-gradient absolute inset-0"></div>
-  </div>
+  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="hero-track py-6 sm:py-9" aria-live="off">
 
-  <!-- Animated circles -->
-  <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-    <div class="absolute -top-20 -right-20 w-96 h-96 rounded-full bg-[#FFCC00] opacity-10"></div>
-    <div class="absolute bottom-0 -left-20 w-64 h-64 rounded-full bg-white opacity-5"></div>
-    <div class="absolute top-1/2 right-1/4 w-32 h-32 rounded-full bg-[#FFCC00] opacity-10 animate-pulse"></div>
-  </div>
+      <!-- ===== Banner de ofertas (productos y descuento reales) ===== -->
+      @if (desfase() === 1) {
+        <div class="hero-slide" [class.hero-slide-activo]="actual() === 0"
+             [attr.inert]="actual() !== 0 ? '' : null"
+             role="group" aria-roledescription="diapositiva" [attr.aria-label]="'1 de ' + total()">
+          <div class="hero-banner">
+            <div class="hero-banner-copy hero-copy">
+              <h2 class="hero-banner-titulo">Ofertas<br />para tu<br />hogar</h2>
+              <p class="hero-banner-sub">Ingresa y elige lo que necesitas para tu hogar</p>
+            </div>
 
-  <!-- Content -->
-  <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-20">
-    <div class="max-w-2xl">
+            <div class="hero-vitrina hero-visual" aria-hidden="true">
+              <span class="hero-plataforma"></span>
+              @for (p of vitrina(); track p.id; let k = $index) {
+                <span class="vit vit-{{ k + 1 }}">
+                  @if (imagen(p); as src) {
+                    <img [src]="src" alt="" width="280" height="280" (error)="imagenFallo(p)" />
+                  }
+                </span>
+              }
+            </div>
 
-      <!-- Badge -->
-      <div class="inline-flex items-center gap-2 bg-[#FFCC00] text-[#111827] px-4 py-1.5 rounded-full text-xs font-montserrat font-black uppercase tracking-widest mb-6 shadow-lg animate-bounce">
-        <i class="fas fa-fire text-[#E60000]"></i>
-        Ofertas Estrella {{ anioActual }}
+            <div class="hero-banner-oferta hero-copy">
+              <p class="hero-banner-pre">Encuentra hasta un</p>
+              <p class="hero-banner-cifra">{{ mayorDescuento() }}<span>%</span></p>
+              <p class="hero-banner-dcto">de descuento</p>
+              <span class="hero-banner-pill">En productos seleccionados</span>
+              <a routerLink="/catalogo" class="hero-banner-boton">
+                Ver ofertas <i class="fas fa-arrow-right text-xs" aria-hidden="true"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      }
+
+      <!-- ===== Mensaje de la tienda (blanco) ===== -->
+      <div class="hero-slide" [class.hero-slide-activo]="actual() === desfase()"
+           [attr.inert]="actual() !== desfase() ? '' : null"
+           role="group" aria-roledescription="diapositiva" [attr.aria-label]="(desfase() + 1) + ' de ' + total()">
+        <div class="hero-banner hero-banner--2 hero-banner--blanco">
+          <div class="hero-copy hb-copy">
+            <p class="hb-chip"><i class="fas fa-store" aria-hidden="true"></i> {{ totalSucursales }} sucursales · Atención por WhatsApp</p>
+            <h1 class="hb-titulo">Todo para tu hogar,<br /><span>al mejor precio.</span></h1>
+            <p class="hb-texto">Las mejores marcas en línea blanca, TV y electrodomésticos menores. Elige en el catálogo y cierra tu compra por WhatsApp.</p>
+            <ul class="hb-lista">
+              <li><i class="fas fa-check" aria-hidden="true"></i> Marcas oficiales</li>
+              <li><i class="fas fa-check" aria-hidden="true"></i> Asesor por WhatsApp</li>
+              <li><i class="fas fa-check" aria-hidden="true"></i> Entrega coordinada</li>
+            </ul>
+            <div class="hb-botones">
+              <a routerLink="/catalogo" class="hb-btn">Ver catálogo <i class="fas fa-arrow-right text-xs" aria-hidden="true"></i></a>
+              <a [href]="whatsappUrl" target="_blank" rel="noopener" class="hb-btn hb-btn--sec">
+                <i class="fab fa-whatsapp text-[#25D366] text-lg" aria-hidden="true"></i> Escribir por WhatsApp
+              </a>
+            </div>
+          </div>
+
+          <div class="hero-visual">
+            <div class="hero-stage">
+              @if (portada(); as p) {
+                @if (imagen(p); as src) {
+                  <img [src]="src" alt="" width="640" height="520" class="hero-stage-foto" (error)="imagenFallo(p)" />
+                }
+              }
+            </div>
+          </div>
+        </div>
       </div>
 
-      <!-- Heading -->
-      <h1 class="font-montserrat font-black text-white text-4xl sm:text-5xl lg:text-6xl leading-tight mb-6">
-        Electrodomésticos<br/>
-        <span class="text-[#FFCC00]">de Primera</span><br/>
-        al Mejor Precio
-      </h1>
+      <!-- ===== Ofertas: mayores ahorros reales (alternan rojo y blanco) ===== -->
+      @for (p of promos(); track p.id; let i = $index) {
+        <div class="hero-slide" [class.hero-slide-activo]="actual() === i + 1 + desfase()"
+             [attr.inert]="actual() !== i + 1 + desfase() ? '' : null"
+             role="group" aria-roledescription="diapositiva" [attr.aria-label]="(i + 2 + desfase()) + ' de ' + total()">
+          <div class="hero-banner hero-banner--2" [class.hero-banner--blanco]="i % 2 === 1">
+            <div class="hero-copy hb-copy">
+              <p class="hb-chip">{{ p.categoria }} · {{ p.marca }}</p>
+              <h2 class="hb-titulo hb-titulo--producto">{{ p.nombre }}</h2>
+              <p class="hb-precios">
+                <span class="hb-precio">${{ p.precio | number:'1.2-2' }}</span>
+                <span class="hb-tachado">${{ p.precioOriginal | number:'1.2-2' }}</span>
+              </p>
+              <p class="hb-ahorro">Ahorras ${{ ahorroDe(p) | number:'1.2-2' }}</p>
+              <div class="hb-botones">
+                <a [routerLink]="ruta(p)" class="hb-btn">Ver este producto <i class="fas fa-arrow-right text-xs" aria-hidden="true"></i></a>
+                <a [href]="whatsappUrl" target="_blank" rel="noopener" class="hb-btn hb-btn--sec">
+                  <i class="fab fa-whatsapp text-[#25D366] text-lg" aria-hidden="true"></i> Consultar por WhatsApp
+                </a>
+              </div>
+            </div>
 
-      <!-- Subtitle -->
-      <p class="font-inter font-normal text-white/80 text-lg leading-relaxed mb-8 max-w-lg">
-        Las mejores marcas: LG, Samsung, Mabe, Indurama, Oster y más.
-        Cierra tu compra por WhatsApp en segundos. ¡Envío disponible!
-      </p>
+            <div class="hero-visual">
+              <a [routerLink]="ruta(p)" tabindex="-1" aria-hidden="true" class="hero-stage block">
+                @if (imagen(p); as src) {
+                  <img [src]="src" [alt]="p.nombre" width="640" height="520" class="hero-stage-foto" (error)="imagenFallo(p)" />
+                }
+                <span class="hero-sello hero-sello--grande">
+                  <span class="font-montserrat font-extrabold text-2xl leading-none">-{{ porcentaje(p) }}%</span>
+                  <span class="text-[0.7rem] font-semibold uppercase tracking-wide">Ahorro</span>
+                </span>
+              </a>
+            </div>
+          </div>
+        </div>
+      }
 
-      <!-- CTAs -->
-      <div class="flex flex-wrap gap-4">
-        <a routerLink="/catalogo"
-           class="inline-flex items-center gap-2 bg-[#FFCC00] hover:bg-yellow-400 text-[#111827] px-8 py-4 rounded-2xl font-montserrat font-black text-base shadow-xl hover:shadow-2xl transition-all hover:scale-105 active:scale-95">
-          <i class="fas fa-shopping-bag"></i>
-          Ver Catálogo Completo
-        </a>
-        <a routerLink="/sucursales"
-           class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white border border-white/30 px-8 py-4 rounded-2xl font-montserrat font-bold text-base transition-all hover:scale-105 active:scale-95">
-          <i class="fas fa-map-marker-alt text-[#FFCC00]"></i>
-          Ver Sucursales
-        </a>
+      <!-- ===== Última diapositiva: asesoría por sucursal ===== -->
+      <div class="hero-slide" [class.hero-slide-activo]="actual() === total() - 1"
+           [attr.inert]="actual() !== total() - 1 ? '' : null"
+           role="group" aria-roledescription="diapositiva" [attr.aria-label]="total() + ' de ' + total()">
+        <div class="hero-banner hero-banner--2" [class.hero-banner--blanco]="asesoriaBlanca()">
+          <div class="hero-copy hb-copy">
+            <p class="hb-chip"><i class="fab fa-whatsapp" aria-hidden="true"></i> Atención por WhatsApp</p>
+            <h2 class="hb-titulo">¿Necesitas ayuda<br />para elegir?</h2>
+            <p class="hb-texto">Un asesor de la sucursal más cercana te ayuda a escoger el electrodoméstico ideal para tu hogar.</p>
+            <div class="hb-botones">
+              <a routerLink="/sucursales" class="hb-btn">Ver mapas y horarios <i class="fas fa-arrow-right text-xs" aria-hidden="true"></i></a>
+            </div>
+          </div>
+
+          <div class="hero-visual hb-vendedores">
+            @for (s of sucursales; track s.id) {
+              <a [href]="whatsappSucursal(s)" target="_blank" rel="noopener" class="hb-vendedor"
+                 [attr.aria-label]="'Escribir a ' + s.asesorNombre + ', ' + s.zona + ', por WhatsApp'">
+                <span class="hb-vendedor-foto">
+                  @if (fotoAsesor(s); as foto) {
+                    <img [src]="foto" [alt]="s.asesorNombre" width="300" height="320" (error)="fotoAsesorFallo(s)" />
+                  } @else {
+                    <i class="fas fa-user" aria-hidden="true"></i>
+                  }
+                  <span class="hb-vendedor-zona">{{ s.zona }}</span>
+                </span>
+                <span class="hb-vendedor-info">
+                  <span class="block font-montserrat font-extrabold text-lg leading-tight">{{ s.asesorNombre }}</span>
+                  <span class="block text-sm text-gray-600">{{ s.asesorTitulo }} · {{ s.horario }}</span>
+                  <span class="hb-vendedor-btn">
+                    <i class="fab fa-whatsapp text-base" aria-hidden="true"></i> Escribir ahora
+                  </span>
+                </span>
+              </a>
+            }
+          </div>
+        </div>
       </div>
 
-      <!-- Stats bar -->
-      <div class="flex flex-wrap gap-6 mt-10 pt-8 border-t border-white/20">
-        <div class="text-center">
-          <span class="block font-montserrat font-black text-[#FFCC00] text-2xl">{{ totalProductosLabel() }}</span>
-          <span class="text-xs font-inter text-white/60 uppercase tracking-wide">Productos</span>
-        </div>
-        <div class="text-center">
-          <span class="block font-montserrat font-black text-[#FFCC00] text-2xl">{{ totalMarcas() }}</span>
-          <span class="text-xs font-inter text-white/60 uppercase tracking-wide">Marcas top</span>
-        </div>
-        <div class="text-center">
-          <span class="block font-montserrat font-black text-[#FFCC00] text-2xl">{{ totalSucursales }}</span>
-          <span class="text-xs font-inter text-white/60 uppercase tracking-wide">Sucursales</span>
-        </div>
-        <div class="text-center">
-          <span class="block font-montserrat font-black text-[#FFCC00] text-2xl">100%</span>
-          <span class="text-xs font-inter text-white/60 uppercase tracking-wide">Garantía</span>
-        </div>
-      </div>
     </div>
   </div>
 
-  <!-- Scroll indicator -->
-  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 text-white/50 animate-bounce">
-    <span class="text-xs font-inter uppercase tracking-widest">Desliza</span>
-    <i class="fas fa-chevron-down text-sm"></i>
+  <!-- ===== Franja inferior: cifras, controles y acceso al catálogo ===== -->
+  <div class="hero-strip relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-wrap items-center justify-between gap-x-8 gap-y-4">
+      <dl class="flex items-center gap-6 sm:gap-8">
+        <div class="flex flex-row-reverse justify-end items-baseline gap-2">
+          <dt class="text-xs sm:text-sm font-inter text-gray-500">Productos</dt>
+          <dd class="font-montserrat font-extrabold text-xl text-[#111827]">{{ totalProductosLabel() }}</dd>
+        </div>
+        <div class="flex flex-row-reverse justify-end items-baseline gap-2">
+          <dt class="text-xs sm:text-sm font-inter text-gray-500">Marcas</dt>
+          <dd class="font-montserrat font-extrabold text-xl text-[#111827]">{{ totalMarcas() }}</dd>
+        </div>
+        <div class="flex flex-row-reverse justify-end items-baseline gap-2">
+          <dt class="text-xs sm:text-sm font-inter text-gray-500">Sucursales</dt>
+          <dd class="font-montserrat font-extrabold text-xl text-[#111827]">{{ totalSucursales }}</dd>
+        </div>
+      </dl>
+
+      <div class="flex items-center gap-3 order-last sm:order-none w-full sm:w-auto justify-center" role="group" aria-label="Controles del carrusel">
+        <button type="button" class="hero-flecha" (click)="anterior()" aria-label="Diapositiva anterior">
+          <i class="fas fa-chevron-left text-xs" aria-hidden="true"></i>
+        </button>
+        <div class="flex items-center gap-2">
+          @for (n of puntos(); track n) {
+            <button type="button" class="hero-dot" (click)="ir(n)"
+                    [attr.aria-current]="actual() === n ? 'true' : null"
+                    [attr.aria-label]="'Ir a la diapositiva ' + (n + 1)"></button>
+          }
+        </div>
+        <button type="button" class="hero-flecha" (click)="siguiente()" aria-label="Diapositiva siguiente">
+          <i class="fas fa-chevron-right text-xs" aria-hidden="true"></i>
+        </button>
+      </div>
+
+      <a routerLink="/catalogo"
+         class="inline-flex items-center gap-2 bg-[#E60000] hover:bg-[#c40000] text-white px-5 py-2.5 rounded-xl font-montserrat font-bold text-sm transition-colors">
+        Ver todos los productos <i class="fas fa-arrow-right text-xs" aria-hidden="true"></i>
+      </a>
+    </div>
   </div>
 </section>

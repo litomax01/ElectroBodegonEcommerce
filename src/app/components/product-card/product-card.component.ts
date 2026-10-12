@@ -32,6 +32,9 @@ export class ProductCardComponent {
   /** URL que ya falló al cargar: se sustituye por el marcador local (sin reintentos ni bucles) */
   readonly urlFallida = signal<string | null>(null);
 
+  /** Selector de sucursal del botón de WhatsApp */
+  readonly selectorAbierto = signal(false);
+
   getWhatsappLink(s: SucursalConfig): string {
     return whatsappProductoLink(s, this.producto, urlAbsolutaProducto(this.seo.origen() + '/', this.producto));
   }

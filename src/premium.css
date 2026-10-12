@@ -1,0 +1,1503 @@
+/* ============================================================
+   ELECTRO BODEGÓN — Capa visual "premium"
+   ------------------------------------------------------------
+   Solo presentación: no cambia estructura, textos, rutas, enlaces,
+   logos ni la paleta de marca (#E60000, #FFCC00, #111827).
+   Se carga después de styles.css (angular.json). Para volver al
+   aspecto anterior basta con quitar este archivo de "styles".
+
+   Idea: showroom. Superficies de tinta oscura, filos finos de luz,
+   sombras en capas y una sola pieza protagonista (el hero).
+   ============================================================ */
+
+:root {
+  --ink-900: #0B0F19;
+  --ink-800: #111827;
+  --ink-700: #1B2333;
+  --paper: #FFFFFF;
+  --paper-warm: #FBFAF8;
+  --hairline: rgba(17, 24, 39, 0.08);
+  --hairline-strong: rgba(17, 24, 39, 0.14);
+  --lift-1: 0 1px 2px rgba(17, 24, 39, 0.04), 0 4px 12px -4px rgba(17, 24, 39, 0.06);
+  --lift-2: 0 2px 4px rgba(17, 24, 39, 0.04), 0 12px 28px -10px rgba(17, 24, 39, 0.14);
+  --lift-3: 0 4px 8px rgba(17, 24, 39, 0.05), 0 28px 56px -18px rgba(17, 24, 39, 0.28);
+  --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ---------- Base ---------- */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  background-color: var(--paper-warm);
+}
+
+::selection {
+  background: #FFCC00;
+  color: #111827;
+}
+
+/* Foco visible, de alto contraste sobre claro y oscuro */
+:where(a, button, input, select, textarea, summary):focus-visible {
+  outline: 2px solid #111827;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 5px #FFCC00;
+  border-radius: 0.5rem;
+}
+
+/* Títulos: más apretados y con mejor reparto de líneas */
+app-home h2,
+app-hero h1 {
+  text-wrap: balance;
+}
+app-home h2 {
+  letter-spacing: -0.028em;
+}
+
+/* Etiquetas de sección: sin mayúsculas ni tracking exagerado */
+app-home section > div > div > p.uppercase.text-\[\#E60000\] {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  text-transform: none;
+  letter-spacing: 0.01em;
+  font-size: 0.8125rem;
+}
+app-home section > div > div > p.uppercase.text-\[\#E60000\]::before {
+  content: '';
+  width: 1.5rem;
+  height: 2px;
+  background: #E60000;
+  border-radius: 2px;
+}
+
+/* ---------- Encabezado ---------- */
+app-navbar header {
+  background: rgba(255, 255, 255, 0.82);
+  -webkit-backdrop-filter: saturate(180%) blur(18px);
+  backdrop-filter: saturate(180%) blur(18px);
+  border-bottom-color: var(--hairline);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.7) inset, 0 8px 24px -16px rgba(17, 24, 39, 0.18);
+}
+app-navbar header a[aria-label^='Electro'] > span span {
+  letter-spacing: 0.05em;
+}
+app-navbar .nav-link {
+  letter-spacing: 0.01em;
+}
+app-navbar header a.rounded-full.bg-\[\#111827\] {
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.12) inset, 0 8px 18px -10px rgba(17, 24, 39, 0.6);
+  transition: background-color 0.2s ease, transform 0.25s var(--ease-premium), box-shadow 0.25s ease;
+}
+app-navbar header a.rounded-full.bg-\[\#111827\]:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.16) inset, 0 12px 22px -10px rgba(230, 0, 0, 0.55);
+}
+
+/* ---------- Botones principales (rojo de marca) ---------- */
+app-hero a.bg-\[\#E60000\],
+app-home a.bg-\[\#E60000\],
+app-product-card a.bg-\[\#E60000\],
+app-product-card button.bg-\[\#E60000\] {
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0) 55%);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.28) inset,
+    0 -1px 0 rgba(0, 0, 0, 0.18) inset,
+    0 12px 22px -12px rgba(230, 0, 0, 0.75);
+  transition: background-color 0.2s ease, transform 0.25s var(--ease-premium), box-shadow 0.25s ease;
+}
+app-hero a.bg-\[\#E60000\]:hover,
+app-home a.bg-\[\#E60000\]:hover,
+app-product-card a.bg-\[\#E60000\]:hover,
+app-product-card button.bg-\[\#E60000\]:hover {
+  transform: translateY(-1px);
+}
+app-hero a.bg-\[\#E60000\]:active,
+app-product-card a.bg-\[\#E60000\]:active,
+app-product-card button.bg-\[\#E60000\]:active {
+  transform: translateY(0);
+}
+
+/* ---------- Hero ---------- */
+app-hero .hero-bg {
+  isolation: isolate;
+}
+/* Haz de luz superior y filo de marca inferior */
+app-hero .hero-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(120% 60% at 50% -10%, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0) 60%),
+    linear-gradient(180deg, rgba(11, 15, 25, 0) 70%, rgba(11, 15, 25, 0.55) 100%);
+  pointer-events: none;
+}
+app-hero .hero-bg::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(230, 0, 0, 0) 0%, #E60000 28%, #FFCC00 72%, rgba(255, 204, 0, 0) 100%);
+  opacity: 0.85;
+  pointer-events: none;
+}
+app-hero h1 {
+  letter-spacing: -0.035em;
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.35);
+}
+app-hero h1 span {
+  background: linear-gradient(100deg, #FFCC00 0%, #FFE27A 55%, #FFCC00 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: none;
+  color: #FFCC00;
+}
+app-hero p.inline-flex {
+  text-transform: none;
+  letter-spacing: 0.02em;
+  font-size: 0.875rem;
+}
+app-hero dl {
+  border-top-color: rgba(255, 255, 255, 0.12);
+}
+app-hero dl dd {
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+app-hero dl dt {
+  text-transform: none;
+  letter-spacing: 0.02em;
+  font-size: 0.8125rem;
+}
+/* Botón secundario: cristal */
+app-hero a.border-white\/25 {
+  background: rgba(255, 255, 255, 0.04);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.25s var(--ease-premium);
+}
+app-hero a.border-white\/25:hover {
+  transform: translateY(-1px);
+}
+/* Tarjetas de producto del hero: piezas de vitrina */
+app-hero a.bg-white {
+  border-radius: 1.25rem;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.6) inset,
+    0 2px 4px rgba(0, 0, 0, 0.12),
+    0 32px 64px -20px rgba(0, 0, 0, 0.65);
+}
+app-hero a.bg-white > span.block.aspect-square,
+app-hero a.bg-white > span.w-24 {
+  background: radial-gradient(90% 90% at 50% 35%, #FFFFFF 0%, #F1F2F4 100%);
+}
+
+/* ---------- Ritmo vertical común de las secciones del home ----------
+   Mismo ancho (max-w-7xl) y mismo espaciado en todas. Las secciones
+   consecutivas sobre el mismo fondo comparten un solo intervalo. */
+.home-section {
+  padding-block: clamp(3rem, 2rem + 4vw, 5rem);
+}
+.home-plain + .home-plain {
+  padding-top: 0;
+}
+
+/* ---------- Banda de beneficios (ancho completo) ---------- */
+.benefit-band {
+  background-image:
+    radial-gradient(60% 140% at 0% 0%, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 60%),
+    linear-gradient(100deg, #E60000 0%, #C20000 100%);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.18) inset;
+}
+.benefit-band li > span:first-child {
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.28) inset;
+}
+@media (min-width: 1024px) {
+  .benefit-band li {
+    padding-inline: 1.5rem;
+  }
+  .benefit-band li + li {
+    border-left: 1px solid rgba(255, 255, 255, 0.2);
+  }
+}
+
+/* ---------- Categorías: cuadrícula simétrica ----------
+   Todas las tarjetas miden lo mismo: foto arriba (misma proporción) y
+   nombre + cantidad debajo. 2 columnas en móvil, 4 en escritorio. */
+.cat-bento {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+@media (min-width: 1024px) {
+  .cat-bento {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+}
+.cat-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 1.25rem;
+  background: #FFFFFF;
+  border: 1px solid var(--hairline-strong);
+  transition:
+    translate 0.3s var(--ease-premium),
+    scale 0.14s var(--ease-premium),
+    border-color 0.25s ease,
+    box-shadow 0.35s ease;
+}
+.cat-card-foto,
+.cat-card-icono {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background: #EEF0F3;
+  transition: transform 0.6s var(--ease-premium);
+}
+.cat-card-foto {
+  object-fit: cover;
+}
+.cat-card-icono {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  color: rgba(230, 0, 0, 0.35);
+}
+.cat-card-panel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.9rem 1rem;
+  position: relative;
+  background: #FFFFFF;
+  border-top: 1px solid var(--hairline);
+  min-height: 4.75rem;
+}
+.cat-card-nombre {
+  font-size: 1rem;
+}
+.cat-card-flecha {
+  flex: none;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #E60000;
+  color: #FFFFFF;
+  transition: translate 0.3s var(--ease-premium), background-color 0.2s ease;
+}
+.cat-card:active {
+  scale: 0.985;
+}
+@media (hover: hover) and (pointer: fine) {
+  .cat-card:hover {
+    translate: 0 -3px;
+    border-color: rgba(230, 0, 0, 0.35);
+    box-shadow: var(--lift-2);
+  }
+  .cat-card:hover .cat-card-foto {
+    transform: scale(1.05);
+  }
+  .cat-card:hover .cat-card-flecha {
+    translate: 3px 0;
+    background: #c40000;
+  }
+}
+.cat-card:focus-visible {
+  outline: 3px solid #E60000;
+  outline-offset: 3px;
+}
+
+/* ---------- Buscador del encabezado ---------- */
+.buscador {
+  position: relative;
+}
+.buscador input {
+  width: 100%;
+  height: 2.75rem;
+  padding: 0 3rem 0 1.1rem;
+  border-radius: 9999px;
+  border: 1px solid var(--hairline-strong);
+  background: #F4F5F7;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.875rem;
+  color: #111827;
+  transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.25s ease;
+}
+.buscador input::placeholder {
+  color: #6B7280;
+}
+.buscador input:hover {
+  background: #FFFFFF;
+}
+.buscador input:focus {
+  outline: none;
+  background: #FFFFFF;
+  border-color: #E60000;
+  box-shadow: 0 0 0 4px rgba(230, 0, 0, 0.12);
+}
+.buscador button {
+  position: absolute;
+  right: 0.25rem;
+  top: 0.25rem;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 9999px;
+  background: #E60000;
+  color: #FFFFFF;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease, scale 0.14s var(--ease-premium);
+}
+.buscador button:hover {
+  background: #C40000;
+}
+.buscador button:active {
+  scale: 0.94;
+}
+
+/* ---------- Hero en carrusel ---------- */
+.hero-track {
+  display: grid;
+}
+.hero-slide {
+  grid-area: 1 / 1;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.55s var(--ease-premium), visibility 0s linear 0.55s;
+}
+.hero-slide-activo {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.55s var(--ease-premium), visibility 0s;
+}
+/* Cada vez que una diapositiva se activa, su contenido entra escalonado */
+.hero-slide-activo .hero-copy > * {
+  animation: hero-in 0.7s var(--ease-premium) both;
+}
+.hero-slide-activo .hero-copy > :nth-child(1) { animation-delay: 0.05s; }
+.hero-slide-activo .hero-copy > :nth-child(2) { animation-delay: 0.12s; }
+.hero-slide-activo .hero-copy > :nth-child(3) { animation-delay: 0.19s; }
+.hero-slide-activo .hero-copy > :nth-child(4) { animation-delay: 0.26s; }
+.hero-slide-activo .hero-copy > :nth-child(5) { animation-delay: 0.33s; }
+.hero-slide-activo .hero-visual {
+  animation: hero-in-visual 0.85s var(--ease-premium) 0.2s both;
+}
+.hero-strip {
+  background: rgba(5, 8, 15, 0.55);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+.hero-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.35);
+  transition: width 0.35s var(--ease-premium), background-color 0.25s ease;
+}
+.hero-dot[aria-current='true'] {
+  width: 1.5rem;
+  background: #FFCC00;
+}
+.hero-flecha {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: #FFFFFF;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease, border-color 0.2s ease, scale 0.14s var(--ease-premium);
+}
+.hero-flecha:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+.hero-flecha:active {
+  scale: 0.94;
+}
+
+/* ---------- Tarjeta de producto ---------- */
+app-product-card .product-card {
+  border-radius: 1.25rem;
+  border-color: var(--hairline);
+  background: var(--paper);
+  box-shadow: var(--lift-1);
+  transition: transform 0.4s var(--ease-premium), box-shadow 0.4s ease, border-color 0.3s ease;
+}
+app-product-card .product-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(230, 0, 0, 0.22);
+  box-shadow: var(--lift-3);
+}
+/* Zona de imagen: fondo de estudio en vez de blanco plano */
+app-product-card .product-card > div.aspect-square {
+  background: radial-gradient(85% 85% at 50% 40%, #FFFFFF 0%, #F3F4F6 100%);
+}
+app-product-card .product-card > div.border-t {
+  border-top-color: var(--hairline);
+  padding: 1.1rem 1.15rem 1.15rem;
+}
+app-product-card .product-card h3 {
+  letter-spacing: -0.01em;
+}
+app-product-card .product-card .font-extrabold.text-2xl {
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+/* Etiquetas sobre la imagen */
+app-product-card .product-card span.absolute {
+  letter-spacing: 0.04em;
+  box-shadow: 0 6px 14px -6px rgba(17, 24, 39, 0.45);
+}
+
+/* ---------- Promoción ---------- */
+app-home .bg-gradient-to-br.rounded-3xl {
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12) inset, 0 30px 60px -28px rgba(143, 0, 0, 0.7);
+}
+app-home .bg-gradient-to-br.rounded-3xl::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(70% 120% at 0% 0%, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0) 55%),
+    repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 14px);
+  pointer-events: none;
+}
+app-home .bg-gradient-to-br.rounded-3xl p.inline-flex {
+  text-transform: none;
+  letter-spacing: 0.01em;
+  font-size: 0.8125rem;
+}
+
+/* ---------- Marcas ---------- */
+app-home section.bg-white.border-y {
+  background: linear-gradient(180deg, #FFFFFF 0%, var(--paper-warm) 100%);
+  border-color: var(--hairline);
+}
+app-home section.bg-white.border-y ul a {
+  background: var(--paper);
+  border-color: var(--hairline);
+  box-shadow: var(--lift-1);
+  transition: transform 0.3s var(--ease-premium), box-shadow 0.3s ease, border-color 0.2s ease;
+}
+app-home section.bg-white.border-y ul a:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--lift-2);
+}
+
+/* ---------- Sucursales ---------- */
+app-home article.bg-white.border {
+  border-color: var(--hairline);
+  border-radius: 1.25rem;
+  box-shadow: var(--lift-1);
+  transition: box-shadow 0.4s ease, border-color 0.3s ease;
+}
+app-home article.bg-white.border:hover {
+  box-shadow: var(--lift-2);
+  border-color: var(--hairline-strong);
+}
+app-home article.bg-white.border dt {
+  text-transform: none;
+  letter-spacing: 0.01em;
+  font-size: 0.8125rem;
+}
+app-home article.bg-white.border a.bg-\[\#111827\] {
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1) inset, 0 12px 20px -12px rgba(17, 24, 39, 0.7);
+}
+
+/* ---------- Pie de página ---------- */
+app-footer footer {
+  background-image:
+    radial-gradient(70% 60% at 0% 0%, rgba(230, 0, 0, 0.12) 0%, rgba(230, 0, 0, 0) 60%),
+    linear-gradient(180deg, var(--ink-800) 0%, var(--ink-900) 100%);
+  border-top: 1px solid rgba(255, 204, 0, 0.35);
+}
+app-footer footer h3 {
+  letter-spacing: 0.04em;
+}
+app-footer footer a {
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+/* ---------- Botón flotante de WhatsApp ---------- */
+.whatsapp-float {
+  width: 58px;
+  height: 58px;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.3) inset, 0 14px 28px -10px rgba(37, 211, 102, 0.7);
+}
+
+/* ---------- Movimiento reducido ---------- */
+@media (prefers-reduced-motion: reduce) {
+  app-product-card .product-card,
+  app-product-card .product-card:hover,
+      app-home section.bg-white.border-y ul a,
+  app-home section.bg-white.border-y ul a:hover,
+  app-hero a,
+  app-navbar header a {
+    transition: none;
+    transform: none;
+  }
+}
+
+/* ============================================================
+   MOVIMIENTO
+   Curva única de la capa premium: --ease-premium.
+   Solo transform / opacity / scale. Todo se atenúa en la sección
+   final de prefers-reduced-motion.
+   ============================================================ */
+
+/* 1. Feedback al pulsar: botones y CTAs ---------------------- */
+app-hero a.rounded-xl,
+app-navbar header a.rounded-full,
+app-home section a.rounded-xl,
+app-product-card a.rounded-xl,
+app-product-card button {
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.25s ease,
+    transform 0.25s var(--ease-premium),
+    translate 0.3s var(--ease-premium),
+    scale 0.14s var(--ease-premium);
+}
+app-hero a.rounded-xl:active,
+app-navbar header a.rounded-full:active,
+app-home section a.rounded-xl:active,
+app-product-card a.rounded-xl:active,
+app-product-card button:active {
+  scale: 0.98;
+}
+
+/* 2. Selector de sucursal de la tarjeta: crece desde su botón -- */
+app-product-card div[id^='wa-'] {
+  transform-origin: top center;
+  transition: opacity 0.18s var(--ease-premium), transform 0.18s var(--ease-premium);
+}
+@starting-style {
+  app-product-card div[id^='wa-'] {
+    opacity: 0;
+    transform: scale(0.97) translateY(-4px);
+  }
+}
+
+/* 3. Menú móvil e icono hamburguesa → cerrar ------------------ */
+app-navbar #menu-movil {
+  transform-origin: top center;
+  transition: opacity 0.2s var(--ease-premium), transform 0.2s var(--ease-premium);
+}
+@starting-style {
+  app-navbar #menu-movil {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+app-navbar #mobile-menu-btn i {
+  transition: opacity 0.12s ease, transform 0.18s var(--ease-premium);
+}
+@starting-style {
+  app-navbar #mobile-menu-btn i {
+    opacity: 0;
+    transform: rotate(-45deg) scale(0.8);
+  }
+}
+
+/* 4. Esqueleto → cuadrícula de productos --------------------- */
+app-home section > div.grid {
+  transition: opacity 0.2s ease-out;
+}
+@starting-style {
+  app-home section > div.grid {
+    opacity: 0;
+  }
+}
+
+/* 5. Entrada del hero: una sola secuencia al cargar ---------- */
+@keyframes hero-in {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes hero-in-visual {
+  from { opacity: 0; transform: translateY(18px) scale(0.97); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* 6. Detalles al pasar el cursor (solo con ratón) ------------- */
+@media (hover: hover) and (pointer: fine) {
+  .benefit-band li > span:first-child {
+    transition: transform 0.3s var(--ease-premium);
+  }
+  .benefit-band li:hover > span:first-child {
+    transform: translateY(-2px);
+  }
+}
+
+/* Movimiento reducido: sin desplazamientos ni escalas, solo opacidad */
+@media (prefers-reduced-motion: reduce) {
+  .hero-slide-activo .hero-copy > *,
+  .hero-slide-activo .hero-visual {
+    animation: none;
+  }
+  .hero-slide,
+  .hero-slide-activo {
+    transition: opacity 0.2s linear;
+  }
+  .cat-card:active,
+  .hero-flecha:active,
+  .buscador button:active {
+    scale: 1;
+  }
+  app-hero a.rounded-xl:active,
+  app-navbar header a.rounded-full:active,
+  app-home section a.rounded-xl:active,
+    app-product-card a.rounded-xl:active,
+  app-product-card button:active {
+    scale: 1;
+  }
+  .benefit-band li:hover > span:first-child {
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  @starting-style {
+    app-product-card div[id^='wa-'],
+    app-navbar #menu-movil,
+    app-navbar #mobile-menu-btn i {
+      transform: none;
+    }
+  }
+}
+
+/* Área táctil mínima de los puntos del carrusel (sin cambiar su tamaño visible) */
+.hero-dot {
+  position: relative;
+}
+.hero-dot::before {
+  content: '';
+  position: absolute;
+  inset: -0.75rem -0.3rem;
+}
+
+
+/* ============================================================
+   PALETA CLARA: blanco y rojo
+   (hero, franja inferior del hero y llamado final)
+   ============================================================ */
+app-hero .hero-bg {
+  background:
+    radial-gradient(70% 90% at 100% 0%, rgba(230, 0, 0, 0.09) 0%, rgba(230, 0, 0, 0) 60%),
+    radial-gradient(60% 80% at 0% 100%, rgba(230, 0, 0, 0.06) 0%, rgba(230, 0, 0, 0) 60%),
+    linear-gradient(180deg, #FFFFFF 0%, #FFF4F4 100%);
+}
+app-hero .hero-bg::before {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0) 40%);
+}
+app-hero .hero-grid {
+  background-image:
+    linear-gradient(rgba(230, 0, 0, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(230, 0, 0, 0.05) 1px, transparent 1px);
+}
+app-hero h1 {
+  text-shadow: none;
+  color: #111827;
+}
+app-hero h1 span {
+  background: none;
+  -webkit-background-clip: border-box;
+  background-clip: border-box;
+  -webkit-text-fill-color: #E60000;
+  color: #E60000;
+}
+app-hero a.bg-white {
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.9) inset, 0 24px 48px -24px rgba(143, 0, 0, 0.25);
+}
+.hero-strip {
+  background: #FFFFFF;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  border-top: 1px solid var(--hairline);
+}
+.hero-dot {
+  background: rgba(17, 24, 39, 0.18);
+}
+.hero-dot[aria-current='true'] {
+  background: #E60000;
+}
+.hero-flecha {
+  border-color: var(--hairline-strong);
+  color: #111827;
+}
+.hero-flecha:hover {
+  background: #FFF1F1;
+  border-color: #E60000;
+  color: #E60000;
+}
+.cta-final {
+  background-image:
+    radial-gradient(60% 100% at 50% 0%, rgba(230, 0, 0, 0.06) 0%, rgba(230, 0, 0, 0) 70%),
+    linear-gradient(180deg, #FFFFFF 0%, #FFF4F4 100%);
+}
+app-hero .hero-bg::after {
+  background: linear-gradient(90deg, rgba(230, 0, 0, 0) 0%, #E60000 30%, #E60000 70%, rgba(230, 0, 0, 0) 100%);
+}
+
+/* Diapositivas centradas verticalmente (la altura la marca la más alta) */
+.hero-slide {
+  display: flex;
+  align-items: center;
+}
+.hero-slide > * {
+  width: 100%;
+}
+
+/* ============================================================
+   HERO: escenario con foto real (rediseño)
+   ============================================================ */
+.hero-stage {
+  position: relative;
+  display: block;
+  width: 100%;
+  max-width: 34rem;
+  margin-inline: auto;
+  aspect-ratio: 5 / 4;
+  border-radius: 1.75rem;
+  overflow: hidden;
+  background: #F1F2F4;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.9) inset, 0 40px 70px -40px rgba(143, 0, 0, 0.45);
+  isolation: isolate;
+}
+.hero-stage-foto {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+}
+.hero-stage-chip {
+  position: absolute;
+  left: 0.9rem;
+  bottom: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.9rem;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.94);
+  color: #111827;
+  font: 600 0.8125rem/1 Inter, system-ui, sans-serif;
+  box-shadow: 0 8px 24px -12px rgba(17, 24, 39, 0.4);
+}
+.hero-sello {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 5.25rem;
+  height: 5.25rem;
+  border-radius: 9999px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  background: #E60000;
+  color: #FFFFFF;
+  box-shadow: 0 12px 28px -10px rgba(143, 0, 0, 0.7);
+  rotate: -8deg;
+}
+@media (max-width: 1023px) {
+  .hero-stage {
+    aspect-ratio: 16 / 10;
+    max-width: 30rem;
+  }
+}
+@media (hover: hover) and (pointer: fine) {
+  .hero-stage-foto {
+    transition: transform 0.8s var(--ease-premium);
+  }
+  a.hero-stage:hover .hero-stage-foto {
+    transform: scale(1.04);
+  }
+}
+
+/* ============================================================
+   HERO: banner de ofertas (titular + vitrina de productos + descuento)
+   ============================================================ */
+.hero-banner {
+  position: relative;
+  display: grid;
+  gap: 1.5rem;
+  align-items: center;
+  padding: 1.75rem 1.25rem;
+  border-radius: 1.75rem;
+  color: #FFFFFF;
+  overflow: hidden;
+  background:
+    radial-gradient(80% 120% at 50% 110%, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0) 60%),
+    radial-gradient(60% 90% at 0% 0%, rgba(255, 90, 90, 0.55) 0%, rgba(255, 90, 90, 0) 60%),
+    linear-gradient(135deg, #D90000 0%, #B30000 100%);
+  box-shadow: 0 40px 70px -40px rgba(143, 0, 0, 0.6);
+}
+.hero-banner-titulo {
+  font-family: Montserrat, system-ui, sans-serif;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  line-height: 1.02;
+  font-size: clamp(2rem, 1.2rem + 2.6vw, 3.4rem);
+  text-wrap: balance;
+}
+.hero-banner-sub {
+  margin-top: 1rem;
+  padding-left: 0.85rem;
+  border-left: 3px solid #FFFFFF;
+  font-weight: 600;
+  font-size: 1.0625rem;
+  color: rgba(255, 255, 255, 0.92);
+  max-width: 22rem;
+}
+.hero-banner-oferta {
+  text-align: center;
+}
+.hero-banner-pre {
+  font-family: Montserrat, system-ui, sans-serif;
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+}
+.hero-banner-cifra {
+  font-family: Montserrat, system-ui, sans-serif;
+  font-weight: 900;
+  line-height: 0.95;
+  font-size: clamp(4.5rem, 2.5rem + 6vw, 7.5rem);
+  letter-spacing: -0.03em;
+}
+.hero-banner-cifra span {
+  font-size: 0.55em;
+  margin-left: 0.05em;
+}
+.hero-banner-dcto {
+  font-family: Montserrat, system-ui, sans-serif;
+  font-weight: 900;
+  text-transform: uppercase;
+  font-size: 1.25rem;
+  letter-spacing: 0.08em;
+}
+.hero-banner-pill {
+  display: inline-block;
+  margin-top: 0.9rem;
+  padding: 0.4rem 0.9rem;
+  border: 1.5px solid rgba(255, 255, 255, 0.85);
+  border-radius: 0.6rem;
+  font-weight: 800;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+.hero-banner-boton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: fit-content;
+  margin: 1rem auto 0;
+  padding: 0.7rem 1.4rem;
+  border-radius: 9999px;
+  background: #FFFFFF;
+  color: #D90000;
+  font-family: Montserrat, system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 0.95rem;
+  box-shadow: 0 12px 24px -12px rgba(0, 0, 0, 0.5);
+  transition: translate 0.25s var(--ease-premium), scale 0.14s var(--ease-premium);
+}
+.hero-banner-boton:hover {
+  translate: 0 -2px;
+}
+.hero-banner-boton:active {
+  scale: 0.97;
+}
+
+/* Vitrina: productos sobre una plataforma */
+.hero-vitrina {
+  position: relative;
+  width: 100%;
+  max-width: 26rem;
+  margin-inline: auto;
+  aspect-ratio: 1.12 / 1;
+}
+.hero-plataforma {
+  position: absolute;
+  left: 2%;
+  right: 2%;
+  bottom: 0;
+  height: 20%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, #FFFFFF 0%, #FFE9E9 70%, rgba(255, 255, 255, 0) 100%);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.55), 0 18px 40px -10px rgba(60, 0, 0, 0.55);
+}
+.vit {
+  position: absolute;
+  display: block;
+  aspect-ratio: 1;
+  border-radius: 1.1rem;
+  overflow: hidden;
+  border: 4px solid #FFFFFF;
+  background: #F1F2F4;
+  box-shadow: 0 20px 34px -14px rgba(40, 0, 0, 0.65);
+}
+.vit img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.vit-1 { left: 28%; top: 4%; width: 44%; z-index: 3; }
+.vit-2 { left: 0; top: 34%; width: 32%; rotate: -6deg; z-index: 2; }
+.vit-3 { right: 0; top: 30%; width: 32%; rotate: 6deg; z-index: 2; }
+.vit-4 { left: 36%; top: 58%; width: 28%; rotate: 3deg; z-index: 4; }
+
+@media (min-width: 1024px) {
+  .hero-banner {
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.3fr) minmax(0, 0.85fr);
+    gap: 1rem;
+    padding: 2.25rem 3rem;
+    min-height: 25rem;
+  }
+}
+@media (max-width: 1023px) {
+  .hero-banner-copy,
+  .hero-banner-oferta {
+    text-align: center;
+  }
+  .hero-banner-sub {
+    margin-inline: auto;
+    text-align: left;
+  }
+  .hero-vitrina {
+    max-width: 20rem;
+  }
+}
+
+/* ============================================================
+   HERO: variantes de banner (rojo / blanco) y piezas comunes
+   ============================================================ */
+.hero-banner--2 {
+  gap: 1.5rem;
+}
+@media (min-width: 1024px) {
+  .hero-banner--2 {
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    gap: 2.5rem;
+  }
+}
+.hero-banner--blanco {
+  color: #111827;
+  background:
+    radial-gradient(70% 100% at 100% 0%, rgba(230, 0, 0, 0.1) 0%, rgba(230, 0, 0, 0) 60%),
+    radial-gradient(50% 80% at 0% 100%, rgba(230, 0, 0, 0.07) 0%, rgba(230, 0, 0, 0) 60%),
+    linear-gradient(180deg, #FFFFFF 0%, #FFF6F6 100%);
+  border: 1px solid rgba(230, 0, 0, 0.18);
+  box-shadow: 0 40px 70px -45px rgba(143, 0, 0, 0.45);
+}
+
+.hb-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.9rem;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.18);
+  color: #FFFFFF;
+  font: 700 0.8125rem/1.2 Inter, system-ui, sans-serif;
+}
+.hero-banner--blanco .hb-chip {
+  background: #FFF1F1;
+  color: #C40000;
+}
+.hb-titulo {
+  margin-top: 1rem;
+  font-family: Montserrat, system-ui, sans-serif;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  font-size: clamp(2rem, 1.1rem + 2.8vw, 3.5rem);
+  text-wrap: balance;
+}
+.hb-titulo span {
+  color: #E60000;
+}
+.hb-titulo--producto {
+  text-transform: none;
+  font-size: clamp(1.75rem, 1rem + 2.2vw, 3rem);
+}
+.hb-texto {
+  margin-top: 1rem;
+  max-width: 34rem;
+  font-size: 1.0625rem;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.9);
+}
+.hero-banner--blanco .hb-texto {
+  color: #4B5563;
+}
+.hb-lista {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
+  margin-top: 1.1rem;
+  font: 600 0.9375rem/1.2 Inter, system-ui, sans-serif;
+}
+.hb-lista li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+.hb-lista i {
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  background: #E60000;
+  color: #FFFFFF;
+}
+.hb-precios {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 0.9rem;
+  margin-top: 1rem;
+}
+.hb-precio {
+  font-family: Montserrat, system-ui, sans-serif;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  font-size: clamp(2.75rem, 1.6rem + 3.6vw, 4.75rem);
+}
+.hero-banner--blanco .hb-precio {
+  color: #E60000;
+}
+.hb-tachado {
+  font-size: 1.25rem;
+  font-weight: 600;
+  text-decoration: line-through;
+  opacity: 0.75;
+}
+.hb-ahorro {
+  display: inline-block;
+  margin-top: 0.75rem;
+  padding: 0.35rem 0.8rem;
+  border-radius: 9999px;
+  background: #FFFFFF;
+  color: #C40000;
+  font: 800 0.875rem/1.2 Inter, system-ui, sans-serif;
+}
+.hero-banner--blanco .hb-ahorro {
+  background: #E60000;
+  color: #FFFFFF;
+}
+.hb-botones {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+@media (min-width: 640px) {
+  .hb-botones {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}
+.hb-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1.5rem;
+  border-radius: 0.9rem;
+  background: #FFFFFF;
+  color: #C40000;
+  border: 1.5px solid #FFFFFF;
+  font-family: Montserrat, system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 0.95rem;
+  box-shadow: 0 14px 26px -14px rgba(0, 0, 0, 0.55);
+  transition: translate 0.25s var(--ease-premium), scale 0.14s var(--ease-premium), background-color 0.2s ease;
+}
+.hero-banner--blanco .hb-btn {
+  background: #E60000;
+  border-color: #E60000;
+  color: #FFFFFF;
+  box-shadow: 0 14px 26px -14px rgba(143, 0, 0, 0.7);
+}
+.hb-btn--sec,
+.hero-banner--blanco .hb-btn--sec {
+  background: transparent;
+  color: #FFFFFF;
+  border-color: rgba(255, 255, 255, 0.85);
+  box-shadow: none;
+}
+.hero-banner--blanco .hb-btn--sec {
+  background: #FFFFFF;
+  color: #111827;
+  border-color: #D1D5DB;
+}
+.hb-btn:active {
+  scale: 0.97;
+}
+@media (hover: hover) and (pointer: fine) {
+  .hb-btn:hover {
+    translate: 0 -2px;
+  }
+  .hero-banner--blanco .hb-btn:hover {
+    background: #C40000;
+  }
+  .hero-banner--blanco .hb-btn--sec:hover {
+    background: #FFFFFF;
+    border-color: #E60000;
+    color: #E60000;
+  }
+}
+
+/* Foto + sello dentro de banners */
+.hero-banner .hero-stage {
+  border: 4px solid #FFFFFF;
+  box-shadow: 0 30px 50px -28px rgba(40, 0, 0, 0.7);
+}
+.hero-banner--blanco .hero-stage {
+  border-color: #FFFFFF;
+  box-shadow: 0 30px 50px -28px rgba(143, 0, 0, 0.45);
+}
+.hero-sello--grande {
+  width: 6rem;
+  height: 6rem;
+  background: #FFFFFF;
+  color: #E60000;
+  top: 0.9rem;
+  right: 0.9rem;
+}
+.hero-banner--blanco .hero-sello--grande {
+  background: #E60000;
+  color: #FFFFFF;
+}
+
+/* Sucursales (diapositiva de asesoría) */
+.hb-sucursales {
+  display: grid;
+  gap: 0.9rem;
+  width: 100%;
+  max-width: 28rem;
+  margin-inline: auto;
+}
+.hb-sucursal {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.1rem;
+  border-radius: 1.1rem;
+  background: #FFFFFF;
+  color: #111827;
+  border: 1px solid rgba(17, 24, 39, 0.1);
+  box-shadow: 0 18px 30px -20px rgba(40, 0, 0, 0.6);
+  transition: translate 0.25s var(--ease-premium), border-color 0.2s ease;
+}
+.hb-sucursal-icono {
+  flex: none;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(37, 211, 102, 0.15);
+  color: #25D366;
+}
+.hb-sucursal-flecha {
+  margin-left: auto;
+  color: #E60000;
+}
+@media (hover: hover) and (pointer: fine) {
+  .hb-sucursal:hover {
+    translate: 0 -2px;
+    border-color: rgba(230, 0, 0, 0.45);
+  }
+}
+@media (max-width: 1023px) {
+  .hb-copy {
+    text-align: left;
+  }
+}
+
+/* Todas las diapositivas-banner comparten la misma altura */
+.hero-slide > .hero-banner {
+  align-self: stretch;
+}
+
+/* Diapositiva de asesoría: un vendedor por sucursal */
+.hb-vendedores {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  width: 100%;
+  max-width: 34rem;
+  margin-inline: auto;
+}
+.hb-vendedor {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 1.25rem;
+  background: #FFFFFF;
+  color: #111827;
+  border: 1px solid rgba(17, 24, 39, 0.1);
+  box-shadow: 0 24px 40px -26px rgba(40, 0, 0, 0.7);
+  transition: translate 0.3s var(--ease-premium), border-color 0.2s ease;
+}
+.hb-vendedor-foto {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1 / 1.05;
+  background: #F1F2F4;
+  color: rgba(230, 0, 0, 0.4);
+  font-size: 3rem;
+}
+.hb-vendedor-foto img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 20%;
+}
+.hb-vendedor-zona {
+  position: absolute;
+  left: 0.6rem;
+  top: 0.6rem;
+  padding: 0.3rem 0.65rem;
+  border-radius: 9999px;
+  background: #E60000;
+  color: #FFFFFF;
+  font: 800 0.75rem/1.1 Inter, system-ui, sans-serif;
+}
+.hb-vendedor-info {
+  display: block;
+  padding: 0.8rem 0.9rem 0.95rem;
+}
+.hb-vendedor-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.65rem;
+  padding: 0.5rem 0.85rem;
+  border-radius: 9999px;
+  background: #25D366;
+  color: #FFFFFF;
+  font: 800 0.8125rem/1 Inter, system-ui, sans-serif;
+}
+@media (hover: hover) and (pointer: fine) {
+  .hb-vendedor:hover {
+    translate: 0 -3px;
+    border-color: rgba(230, 0, 0, 0.45);
+  }
+}
+
+/* El retrato de stock de la primera sucursal está desplazado a la derecha */
+.hb-vendedores > .hb-vendedor:first-child .hb-vendedor-foto img {
+  object-position: 78% 20%;
+}
+
+.hb-vendedores > .hb-vendedor:nth-child(2) .hb-vendedor-foto img {
+  object-position: 50% 0%;
+}
+
+/* ============================================================
+   Banda de beneficios: entrada animada (una sola vez, al llegar con el scroll)
+   - los 4 beneficios suben en cascada (RevealDirective)
+   - cada icono aparece con un pequeño rebote
+   - un destello cruza la banda
+   - el icono de WhatsApp emite dos ondas para llamar la atención
+   ============================================================ */
+.benefit-band {
+  position: relative;
+  overflow: hidden;
+}
+.benefit-band::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(100deg, transparent 38%, rgba(255, 255, 255, 0.2) 50%, transparent 62%);
+  translate: -120% 0;
+}
+.benefit-band:has(li.reveal-in)::after {
+  animation: benefit-brillo 1.5s var(--ease-premium) 0.25s 1 both;
+}
+@keyframes benefit-brillo {
+  from { translate: -120% 0; }
+  to   { translate: 120% 0; }
+}
+
+.benefit-band li.reveal-in > span:first-child {
+  animation: benefit-icono 0.65s var(--ease-premium) both;
+}
+.benefit-band li:nth-child(1).reveal-in > span:first-child { animation-delay: 0.05s; }
+.benefit-band li:nth-child(2).reveal-in > span:first-child { animation-delay: 0.14s; }
+.benefit-band li:nth-child(3).reveal-in > span:first-child { animation-delay: 0.23s; }
+.benefit-band li:nth-child(4).reveal-in > span:first-child { animation-delay: 0.32s; }
+@keyframes benefit-icono {
+  0%   { scale: 0.5; opacity: 0; }
+  60%  { scale: 1.1; opacity: 1; }
+  100% { scale: 1; opacity: 1; }
+}
+
+.benefit-band li:first-child > span:first-child {
+  position: relative;
+}
+.benefit-band li:first-child.reveal-in > span:first-child::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  animation: benefit-onda 1.6s ease-out 1s 2 both;
+  pointer-events: none;
+}
+@keyframes benefit-onda {
+  from { scale: 1; opacity: 0.7; }
+  to   { scale: 1.7; opacity: 0; }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .benefit-band li > span:first-child {
+    transition: transform 0.3s var(--ease-premium), background-color 0.25s ease;
+  }
+  .benefit-band li:hover > span:first-child {
+    background-color: rgba(255, 255, 255, 0.28);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .benefit-band:has(li.reveal-in)::after,
+  .benefit-band li.reveal-in > span:first-child,
+  .benefit-band li:first-child.reveal-in > span:first-child::after {
+    animation: none;
+  }
+}
+
+/* ============================================================
+   Banda de beneficios: niveles de animación (atributo data-anim)
+     a = suave   (solo la entrada, ya definida arriba)
+     b = dinámica (entrada + cada icono con su propio gesto + fondo en movimiento)
+     c = máxima  (b + ondas continuas en los iconos y destello repetido)
+   ============================================================ */
+.benefit-band[data-anim='b']::before,
+.benefit-band[data-anim='c']::before {
+  content: '';
+  position: absolute;
+  inset: -30% -10%;
+  pointer-events: none;
+  background:
+    radial-gradient(34% 60% at 18% 45%, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0) 70%),
+    radial-gradient(30% 55% at 82% 55%, rgba(255, 110, 110, 0.35) 0%, rgba(255, 110, 110, 0) 70%);
+  animation: benefit-deriva 14s ease-in-out infinite alternate;
+}
+@keyframes benefit-deriva {
+  from { translate: -5% 0; }
+  to   { translate: 5% 0; }
+}
+
+/* Gesto propio de cada icono (empieza cuando el beneficio ya apareció) */
+.benefit-band[data-anim='b'] li:is(:not(.reveal-pending), .reveal-in) i,
+.benefit-band[data-anim='c'] li:is(:not(.reveal-pending), .reveal-in) i {
+  display: inline-block;
+  transform-origin: 50% 12%;
+}
+.benefit-band[data-anim='b'] li:nth-child(1):is(:not(.reveal-pending), .reveal-in) i,
+.benefit-band[data-anim='c'] li:nth-child(1):is(:not(.reveal-pending), .reveal-in) i {
+  animation: benefit-campana 5s ease-in-out 1.6s infinite;
+}
+.benefit-band[data-anim='b'] li:nth-child(2):is(:not(.reveal-pending), .reveal-in) i,
+.benefit-band[data-anim='c'] li:nth-child(2):is(:not(.reveal-pending), .reveal-in) i {
+  animation: benefit-toldo 5.5s ease-in-out 2s infinite;
+}
+.benefit-band[data-anim='b'] li:nth-child(3):is(:not(.reveal-pending), .reveal-in) i,
+.benefit-band[data-anim='c'] li:nth-child(3):is(:not(.reveal-pending), .reveal-in) i {
+  animation: benefit-sello 6s ease-in-out 2.4s infinite;
+}
+.benefit-band[data-anim='b'] li:nth-child(4):is(:not(.reveal-pending), .reveal-in) i,
+.benefit-band[data-anim='c'] li:nth-child(4):is(:not(.reveal-pending), .reveal-in) i {
+  animation: benefit-camion 5s ease-in-out 2.8s infinite;
+}
+@keyframes benefit-campana {
+  0%, 30%, 100% { rotate: 0deg; }
+  8%  { rotate: -16deg; }
+  14% { rotate: 14deg; }
+  20% { rotate: -9deg; }
+  26% { rotate: 6deg; }
+}
+@keyframes benefit-toldo {
+  0%, 60%, 100% { translate: 0 0; scale: 1; }
+  68% { translate: 0 -5px; scale: 1.1; }
+  78% { translate: 0 0; scale: 1; }
+  86% { translate: 0 -2px; }
+}
+@keyframes benefit-sello {
+  0%, 55%, 100% { rotate: 0deg; scale: 1; }
+  80% { rotate: 360deg; scale: 1.12; }
+}
+@keyframes benefit-camion {
+  0%, 55%, 100% { translate: 0 0; }
+  64% { translate: -6px 0; }
+  78% { translate: 5px 0; }
+  88% { translate: -1px 0; }
+}
+
+/* Nivel máximo: ondas continuas en los iconos y destello repetido */
+.benefit-band[data-anim='c'] li > span:first-child {
+  position: relative;
+}
+.benefit-band[data-anim='c'] li:is(:not(.reveal-pending), .reveal-in) > span:first-child::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  border: 2px solid rgba(255, 255, 255, 0.7);
+  pointer-events: none;
+  animation: benefit-onda 2.6s ease-out 1.5s infinite both;
+}
+.benefit-band[data-anim='c'] li:nth-child(2) > span:first-child::after { animation-delay: 1.9s; }
+.benefit-band[data-anim='c'] li:nth-child(3) > span:first-child::after { animation-delay: 2.3s; }
+.benefit-band[data-anim='c'] li:nth-child(4) > span:first-child::after { animation-delay: 2.7s; }
+.benefit-band[data-anim='c']:has(li.reveal-in)::after {
+  animation: benefit-brillo 1.5s var(--ease-premium) 0.25s 1 both,
+             benefit-brillo 1.8s var(--ease-premium) 6s infinite both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .benefit-band::before,
+  .benefit-band li i,
+  .benefit-band li > span:first-child::after {
+    animation: none !important;
+  }
+}

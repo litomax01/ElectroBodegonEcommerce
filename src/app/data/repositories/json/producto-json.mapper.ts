@@ -1,5 +1,6 @@
 import { Disponibilidad, Especificacion, Producto, ProductoImagen } from '../../../core/models/producto.model';
 import { SLUG_REGEX, slugDesdeProducto } from '../../../core/models/producto.helpers';
+import { resolverFoto } from '../../../core/models/fotos-no-corresponden';
 
 /**
  * Formato del archivo productos.json.
@@ -71,7 +72,9 @@ export function mapProductoJson(raw: ProductoJson): Producto {
   const fuentesImagen = raw.imagenes?.length ? raw.imagenes : raw.imagen_url ? [raw.imagen_url] : [];
   const imagenes = fuentesImagen
     .map((img, i) => imagen(img, i === 0 ? nombre : `${nombre} — imagen ${i + 1}`))
-    .filter((img): img is ProductoImagen => img !== null);
+    .filter((img): img is ProductoImagen => img !== null)
+    .map(img => ({ ...img, url: resolverFoto(img.url, nombre) }))
+    .filter((img): img is ProductoImagen => img.url !== null);
 
   const slugGuardado = texto(raw.slug)?.toLowerCase();
   const disponibilidad = DISPONIBILIDADES.find(d => d === raw.disponibilidad);

@@ -1,188 +1,253 @@
-<!-- Hero Banner -->
 <app-hero></app-hero>
 
 <!-- ================================================
-     MARQUEE DE MARCAS (clickeable → filtra catálogo)
+     CATEGORÍAS (reales, desde el catálogo)
      ================================================ -->
-<section class="bg-white border-y-2 border-gray-100 py-8 overflow-hidden">
-  <p class="text-center text-xs font-montserrat font-bold text-gray-400 uppercase tracking-[0.3em] mb-5">
-    <i class="fas fa-certificate text-[#E60000] mr-2"></i>
-    Marcas oficiales — Haz clic para ver sus productos
-    <i class="fas fa-certificate text-[#E60000] ml-2"></i>
-  </p>
-  <div class="marquee-wrapper">
-    <div class="marquee-track">
-      @for (brand of brandsLoop; track $index) {
-        <a
-          routerLink="/catalogo"
-          [queryParams]="getMarcaQueryParams(brand.name)"
-          class="inline-flex flex-col items-center justify-center mx-6 gap-2 group cursor-pointer no-underline"
-          [title]="'Ver productos ' + brand.name">
-          <div class="w-24 h-24 bg-white rounded-2xl flex items-center justify-center shadow-sm border-2 border-gray-100
-                      transition-all duration-300 group-hover:border-[#E60000] group-hover:shadow-xl group-hover:scale-110 group-hover:-translate-y-1 p-3">
-            @if (logoFallido(brand.name)) {
-              <span class="font-montserrat font-black text-sm text-gray-700">{{ brand.name }}</span>
-            } @else {
-              <img
-                [src]="brand.logo"
-                [alt]="brand.name"
-                class="w-full h-full object-contain"
-                (error)="onLogoError(brand.name)"
-              />
-            }
-          </div>
-          <span class="text-xs font-montserrat font-bold text-gray-600 group-hover:text-[#E60000] transition-colors">
-            {{ brand.name }}
-          </span>
-          <span class="text-[10px] font-inter text-gray-400 group-hover:text-[#E60000] transition-colors opacity-0 group-hover:opacity-100 -mt-1">
-            Ver productos →
+@if (categorias().length > 0) {
+  <section class="home-section home-plain max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-labelledby="titulo-categorias">
+    <div appReveal class="flex items-end justify-between gap-4 mb-8">
+      <div>
+        <h2 id="titulo-categorias" class="font-montserrat font-extrabold tracking-tight text-[#111827] text-2xl sm:text-3xl">Compra por categoría</h2>
+        <p class="mt-2 text-gray-600 font-inter">Elige el tipo de producto y compáralo entre marcas.</p>
+      </div>
+      <a routerLink="/catalogo" class="hidden sm:inline-flex items-center gap-2 text-sm font-montserrat font-bold text-[#111827] hover:text-[#E60000] transition-colors shrink-0">
+        Ver todo el catálogo <i class="fas fa-arrow-right text-xs" aria-hidden="true"></i>
+      </a>
+    </div>
+
+    <div class="cat-bento">
+      @for (c of categorias(); track c.nombre; let i = $index) {
+        <a [appReveal]="i * 70" routerLink="/catalogo" [queryParams]="{ categoria: c.nombre }"
+           [attr.aria-label]="c.nombre + ', ' + c.total + ' productos'"
+           class="cat-card group">
+          @if (c.imagen; as src) {
+            <img [src]="src" alt="" loading="lazy" width="640" height="480" class="cat-card-foto"
+                 (error)="imagenCategoriaFallo(src)" />
+          } @else {
+            <span class="cat-card-icono" aria-hidden="true"><i class="fas {{ c.icono }}"></i></span>
+          }
+          <span class="cat-card-panel">
+            <span class="min-w-0">
+              <span class="block font-montserrat font-extrabold text-[#111827] leading-tight cat-card-nombre">{{ c.nombre }}</span>
+              <span class="block text-sm font-inter text-gray-500 mt-0.5">
+                {{ c.total }} {{ c.total === 1 ? 'producto' : 'productos' }}
+              </span>
+            </span>
+            <span class="cat-card-flecha" aria-hidden="true"><i class="fas fa-arrow-right text-sm"></i></span>
           </span>
         </a>
       }
     </div>
-  </div>
+  </section>
+}
+
+<!-- ================================================
+     BENEFICIOS (banda de ancho completo)
+     ================================================ -->
+<!-- Animación de la banda: data-anim="a" (suave) | "b" (dinámica) | "c" (máxima) -->
+<section class="benefit-band text-white" data-anim="b" aria-label="Por qué comprar en Electro Bodegón">
+  <ul class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12 grid grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-10 lg:gap-x-0">
+    <li [appReveal]="0" class="flex flex-col items-center text-center gap-3">
+      <span class="w-14 h-14 shrink-0 rounded-full bg-white/15 flex items-center justify-center"><i class="fab fa-whatsapp text-2xl" aria-hidden="true"></i></span>
+      <span class="font-inter leading-snug">
+        <strong class="block font-montserrat font-bold text-base sm:text-lg">Atención por WhatsApp</strong>
+        <span class="block mt-1 text-sm text-white/85">Respuesta directa de un asesor</span>
+      </span>
+    </li>
+    <li [appReveal]="90" class="flex flex-col items-center text-center gap-3">
+      <span class="w-14 h-14 shrink-0 rounded-full bg-white/15 flex items-center justify-center"><i class="fas fa-store text-2xl" aria-hidden="true"></i></span>
+      <span class="font-inter leading-snug">
+        <strong class="block font-montserrat font-bold text-base sm:text-lg">{{ totalSucursales }} sucursales</strong>
+        <span class="block mt-1 text-sm text-white/85">Visítanos y compara en persona</span>
+      </span>
+    </li>
+    <li [appReveal]="180" class="flex flex-col items-center text-center gap-3">
+      <span class="w-14 h-14 shrink-0 rounded-full bg-white/15 flex items-center justify-center"><i class="fas fa-certificate text-2xl" aria-hidden="true"></i></span>
+      <span class="font-inter leading-snug">
+        <strong class="block font-montserrat font-bold text-base sm:text-lg">Marcas reconocidas</strong>
+        <span class="block mt-1 text-sm text-white/85">Productos de marcas oficiales</span>
+      </span>
+    </li>
+    <li [appReveal]="270" class="flex flex-col items-center text-center gap-3">
+      <span class="w-14 h-14 shrink-0 rounded-full bg-white/15 flex items-center justify-center"><i class="fas fa-truck text-2xl" aria-hidden="true"></i></span>
+      <span class="font-inter leading-snug">
+        <strong class="block font-montserrat font-bold text-base sm:text-lg">Envío disponible</strong>
+        <span class="block mt-1 text-sm text-white/85">Coordina la entrega por WhatsApp</span>
+      </span>
+    </li>
+  </ul>
 </section>
 
 <!-- ================================================
-     OFERTAS ESTRELLA
+     PRODUCTOS DESTACADOS
      ================================================ -->
-<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-
-  <!-- Section Header -->
-  <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
+<section class="home-section home-plain max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <div appReveal class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
     <div>
-      <div class="inline-flex items-center gap-2 bg-red-50 text-[#E60000] px-3 py-1 rounded-full text-xs font-montserrat font-bold uppercase tracking-widest mb-3">
-        <i class="fas fa-fire animate-pulse"></i> Oferta Limitada
-      </div>
-      <h2 class="font-montserrat font-black text-[#111827] text-3xl sm:text-4xl">
-        &#11088; Ofertas Estrella
-      </h2>
-      <p class="font-inter text-gray-500 mt-2">Los productos más buscados al mejor precio de la semana</p>
+      <p class="text-xs font-montserrat font-bold uppercase tracking-[0.18em] text-[#E60000] mb-2">Destacados</p>
+      <h2 class="font-montserrat font-extrabold tracking-tight text-[#111827] text-2xl sm:text-3xl">Los más buscados</h2>
+      <p class="font-inter text-gray-500 mt-2">Una selección de nuestros productos con mejor precio.</p>
     </div>
     <a routerLink="/catalogo"
-       class="inline-flex items-center gap-2 border-2 border-[#E60000] text-[#E60000] hover:bg-[#E60000] hover:text-white px-6 py-3 rounded-xl font-montserrat font-bold text-sm transition-all hover:scale-105 whitespace-nowrap shadow-sm">
-      Ver todo el catálogo
-      <i class="fas fa-arrow-right"></i>
+       class="inline-flex items-center gap-2 text-[#111827] hover:text-[#E60000] font-montserrat font-bold text-sm transition-colors whitespace-nowrap">
+      Ver todo el catálogo <i class="fas fa-arrow-right text-xs" aria-hidden="true"></i>
     </a>
   </div>
 
-  <!-- Loading Skeleton -->
   @if (loading()) {
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 min-[480px]:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6" aria-hidden="true">
       @for (n of skeletons; track n) {
-        <div class="bg-white rounded-2xl overflow-hidden animate-pulse shadow-sm">
-          <div class="bg-gray-200 aspect-square w-full"></div>
+        <div class="bg-white rounded-2xl overflow-hidden animate-pulse border border-gray-200">
+          <div class="bg-gray-100 aspect-square w-full"></div>
           <div class="p-4 space-y-3">
-            <div class="bg-gray-200 h-3 w-1/3 rounded"></div>
-            <div class="bg-gray-200 h-4 w-full rounded"></div>
-            <div class="bg-gray-200 h-6 w-1/2 rounded"></div>
+            <div class="bg-gray-100 h-3 w-1/3 rounded"></div>
+            <div class="bg-gray-100 h-4 w-full rounded"></div>
+            <div class="bg-gray-100 h-6 w-1/2 rounded"></div>
           </div>
         </div>
       }
     </div>
-  }
-
-  <!-- Products Grid -->
-  @if (!loading()) {
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      @for (producto of destacados(); track trackById($index, producto)) {
-        <app-product-card [producto]="producto"></app-product-card>
+  } @else {
+    <div class="grid grid-cols-1 min-[480px]:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+      @for (producto of destacados(); track trackById($index, producto); let i = $index) {
+        <app-product-card [appReveal]="(i % 3) * 80" [producto]="producto"></app-product-card>
       }
     </div>
   }
 </section>
 
 <!-- ================================================
-     WHATSAPP CTA BANNER
+     PROMOCIÓN (mayor ahorro real del catálogo)
      ================================================ -->
-<section class="bg-gradient-to-r from-[#E60000] to-[#9B0000] py-14">
-  <div class="max-w-4xl mx-auto px-4 sm:px-6 text-center">
-    <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-6">
-      <i class="fab fa-whatsapp text-white text-4xl"></i>
-    </div>
-    <h2 class="font-montserrat font-black text-white text-3xl sm:text-4xl mb-4">
-      ¿Tienes dudas? ¡Escríbenos ahora!
-    </h2>
-    <p class="font-inter text-white/80 text-lg mb-8">
-      Nuestros asesores te ayudan a elegir el electrodoméstico perfecto
-    </p>
-    <div class="flex flex-col sm:flex-row gap-4 justify-center">
-      @for (s of sucursales; track s.id; let first = $first) {
-        <a [href]="getWhatsappUrl(s)"
-           target="_blank" rel="noopener"
-           class="inline-flex items-center gap-3 px-8 py-4 rounded-2xl font-montserrat font-black text-base transition-all hover:scale-105"
-           [class]="first
-             ? 'bg-white text-[#E60000] hover:bg-yellow-50 shadow-xl'
-             : 'bg-white/10 text-white border border-white/30 hover:bg-white/20'">
-          <i class="fab fa-whatsapp text-[#25D366] text-xl"></i>
-          {{ s.nombreCorto }} — {{ s.asesorNombre }}
-        </a>
-      }
-    </div>
-  </div>
-</section>
-
-<!-- ================================================
-     EXPLORAR POR MARCA (cuadrícula fija con logos)
-     ================================================ -->
-<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-  <div class="text-center mb-10">
-    <h2 class="font-montserrat font-black text-[#111827] text-2xl sm:text-3xl mb-2">
-      Explora por Marca
-    </h2>
-    <p class="font-inter text-gray-500">Haz clic en tu marca favorita</p>
-  </div>
-  <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
-    @for (brand of brands; track brand.name) {
-      <a routerLink="/catalogo"
-         [queryParams]="getMarcaQueryParams(brand.name)"
-         class="group flex flex-col items-center gap-3 p-5 bg-white rounded-2xl shadow-sm border-2 border-transparent hover:border-[#E60000] hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer">
-        <div class="w-16 h-16 flex items-center justify-center">
-          @if (logoFallido(brand.name)) {
-            <span class="font-montserrat font-black text-sm text-gray-700">{{ brand.name }}</span>
-          } @else {
-            <img [src]="brand.logo" [alt]="brand.name" class="w-full h-full object-contain"
-                 (error)="onLogoError(brand.name)"/>
-          }
+@if (promo(); as p) {
+  <section class="home-section home-plain max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div appReveal class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#E60000] to-[#8f0000] text-white">
+      <div class="absolute -right-16 -bottom-16 w-72 h-72 rounded-full bg-[#FFCC00]/20 blur-2xl" aria-hidden="true"></div>
+      <div class="relative grid md:grid-cols-[1fr_auto] items-center gap-6 sm:gap-10 p-6 sm:p-10">
+        <div>
+          <p class="inline-flex items-center gap-2 bg-[#FFCC00] text-[#111827] text-xs font-montserrat font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-4">
+            Mayor ahorro · -{{ porcentaje(p) }}%
+          </p>
+          <h2 class="font-montserrat font-extrabold tracking-tight text-2xl sm:text-3xl leading-tight">{{ p.nombre }}</h2>
+          <p class="mt-3 flex items-baseline flex-wrap gap-x-3">
+            <span class="font-montserrat font-extrabold text-4xl">${{ p.precio | number:'1.2-2' }}</span>
+            <span class="text-white/60 line-through">${{ p.precioOriginal | number:'1.2-2' }}</span>
+          </p>
+          <p class="mt-1 text-white/80 text-sm">Ahorras ${{ ahorroPromo(p) | number:'1.2-2' }}</p>
+          <a [routerLink]="rutaPromo(p)"
+             class="mt-6 inline-flex items-center gap-2 bg-white text-[#111827] hover:bg-[#FFCC00] px-6 py-3 rounded-xl font-montserrat font-bold text-sm transition-colors">
+            Ver este producto <i class="fas fa-arrow-right text-xs" aria-hidden="true"></i>
+          </a>
         </div>
-        <span class="font-montserrat font-bold text-xs text-gray-700 group-hover:text-[#E60000] transition-colors text-center">{{ brand.name }}</span>
-        <span class="text-[10px] font-inter text-[#E60000] opacity-0 group-hover:opacity-100 transition-all -mt-2 flex items-center gap-1">
-          <i class="fas fa-arrow-right text-[8px]"></i> Ver productos
-        </span>
-      </a>
+        @if (p.imagenes[0]; as img) {
+          @if (!promoImagenFallida()) {
+            <div class="hidden md:flex w-56 h-56 bg-white rounded-2xl p-3 items-center justify-center shadow-2xl shadow-black/30">
+              <img [src]="img.url" [alt]="p.nombre" width="224" height="224" loading="lazy"
+                   class="w-full h-full object-contain" (error)="promoImagenFallida.set(true)" />
+            </div>
+          }
+        }
+      </div>
+    </div>
+  </section>
+}
+
+<!-- ================================================
+     MARCAS (reales, desde el catálogo)
+     ================================================ -->
+@if (marcas().length > 0) {
+  <section class="home-section bg-white border-y border-gray-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div appReveal class="text-center mb-8">
+        <p class="text-xs font-montserrat font-bold uppercase tracking-[0.18em] text-[#E60000] mb-2">Marcas</p>
+        <h2 class="font-montserrat font-extrabold tracking-tight text-[#111827] text-2xl sm:text-3xl">Trabajamos con marcas de confianza</h2>
+      </div>
+      <ul class="flex flex-wrap justify-center gap-3">
+        @for (m of marcas(); track m.nombre) {
+          <li>
+            <a routerLink="/catalogo" [queryParams]="getMarcaQueryParams(m.nombre)"
+               [attr.aria-label]="'Ver productos ' + m.nombre"
+               class="group flex items-center gap-3 bg-gray-50 hover:bg-white border border-gray-200 hover:border-[#E60000] rounded-2xl pl-3 pr-5 py-3 transition-colors">
+              <span class="w-10 h-10 rounded-xl bg-[#111827] group-hover:bg-[#E60000] text-white font-montserrat font-extrabold flex items-center justify-center transition-colors" aria-hidden="true">{{ m.nombre.charAt(0).toUpperCase() }}</span>
+              <span class="leading-tight">
+                <span class="block font-montserrat font-bold text-sm text-[#111827]">{{ m.nombre }}</span>
+                <span class="block text-xs font-inter text-gray-500">{{ m.total }} {{ m.total === 1 ? 'producto' : 'productos' }}</span>
+              </span>
+            </a>
+          </li>
+        }
+      </ul>
+    </div>
+  </section>
+}
+
+<!-- ================================================
+     SUCURSALES
+     ================================================ -->
+<section class="home-section home-plain max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <div appReveal class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
+    <div>
+      <p class="text-xs font-montserrat font-bold uppercase tracking-[0.18em] text-[#E60000] mb-2">Sucursales</p>
+      <h2 class="font-montserrat font-extrabold tracking-tight text-[#111827] text-2xl sm:text-3xl">Visítanos o escríbenos</h2>
+    </div>
+    <a routerLink="/sucursales"
+       class="inline-flex items-center gap-2 text-[#111827] hover:text-[#E60000] font-montserrat font-bold text-sm transition-colors whitespace-nowrap">
+      Ver mapas y horarios <i class="fas fa-arrow-right text-xs" aria-hidden="true"></i>
+    </a>
+  </div>
+
+  <div class="grid md:grid-cols-2 gap-5">
+    @for (s of sucursales; track s.id; let i = $index) {
+      <article [appReveal]="i * 100" class="bg-white border border-gray-200 rounded-2xl p-6 flex flex-col gap-4">
+        <div class="flex items-start gap-4">
+          <span class="w-12 h-12 shrink-0 rounded-xl bg-red-50 text-[#E60000] flex items-center justify-center">
+            <i class="fas fa-location-dot text-lg" aria-hidden="true"></i>
+          </span>
+          <div>
+            <h3 class="font-montserrat font-bold text-lg text-[#111827]">{{ s.zona }}</h3>
+            <p class="font-inter text-sm text-gray-600">{{ s.direccion }}</p>
+          </div>
+        </div>
+        <dl class="grid grid-cols-2 gap-3 text-sm font-inter">
+          <div>
+            <dt class="text-xs uppercase tracking-wide text-gray-400">Horario</dt>
+            <dd class="text-gray-700">{{ s.horario }}</dd>
+          </div>
+          <div>
+            <dt class="text-xs uppercase tracking-wide text-gray-400">{{ s.asesorTitulo }}</dt>
+            <dd class="text-gray-700">{{ s.asesorNombre }}</dd>
+          </div>
+        </dl>
+        <a [href]="getWhatsappUrl(s)" target="_blank" rel="noopener"
+           class="mt-auto inline-flex items-center justify-center gap-2 bg-[#111827] hover:bg-[#E60000] text-white px-5 py-3 rounded-xl font-montserrat font-bold text-sm transition-colors">
+          <i class="fab fa-whatsapp text-[#25D366]" aria-hidden="true"></i> Escribir a {{ s.asesorNombre }}
+        </a>
+      </article>
     }
   </div>
 </section>
 
 <!-- ================================================
-     CATEGORÍAS RÁPIDAS
+     CTA FINAL
      ================================================ -->
-<section class="bg-[#F9FAFB] py-16">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <h2 class="font-montserrat font-black text-[#111827] text-2xl sm:text-3xl mb-8 text-center">
-      Explora por Categoría
-    </h2>
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-      <a routerLink="/catalogo" [queryParams]="{categoria: 'TV y Audio'}"
-         class="group relative overflow-hidden rounded-2xl aspect-video bg-gradient-to-br from-blue-500 to-blue-700 flex flex-col items-center justify-center text-white hover:shadow-xl transition-all hover:scale-105 cursor-pointer">
-        <i class="fas fa-tv text-4xl mb-3 group-hover:scale-110 transition-transform"></i>
-        <span class="font-montserrat font-bold text-sm">TV y Audio</span>
-      </a>
-      <a routerLink="/catalogo" [queryParams]="{categoria: 'Línea Blanca'}"
-         class="group relative overflow-hidden rounded-2xl aspect-video bg-gradient-to-br from-[#E60000] to-red-800 flex flex-col items-center justify-center text-white hover:shadow-xl transition-all hover:scale-105 cursor-pointer">
-        <i class="fas fa-wind text-4xl mb-3 group-hover:scale-110 transition-transform"></i>
-        <span class="font-montserrat font-bold text-sm">Línea Blanca</span>
-      </a>
-      <a routerLink="/catalogo" [queryParams]="{categoria: 'Electrodomésticos Menores'}"
-         class="group relative overflow-hidden rounded-2xl aspect-video bg-gradient-to-br from-[#FFCC00] to-yellow-600 flex flex-col items-center justify-center text-[#111827] hover:shadow-xl transition-all hover:scale-105 cursor-pointer">
-        <i class="fas fa-blender text-4xl mb-3 group-hover:scale-110 transition-transform"></i>
-        <span class="font-montserrat font-bold text-sm">Electro. Menores</span>
-      </a>
-      <a routerLink="/catalogo" [queryParams]="{categoria: 'Hogar'}"
-         class="group relative overflow-hidden rounded-2xl aspect-video bg-gradient-to-br from-gray-700 to-gray-900 flex flex-col items-center justify-center text-white hover:shadow-xl transition-all hover:scale-105 cursor-pointer">
-        <i class="fas fa-couch text-4xl mb-3 group-hover:scale-110 transition-transform"></i>
-        <span class="font-montserrat font-bold text-sm">Hogar</span>
-      </a>
+<section class="cta-final bg-white text-[#111827] relative overflow-hidden border-t border-gray-200">
+  <div class="absolute -left-24 top-1/2 -translate-y-1/2 w-80 h-80 rounded-full bg-[#E60000]/10 blur-3xl" aria-hidden="true"></div>
+  <div appReveal class="home-section relative max-w-4xl mx-auto px-4 sm:px-6 text-center">
+    <h2 class="font-montserrat font-extrabold tracking-tight text-3xl sm:text-4xl">¿Necesitas ayuda para elegir?</h2>
+    <p class="font-inter text-gray-600 text-lg mt-4 mb-8">
+      Un asesor te ayuda a escoger el electrodoméstico ideal para tu hogar.
+    </p>
+    <div class="flex flex-col sm:flex-row gap-3 justify-center">
+      @for (s of sucursales; track s.id; let first = $first) {
+        <a [href]="getWhatsappUrl(s)" target="_blank" rel="noopener"
+           class="inline-flex items-center justify-center gap-3 px-7 py-3.5 rounded-xl font-montserrat font-bold text-base transition-colors"
+           [class]="first
+             ? 'bg-[#E60000] hover:bg-[#ff1a1a] text-white'
+             : 'border border-gray-300 bg-white hover:border-[#E60000] hover:text-[#E60000] text-[#111827]'">
+          <i class="fab fa-whatsapp text-[#25D366] text-xl" aria-hidden="true"></i>
+          {{ s.nombreCorto }} · {{ s.asesorNombre }}
+        </a>
+      }
     </div>
   </div>
 </section>

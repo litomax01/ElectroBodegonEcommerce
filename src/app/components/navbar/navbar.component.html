@@ -1,118 +1,116 @@
-<nav class="sticky top-0 z-50 bg-white shadow-lg border-b-4 border-[#E60000]">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex items-center justify-between h-20">
+<header class="sticky top-0 z-50 bg-white/85 backdrop-blur-xl border-b border-gray-200/80">
+  <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-label="Navegación principal">
+    <div class="flex items-center justify-between h-[80px] sm:h-[92px] gap-4">
 
       <!-- Logo -->
-      <a routerLink="/" class="flex items-center gap-3 group flex-shrink-0">
-        <img
-          src="logo.png"
-          alt="Electro Bodegón"
-          class="h-16 w-16 object-contain group-hover:scale-110 transition-transform duration-300 drop-shadow-md"
-        />
-        <div class="hidden sm:block leading-tight">
-          <span class="block font-montserrat font-black text-[#E60000] text-2xl leading-none tracking-tight">ELECTRO</span>
-          <span class="block font-montserrat font-black text-[#111827] text-2xl leading-none tracking-tight">BODEGÓN</span>
-          <!-- Oculto solo en tablet (md): con los enlaces de escritorio no cabe y desborda -->
-          <span class="block md:hidden lg:block font-inter text-[10px] text-gray-400 uppercase tracking-widest">Donde compran los que saben de ahorro</span>
-        </div>
+      <a routerLink="/" class="flex items-center gap-3 flex-shrink-0 group" aria-label="Electro Bodegón, ir al inicio">
+        <img src="logo-circulo.png" alt="" width="80" height="80"
+             class="h-[60px] w-[60px] sm:h-20 sm:w-20 rounded-full object-cover shadow-[0_6px_16px_-6px_rgba(143,0,0,0.55)] transition-transform duration-300 group-hover:scale-105" />
+        <span class="leading-none">
+          <span class="block font-montserrat font-extrabold text-[#E60000] text-xl sm:text-2xl tracking-tight">ELECTRO</span>
+          <span class="block font-montserrat font-extrabold text-[#111827] text-xl sm:text-2xl tracking-tight">BODEGÓN</span>
+        </span>
       </a>
 
-      <!-- Desktop Nav Links -->
+      <!-- Buscador (escritorio): lleva al catálogo -->
+      <form class="buscador hidden lg:block flex-1 max-w-sm" role="search" (submit)="buscar($event, qDesktop.value)">
+        <label for="buscar-desktop" class="sr-only">Buscar productos</label>
+        <input #qDesktop id="buscar-desktop" type="search" name="q" maxlength="100" autocomplete="off"
+               placeholder="¿Qué producto buscas?" />
+        <button type="submit" aria-label="Buscar">
+          <i class="fas fa-magnifying-glass text-sm" aria-hidden="true"></i>
+        </button>
+      </form>
+
+      <!-- Enlaces (escritorio y tablet) -->
       <div class="hidden md:flex items-center gap-1">
-        <a routerLink="/" routerLinkActive="text-[#E60000] bg-red-50 border-b-2 border-[#E60000]"
-           [routerLinkActiveOptions]="{exact: true}"
-           class="px-4 py-2.5 font-montserrat font-bold text-sm text-[#111827] hover:text-[#E60000] transition-all rounded-lg hover:bg-red-50">
-          <i class="fas fa-home mr-1.5"></i> Inicio
-        </a>
-        <a routerLink="/catalogo" routerLinkActive="text-[#E60000] bg-red-50 border-b-2 border-[#E60000]"
-           class="px-4 py-2.5 font-montserrat font-bold text-sm text-[#111827] hover:text-[#E60000] transition-all rounded-lg hover:bg-red-50">
-          <i class="fas fa-th-large mr-1.5"></i> Catálogo
-        </a>
-        <a routerLink="/sucursales" routerLinkActive="text-[#E60000] bg-red-50 border-b-2 border-[#E60000]"
-           class="px-4 py-2.5 font-montserrat font-bold text-sm text-[#111827] hover:text-[#E60000] transition-all rounded-lg hover:bg-red-50">
-          <i class="fas fa-map-marker-alt mr-1.5"></i> Sucursales
-        </a>
+        <a routerLink="/" routerLinkActive="nav-activo" [routerLinkActiveOptions]="{exact: true}"
+           class="nav-link">Inicio</a>
+        <a routerLink="/catalogo" routerLinkActive="nav-activo" class="nav-link">Catálogo</a>
+        <a routerLink="/sucursales" routerLinkActive="nav-activo" class="nav-link">Sucursales</a>
       </div>
 
-      <!-- Social + CTA -->
-      <div class="flex items-center gap-2">
-        <!-- Social icons (desktop) -->
-        <div class="hidden lg:flex items-center gap-1.5 mr-2">
-          <a [href]="whatsappUrl" target="_blank" rel="noopener"
-             class="w-8 h-8 flex items-center justify-center rounded-lg text-[#25D366] hover:bg-green-50 transition-all hover:scale-110" title="WhatsApp">
-            <i class="fab fa-whatsapp text-xl"></i>
-          </a>
-          @if (redes.instagram) {
-            <a [href]="redes.instagram" aria-label="Instagram" target="_blank" rel="noopener"
-             class="w-8 h-8 flex items-center justify-center rounded-lg text-pink-500 hover:bg-pink-50 transition-all hover:scale-110" title="Instagram">
-            <i class="fab fa-instagram text-xl"></i>
-          </a>
-          }
-          @if (redes.facebook) {
-            <a [href]="redes.facebook" aria-label="Facebook" target="_blank" rel="noopener"
-             class="w-8 h-8 flex items-center justify-center rounded-lg text-[#1877F2] hover:bg-blue-50 transition-all hover:scale-110" title="Facebook">
-            <i class="fab fa-facebook-f text-xl"></i>
-          </a>
-          }
-          @if (redes.tiktok) {
-            <a [href]="redes.tiktok" aria-label="TikTok" target="_blank" rel="noopener"
-             class="w-8 h-8 flex items-center justify-center rounded-lg text-gray-900 hover:bg-gray-100 transition-all hover:scale-110" title="TikTok">
-            <i class="fab fa-tiktok text-xl"></i>
-          </a>
-          }
-        </div>
+      <!-- Acciones -->
+      <div class="flex items-center gap-2 sm:gap-3">
 
-        <!-- WhatsApp CTA button -->
+        @if (redes.instagram || redes.facebook || redes.tiktok) {
+          <div class="hidden xl:flex items-center gap-1">
+            @if (redes.instagram) {
+              <a [href]="redes.instagram" aria-label="Instagram" target="_blank" rel="noopener"
+                 class="w-9 h-9 flex items-center justify-center rounded-full text-gray-500 hover:text-[#E60000] hover:bg-red-50 transition-colors">
+                <i class="fab fa-instagram text-lg"></i>
+              </a>
+            }
+            @if (redes.facebook) {
+              <a [href]="redes.facebook" aria-label="Facebook" target="_blank" rel="noopener"
+                 class="w-9 h-9 flex items-center justify-center rounded-full text-gray-500 hover:text-[#E60000] hover:bg-red-50 transition-colors">
+                <i class="fab fa-facebook-f text-lg"></i>
+              </a>
+            }
+            @if (redes.tiktok) {
+              <a [href]="redes.tiktok" aria-label="TikTok" target="_blank" rel="noopener"
+                 class="w-9 h-9 flex items-center justify-center rounded-full text-gray-500 hover:text-[#E60000] hover:bg-red-50 transition-colors">
+                <i class="fab fa-tiktok text-lg"></i>
+              </a>
+            }
+          </div>
+        }
+
         <a [href]="whatsappUrl" target="_blank" rel="noopener"
-           class="hidden sm:flex items-center gap-2 bg-[#25D366] text-white px-4 py-2.5 rounded-full text-sm font-montserrat font-bold hover:bg-green-600 transition-all hover:scale-105 shadow-md">
-          <i class="fab fa-whatsapp text-base"></i>
-          <span>Contáctanos</span>
+           class="hidden sm:inline-flex items-center gap-2 bg-[#111827] hover:bg-[#E60000] text-white px-4 py-2.5 rounded-full text-sm font-montserrat font-bold transition-colors">
+          <i class="fab fa-whatsapp text-base text-[#25D366]" aria-hidden="true"></i>
+          <span>WhatsApp</span>
         </a>
 
-        <!-- Mobile hamburger -->
+        <!-- Menú móvil -->
         <button id="mobile-menu-btn" type="button" (click)="toggleMenu()"
-                [attr.aria-expanded]="menuOpen()" aria-label="Abrir menú de navegación" class="md:hidden p-2.5 rounded-lg text-gray-600 hover:text-[#E60000] hover:bg-red-50 transition-colors">
+                [attr.aria-expanded]="menuOpen()" aria-controls="menu-movil"
+                [attr.aria-label]="menuOpen() ? 'Cerrar menú de navegación' : 'Abrir menú de navegación'"
+                class="md:hidden w-11 h-11 flex items-center justify-center rounded-xl text-[#111827] hover:text-[#E60000] hover:bg-red-50 transition-colors">
           @if (!menuOpen()) {
-            <i class="fas fa-bars text-xl"></i>
+            <i class="fas fa-bars text-xl" aria-hidden="true"></i>
           } @else {
-            <i class="fas fa-times text-xl"></i>
+            <i class="fas fa-times text-xl" aria-hidden="true"></i>
           }
         </button>
       </div>
     </div>
 
-    <!-- Mobile Dropdown -->
+    <!-- Menú móvil -->
     @if (menuOpen()) {
-      <div class="md:hidden border-t border-gray-100 py-3 space-y-1">
-        <a routerLink="/" (click)="closeMenu()" routerLinkActive="text-[#E60000] bg-red-50"
-           [routerLinkActiveOptions]="{exact: true}"
-           class="flex items-center gap-2 px-4 py-3 text-sm font-montserrat font-semibold text-gray-700 hover:bg-red-50 hover:text-[#E60000] rounded-xl transition-colors">
-          <i class="fas fa-home w-5 text-center"></i> Inicio
+      <div id="menu-movil" class="md:hidden border-t border-gray-100 py-3 space-y-1">
+        <form class="buscador mb-2" role="search" (submit)="buscar($event, qMovil.value)">
+          <label for="buscar-movil" class="sr-only">Buscar productos</label>
+          <input #qMovil id="buscar-movil" type="search" name="q" maxlength="100" autocomplete="off"
+                 placeholder="¿Qué producto buscas?" />
+          <button type="submit" aria-label="Buscar">
+            <i class="fas fa-magnifying-glass text-sm" aria-hidden="true"></i>
+          </button>
+        </form>
+        <a routerLink="/" (click)="closeMenu()" routerLinkActive="nav-activo-movil" [routerLinkActiveOptions]="{exact: true}"
+           class="nav-link-movil">Inicio</a>
+        <a routerLink="/catalogo" (click)="closeMenu()" routerLinkActive="nav-activo-movil" class="nav-link-movil">Catálogo</a>
+        <a routerLink="/sucursales" (click)="closeMenu()" routerLinkActive="nav-activo-movil" class="nav-link-movil">Sucursales</a>
+
+        <a [href]="whatsappUrl" target="_blank" rel="noopener" (click)="closeMenu()"
+           class="mt-2 flex items-center justify-center gap-2 bg-[#25D366] text-[#052e16] px-4 py-3 rounded-xl text-sm font-montserrat font-bold">
+          <i class="fab fa-whatsapp text-lg" aria-hidden="true"></i> Escribir por WhatsApp
         </a>
-        <a routerLink="/catalogo" (click)="closeMenu()" routerLinkActive="text-[#E60000] bg-red-50"
-           class="flex items-center gap-2 px-4 py-3 text-sm font-montserrat font-semibold text-gray-700 hover:bg-red-50 hover:text-[#E60000] rounded-xl transition-colors">
-          <i class="fas fa-th-large w-5 text-center"></i> Catálogo
-        </a>
-        <a routerLink="/sucursales" (click)="closeMenu()" routerLinkActive="text-[#E60000] bg-red-50"
-           class="flex items-center gap-2 px-4 py-3 text-sm font-montserrat font-semibold text-gray-700 hover:bg-red-50 hover:text-[#E60000] rounded-xl transition-colors">
-          <i class="fas fa-map-marker-alt w-5 text-center"></i> Sucursales
-        </a>
-        <!-- Mobile social icons -->
-        <div class="flex items-center gap-3 px-4 pt-2 pb-1 border-t border-gray-100 mt-2">
-          <a [href]="whatsappUrl" target="_blank" rel="noopener" class="flex items-center gap-1.5 text-[#25D366] text-sm font-montserrat font-semibold hover:underline">
-            <i class="fab fa-whatsapp text-lg"></i> WhatsApp
-          </a>
-          @if (redes.instagram) {
-            <a [href]="redes.instagram" aria-label="Instagram" target="_blank" rel="noopener" class="text-pink-500 hover:scale-110 transition-transform"><i class="fab fa-instagram text-xl"></i></a>
-          }
-          @if (redes.facebook) {
-            <a [href]="redes.facebook" aria-label="Facebook" target="_blank" rel="noopener" class="text-[#1877F2] hover:scale-110 transition-transform"><i class="fab fa-facebook-f text-xl"></i></a>
-          }
-          @if (redes.tiktok) {
-            <a [href]="redes.tiktok" aria-label="TikTok" target="_blank" rel="noopener" class="text-gray-900 hover:scale-110 transition-transform"><i class="fab fa-tiktok text-xl"></i></a>
-          }
-        </div>
+
+        @if (redes.instagram || redes.facebook || redes.tiktok) {
+          <div class="flex items-center gap-4 px-4 pt-3">
+            @if (redes.instagram) {
+              <a [href]="redes.instagram" aria-label="Instagram" target="_blank" rel="noopener" class="text-gray-600"><i class="fab fa-instagram text-xl"></i></a>
+            }
+            @if (redes.facebook) {
+              <a [href]="redes.facebook" aria-label="Facebook" target="_blank" rel="noopener" class="text-gray-600"><i class="fab fa-facebook-f text-xl"></i></a>
+            }
+            @if (redes.tiktok) {
+              <a [href]="redes.tiktok" aria-label="TikTok" target="_blank" rel="noopener" class="text-gray-600"><i class="fab fa-tiktok text-xl"></i></a>
+            }
+          </div>
+        }
       </div>
     }
-  </div>
-</nav>
+  </nav>
+</header>

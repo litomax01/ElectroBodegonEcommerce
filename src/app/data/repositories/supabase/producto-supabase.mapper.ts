@@ -1,4 +1,5 @@
 import { Disponibilidad, Especificacion, Producto, ProductoImagen } from '../../../core/models/producto.model';
+import { resolverFoto } from '../../../core/models/fotos-no-corresponden';
 
 /** Bucket de Storage con las imágenes del catálogo (ver migración inicial). */
 export const BUCKET_CATALOGO = 'catalog-media';
@@ -103,7 +104,9 @@ export function mapProductoRow(row: ProductoRow, urlPublica: ResolverUrlPublica)
   const imagenes = [...(row.images ?? [])]
     .sort((a, b) => a.position - b.position)
     .map((img, i) => imagen(img, i === 0 ? nombre : `${nombre} — imagen ${i + 1}`, urlPublica))
-    .filter((img): img is ProductoImagen => img !== null);
+    .filter((img): img is ProductoImagen => img !== null)
+    .map(img => ({ ...img, url: resolverFoto(img.url, nombre) }))
+    .filter((img): img is ProductoImagen => img.url !== null);
 
   return {
     id: row.id,

@@ -36,7 +36,12 @@ function dominiosPermitidos(): string[] {
 
 const allowedHosts = dominiosPermitidos();
 const app = express();
-const angularApp = new AngularNodeAppEngine({ allowedHosts });
+// Vercel (y cualquier CDN/proxy) envía X-Forwarded-*: sin declararlos como confiables Angular
+// no renderiza en el servidor y devuelve el shell vacío. El Host se sigue validando con allowedHosts.
+const angularApp = new AngularNodeAppEngine({
+  allowedHosts,
+  trustProxyHeaders: ['x-forwarded-for', 'x-forwarded-host', 'x-forwarded-proto', 'x-forwarded-port']
+});
 
 app.disable('x-powered-by');
 // Detrás de un proxy/CDN (Vercel, Netlify, Render...) el protocolo real llega en X-Forwarded-Proto
